@@ -29,7 +29,7 @@ The following libraries are necessary for the audio demos:
 * For Ubuntu/Debian-like Linux distributions, install `libopenal1` and `libvorbisfile3`
 * For CentOS/Fedora-like Linux distributions, install `libopenal1` and `libvorbisfile3`
 * Currently it was not tested on OS X. We encourage some feedback.
-* For Windows install `OpenAL32.dll` and ???
+* For Windows its is necessary to install the following dlls: OpenAL32.dll, libogg.dll, libvorbis.dll and libvorbisfile.dll.
 
 G3ND was only tested with Go1.7.4+.
 
