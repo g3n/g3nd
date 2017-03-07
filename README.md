@@ -15,12 +15,12 @@ of a lot of necessary initializations and housekeeping.
 G3ND imports the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
 It needs an OpenGL driver installed in your system and on Unix like systems
 depends on some C libraries that can be installed using the platform package manager.
-In all cases it is necessary to have a C compiler installed.
+In all cases it is necessary to have a gcc compatible C compiler installed.
 
 * For Ubuntu/Debian-like Linux distributions, install `libgl1-mesa-dev` and `xorg-dev` packages.
 * For CentOS/Fedora-like Linux distributions, install `libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel mesa-libGL-devel libXi-devel` packages.
 * Currently it was not tested on OS X. We encourage some feedback.
-* For Windows it is recommended to have MingGW vx.x.x installed.
+* For Windows we tested the build using the [mingw-w64](https://mingw-w64.org) toolchain.
 
 G3ND checks if audio libraries are installed in the system at runtime
 and if found enables the execution of audio demos.
@@ -35,7 +35,7 @@ G3ND was only tested with Go1.7.4+.
 
 # Installation
 
-The following command will download the G3ND, the engine and all its dependencies, compile and
+The following command will download G3ND, the engine and all its dependencies, compile and
 install the packages and the g3nd binary. Make sure your GOPATH is set correctly.
 
 `go get -u github.com/g3n/g3nd`
