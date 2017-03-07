@@ -11,7 +11,7 @@ of a lot of necessary initializations and house keeping.
 
 # Dependencies for installation
 
-The G3N engine imported by G3ND needs an OpenGL driver installed in the system and
+The [G3N](https://github.com/g3n/engine) engine imported by G3ND needs an OpenGL driver installed in the system and
 on Unix like systems depends on some C libraries that must be installed.
 In all cases it is necessary to have a C compiler installed.
 
@@ -33,7 +33,7 @@ G3ND was only tested with Go1.7.4+.
 
 # Installation
 
-go get -u github.com/g3n/g3nd
+`go get -u github.com/g3n/g3nd`
 
 Note: G3ND comes with a data directory with media files: images, textures, models and audio files.
 Currently this directory has aproximately 50MB.
