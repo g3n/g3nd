@@ -12,7 +12,8 @@ of a lot of necessary initializations and house keeping.
 
 # Dependencies for installation
 
-The [G3N](https://github.com/g3n/engine) engine imported by G3ND needs an OpenGL driver installed in the system and
+G3ND imports the [G3N](https://github.com/g3n/engine) and so has the same dependencies as the engine itself.
+It needs an OpenGL driver installed in your system and
 on Unix like systems depends on some C libraries that must be installed.
 In all cases it is necessary to have a C compiler installed.
 

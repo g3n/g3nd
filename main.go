@@ -236,12 +236,13 @@ func buildGui(ctx *Context) {
 	header.SetLayout(hbox)
 	ctx.root.Add(header)
 
-	// Header logo
+	// Add an optional image to header
 	logo, err := gui.NewImage(ctx.DirData + "/images/g3n_logo.png")
 	if err == nil {
 		logo.SetContentAspectWidth(32)
 		header.Add(logo)
 	}
+
 	// Header title
 	title := gui.NewLabel(" ")
 	title.SetFontSize(20)
