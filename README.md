@@ -1,4 +1,4 @@
-## G3ND G3N Demo
+# G3ND - G3N Game Engine Demo Program
 
 G3ND is a demo/test program for the [G3N](https://github.com/g3n/engine) Go 3D Game Engine.
 It contains demos of the main features of the engine and also some basic tests.
