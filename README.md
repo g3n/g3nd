@@ -38,7 +38,7 @@ G3ND was only tested with Go1.7.4+.
 `go get -u github.com/g3n/g3nd`
 
 Note: G3ND comes with a data directory with media files: images, textures, models and audio files.
-Currently this directory has aproximately 50MB.
+Currently this directory has aproximately 50MB. The download and compilation may take some time.
 
 # Running
 
