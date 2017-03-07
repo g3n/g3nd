@@ -12,9 +12,9 @@ of a lot of necessary initializations and house keeping.
 
 # Dependencies for installation
 
-G3ND imports the [G3N](https://github.com/g3n/engine) and so has the same dependencies as the engine itself.
-It needs an OpenGL driver installed in your system and
-on Unix like systems depends on some C libraries that must be installed.
+G3ND imports the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
+It needs an OpenGL driver installed in your system and on Unix like systems
+depends on some C libraries that can be installed using the platform package manager.
 In all cases it is necessary to have a C compiler installed.
 
 * For Ubuntu/Debian-like Linux distributions, install `libgl1-mesa-dev` and `xorg-dev` packages.
