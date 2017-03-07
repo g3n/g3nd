@@ -1,14 +1,14 @@
-Audio libraries for Windows
----------------------------
+* Audio libraries for Windows
 
 The G3N engine audio support currently depends on the following external libraries:
 - openal        - for spatial audio
 - libogg        - for Ogg container format
 - libvorbis     - for vorbis decoder support
 - libvorbisfile - for reading/decoding ogg vorbis files
-
-This guide describes the procedure to get and build Windows dlls for these
-libraries from sources.
+These libraries are easily installed in Linux systems using the distribution package manager.
+For Windows you can build these libraries from sources using the following procedure
+of if you are trusting you can simply use the dlls in this directory which were
+built using this procedure.
 
 1. Download and install Microsoft Studio Community from:
    https://www.visualstudio.com/downloads/
@@ -75,8 +75,6 @@ libraries from sources.
 
 11. Copy the dlls: OpenAL32.dll, libogg.dll, libvorbis.dll and libvorbisfile.dll
     to the directory from which you will execute a G3N application.
-
-
 
 
 
