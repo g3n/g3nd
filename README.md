@@ -68,7 +68,10 @@ The FPS will be lower when the screen is maximized or full.
 # Creating a new demo/test
 
 To create a new demo or test create a file in G3ND's main directory
-you can use the `tests_model.go` template. 
+you can use the `tests_model.go` template. You can can change it
+directly or copy it to a new file such as `tests_mytest.go` and
+experiment with the engine. You new test will appear under the
+|tests| category with 'mytest' name.
 
 ```Go
 // This is a simple model for your tests
@@ -87,22 +90,21 @@ func init() {
 }
 
 // This is your test object. You can store state here.
-// This name must be unique in the package
 type testsModel struct {
-	grid *graphic.GridHelper
+	grid *graphic.GridHelper    // Pointer to a GridHelper created in 'Initialize'
 }
 
 // This method will be called once when the test is selected from the list
-// You can add your objects to the scene here.
 // The ctx objects contain several global objects built by the main program.
 // ctx.Scene is the scene being rendered.
+// You can build your scene, adding your objects to the ctx.Scene.
 func (t *testsModel) Initialize(ctx *Context) {
 
 	// Show axis helper
 	ah := graphic.NewAxisHelper(1.0)
 	ctx.Scene.Add(ah)
 
-	// Creates grid helper and saves its pointer in the test state
+	// Creates a grid helper and saves its pointer in the test state
 	t.grid = graphic.NewGridHelper(50, 1, &math32.Color{0.4, 0.4, 0.4})
 	ctx.Scene.Add(t.grid)
 
