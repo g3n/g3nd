@@ -7,7 +7,7 @@ It is very easy to create a new demo or test as the main program takes care
 of a lot of necessary initializations and house keeping.
 
 <p align="center">
-  <img style="float: right;" src="data/images/cube.png" alt="G3ND Screenshot"/>
+  <img style="float: right;" src="data/images/screenshot.png" alt="G3ND Screenshot"/>
 </p>
 
 # Dependencies for installation
