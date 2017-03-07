@@ -247,7 +247,7 @@ func buildGui(ctx *Context) {
 	title := gui.NewLabel(" ")
 	title.SetFontSize(20)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-	title.SetText(fmt.Sprintf("G3N Demo v%d.%d", VMAJOR, VMINOR))
+	title.SetText(fmt.Sprintf("%s v%d.%d", PROGNAME, VMAJOR, VMINOR))
 	header.Add(title)
 	// FPS
 	if !*oNofps {
@@ -414,7 +414,6 @@ func setupScene(ctx *Context) {
 	// Subscribe to window key events to exit when ESC received
 	ctx.Win.Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
 		kev := ev.(*window.KeyEvent)
-		fmt.Printf("ev:%+v\n", kev)
 		if kev.Keycode == window.KeyEscape {
 			ctx.Win.SetShouldClose(true)
 		}
@@ -427,13 +426,13 @@ func setupScene(ctx *Context) {
 
 	ctx.root.SubscribeWin()
 
-	//	// If audio active, resets global listener parameters
-	//	if ctx.Audio {
-	//		als.Listener3f(als.POSITION, 0, 0, 0)
-	//		als.Listener3f(als.VELOCITY, 0, 0, 0)
-	//		als.Listenerfv(als.ORIENTATION, []float32{0, 0, -1, 0, 1, 0})
-	//	}
-	//
+	// If audio active, resets global listener parameters
+	if ctx.Audio {
+		al.Listener3f(al.Position, 0, 0, 0)
+		al.Listener3f(al.Velocity, 0, 0, 0)
+		al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
+	}
+
 	// If no gui, nothing more to do
 	if ctx.Control == nil {
 		return
