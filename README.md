@@ -35,6 +35,9 @@ G3ND was only tested with Go1.7.4+.
 
 # Installation
 
+The following command will download the G3ND, the engine and all its dependencies, compile and
+install the packages and the g3nd binary. Make sure your GOPATH is set correctly.
+
 `go get -u github.com/g3n/g3nd`
 
 Note: G3ND comes with a data directory with media files: images, textures, models and audio files.
