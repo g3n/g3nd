@@ -39,6 +39,9 @@ G3ND was only tested with Go1.7.4+.
 
 Note: G3ND comes with a data directory with media files: images, textures, models and audio files.
 Currently this directory has aproximately 50MB. The download and compilation may take some time.
+To see what is going on you can alternatively supply the verbose flag:
+
+`go get -u -v github.com/g3n/g3nd`
 
 # Running
 
@@ -57,7 +60,7 @@ line such as:
 
 `>g3nd geometry_box`
 
-To check the maximum frames per second rate (FPS) of your system for any demo,
+To check the maximum FPS rate (frames per second) of your system for any demo,
 run G3ND with the option `-interval 0`.
 Note that at least one core of your system CPU will run at 100% utilization.
 The FPS will be lower when the screen is maximized or full.
