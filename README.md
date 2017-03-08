@@ -71,15 +71,7 @@ The FPS will be lower when the screen is maximized or full.
 
 # Creating a new demo/test
 
-To create a new demo or test create a file in G3ND's main directory
-named using the following format:
-```
-<category>_<name>.go
-```
-Your demo will appear in the G3ND demo tree under the specified
-category with the specified name.
-
-If you wish you can use the `tests_model.go` file as a template
+You can use the `tests_model.go` file as a template
 for your test. You can can change it directly or copy it to a
 new file such as `tests_mytest.go` and
 experiment with the engine. Your new test will appear under the
@@ -97,7 +89,7 @@ import (
 	"github.com/g3n/engine/math32"
 )
 
-// Sets the category and name of your test in the package global "TestMap"
+// Sets the category and name of your test in the global map "TestMap"
 // The category name choosen here starts with a "|" so it shows as the
 // last category in list. Change "model" to the name of your test.
 func init() {
@@ -105,13 +97,16 @@ func init() {
 }
 
 // This is your test object. You can store state here.
+// By convention and to avoid conflict with other demo/tests name it
+// using your test category and name.
 type testsModel struct {
 	grid *graphic.GridHelper    // Pointer to a GridHelper created in 'Initialize'
 }
 
-// This method will be called once when the test is selected from the list
-// The ctx struct contain several global objects built by the main program.
-// ctx.Scene is the scene being rendered.
+// This method will be called once when the test is selected from the list.
+// ctx is a pointer to a Context structure built by the main program.
+// It allows access to several important object such as the scene (ctx.Scene),
+// camera (ctx.Camera) and the window (ctx.Win) among others.
 // You can build your scene adding your objects to the ctx.Scene.
 func (t *testsModel) Initialize(ctx *Context) {
 
