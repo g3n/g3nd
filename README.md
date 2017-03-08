@@ -19,7 +19,7 @@ In all cases it is necessary to have a gcc compatible C compiler installed.
 
 * For Ubuntu/Debian-like Linux distributions, install `libgl1-mesa-dev` and `xorg-dev` packages.
 * For CentOS/Fedora-like Linux distributions, install `libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel mesa-libGL-devel libXi-devel` packages.
-* Currently it was not tested on OS X. We encourage some feedback.
+* Currently it was not tested on OS X.
 * For Windows we tested the build using the [mingw-w64](https://mingw-w64.org) toolchain.
 
 G3ND checks if audio libraries are installed in the system at runtime
