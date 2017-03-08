@@ -3,7 +3,7 @@
 G3ND is a demo/test program for the [G3N](https://github.com/g3n/engine) Go 3D Game Engine.
 It contains demos of the main features of the engine and also some basic tests.
 It can also be used to learn how to use the game engine by examining the source code of the demo programs.
-It is very easy to create a new demo or test as the main program takes care
+It is very easy to create a new demo as the main program takes care
 of a lot of necessary initializations and housekeeping.
 
 <p align="center">
@@ -72,9 +72,14 @@ The FPS will be lower when the screen is maximized or full.
 # Creating a new demo/test
 
 To create a new demo or test create a file in G3ND's main directory
-you can use the `tests_model.go` template. You can can change it
-directly or copy it to a new file such as `tests_mytest.go` and
-experiment with the engine. You new test will appear under the
+named using the following format: `<category>_<name>.go`.
+Your demo will appear in the G3ND demo tree under the specified
+category with the specified name.
+
+If you wish you can use the `tests_model.go` file as a template
+for your test. You can can change it directly or copy it to a
+new file such as `tests_mytest.go` and
+experiment with the engine. Your new test will appear under the
 |tests| category with 'mytest' name.
 
 ```Go
