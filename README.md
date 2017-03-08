@@ -72,7 +72,10 @@ The FPS will be lower when the screen is maximized or full.
 # Creating a new demo/test
 
 To create a new demo or test create a file in G3ND's main directory
-named using the following format: `<category>_<name>.go`.
+named using the following format:
+```
+<category>_<name>.go`
+```
 Your demo will appear in the G3ND demo tree under the specified
 category with the specified name.
 
@@ -80,7 +83,10 @@ If you wish you can use the `tests_model.go` file as a template
 for your test. You can can change it directly or copy it to a
 new file such as `tests_mytest.go` and
 experiment with the engine. Your new test will appear under the
-|tests| category with 'mytest' name.
+|tests| category with 'mytest' name. The contents of the `tests_model.go`
+file are shown below, documenting the common structure of all
+demo/tests programs:
+
 
 ```Go
 // This is a simple model for your tests
