@@ -74,7 +74,7 @@ The FPS will be lower when the screen is maximized or full.
 To create a new demo or test create a file in G3ND's main directory
 named using the following format:
 ```
-<category>_<name>.go`
+<category>_<name>.go
 ```
 Your demo will appear in the G3ND demo tree under the specified
 category with the specified name.
@@ -83,7 +83,7 @@ If you wish you can use the `tests_model.go` file as a template
 for your test. You can can change it directly or copy it to a
 new file such as `tests_mytest.go` and
 experiment with the engine. Your new test will appear under the
-|tests| category with 'mytest' name. The contents of the `tests_model.go`
+`|tests|` category with `mytest` name. The contents of the `tests_model.go`
 file are shown below, documenting the common structure of all
 demo/tests programs:
 
@@ -110,9 +110,9 @@ type testsModel struct {
 }
 
 // This method will be called once when the test is selected from the list
-// The ctx objects contain several global objects built by the main program.
+// The ctx struct contain several global objects built by the main program.
 // ctx.Scene is the scene being rendered.
-// You can build your scene, adding your objects to the ctx.Scene.
+// You can build your scene adding your objects to the ctx.Scene.
 func (t *testsModel) Initialize(ctx *Context) {
 
 	// Show axis helper
