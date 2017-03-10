@@ -37,7 +37,7 @@ var log *logger.Logger
 // Data directory base name
 const dirDataName = "data"
 
-// Context passed to all tests
+// Context structure passed to all tests
 type Context struct {
 	GS          *gls.GLS              // OpenGL state
 	Win         window.IWindow        // Window
@@ -85,6 +85,7 @@ var (
 	oInterval = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
 	oProfile  = flag.String("profile", "", "File to write cpuprofile to")
 	oLogColor = flag.Bool("logcolors", false, "Colored logs")
+	oLogs     = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 )
 
 func main() {
@@ -93,16 +94,44 @@ func main() {
 	flag.Usage = usage
 	flag.Parse()
 
-	// Print version and exits
+	// If requested, print version and exits
 	if *oVersion == true {
 		fmt.Fprintf(os.Stderr, "%s v%d.%d\n", PROGNAME, VMAJOR, VMINOR)
 		return
 	}
 
-	// Initialize logger
+	// Creates independent logger for the application
 	log = logger.New("G3ND", nil)
-	log.SetFormat(logger.FTIME | logger.FMICROS)
 	log.AddWriter(logger.NewConsole(*oLogColor))
+	log.SetFormat(logger.FTIME | logger.FMICROS)
+	log.SetLevel(logger.DEBUG)
+	log.Info("%s v%d.%d starting", PROGNAME, VMAJOR, VMINOR)
+
+	// Apply log levels to engine package loggers
+	// For example:>g3nd -logs gui:debug,gls:info
+	if *oLogs != "" {
+		logs := strings.Split(*oLogs, ",")
+		for i := 0; i < len(logs); i++ {
+			parts := strings.Split(logs[i], ":")
+			if len(parts) != 2 {
+				log.Error("Invalid logs level string")
+				continue
+			}
+			pack := strings.ToUpper(parts[0])
+			level := strings.ToUpper(parts[1])
+			path := "G3N/" + pack
+			packlog := logger.Find(path)
+			if packlog == nil {
+				log.Error("No logger for package:%s", pack)
+				continue
+			}
+			err := packlog.SetLevelByName(level)
+			if err != nil {
+				log.Error("%s", err)
+			}
+			log.Info("Set log level:%s for package:%s", level, pack)
+		}
+	}
 
 	// Check for data directory and aborts if not found
 	dirData := checkDirData()
