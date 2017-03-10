@@ -16,7 +16,9 @@ import (
 	"github.com/g3n/engine/renderer"
 	"github.com/g3n/engine/util/logger"
 	"github.com/g3n/engine/window"
+	"github.com/kardianos/osext"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sort"
 	"strconv"
@@ -29,11 +31,11 @@ const PROGNAME = "G3N Demo"
 const VMAJOR = 0
 const VMINOR = 1
 
-// Data directory name
-const dirData = "data"
-
 // Package logger
 var log *logger.Logger
+
+// Data directory base name
+const dirDataName = "data"
 
 // Context passed to all tests
 type Context struct {
@@ -44,7 +46,6 @@ type Context struct {
 	CamOrtho    *camera.Orthographic  // pointer to orthographic camera
 	Camera      camera.ICamera        // current camera
 	Orbit       *control.OrbitControl // pointer to orbit camera controller
-	root        *gui.Root             // GUI root container
 	Gui         *gui.Panel            // GUI panel container for GUI tests
 	Control     *gui.ControlFolder    // Pointer to gui control panel
 	Scene       *core.Node            // Node container for 3D tests
@@ -55,6 +56,7 @@ type Context struct {
 	Audio       bool                  // Audio available
 	AudioEFX    bool                  // Audio effects available
 	Vorbis      bool                  // Vorbis decoder available
+	root        *gui.Root             // GUI root container
 	currentTest ITest                 // current test object
 	frameCount  int                   // frame counter for FPS calculation
 	lastTime    float64               // time of last calculated FPS
@@ -83,7 +85,6 @@ var (
 	oInterval = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
 	oProfile  = flag.String("profile", "", "File to write cpuprofile to")
 	oLogColor = flag.Bool("logcolors", false, "Colored logs")
-	oDirData  = flag.String("dirdata", "data", "Data directory path")
 )
 
 func main() {
@@ -103,25 +104,15 @@ func main() {
 	log.SetFormat(logger.FTIME | logger.FMICROS)
 	log.AddWriter(logger.NewConsole(*oLogColor))
 
+	// Check for data directory and aborts if not found
+	dirData := checkDirData()
+	log.Info("Using data directory:%s", dirData)
+
 	// GLFW event handling must run on the main OS thread
 	runtime.LockOSThread()
 
-	// Set full screen on primary monitor if requested
-	//var width, height int
-	//var mon *glfw.Monitor
-	//if *oFull {
-	//	mon = glfw.GetPrimaryMonitor()
-	//    vmode:= mon.GetVideoMode()
-	//	width = vmode.Width
-	//	height = vmode.Height
-	//} else {
-	//	mon = nil
-	//	width = *oWidth
-	//	height = *oHeight
-	//}
-
 	// Creates window and sets it as the current context
-	win, err := window.New("glfw", *oWidth, *oHeight, "G3ND", false)
+	win, err := window.New("glfw", *oWidth, *oHeight, "G3ND", *oFull)
 	if err != nil {
 		panic(err)
 	}
@@ -144,8 +135,8 @@ func main() {
 	ctx.Time = time.Now()
 	ctx.DirData = dirData
 
-	// Try to open audio and sets its availability in the context
-	openALS(&ctx)
+	// Try to load audio libraries and sets its availability in the context
+	loadAudioLibs(&ctx)
 
 	// Creates renderer
 	ctx.Renderer = renderer.NewRenderer(gs)
@@ -181,13 +172,13 @@ func main() {
 			}
 		}
 		if ctx.currentTest == nil {
-			fmt.Println("INVALID TEST NAME")
+			log.Error("INVALID TEST NAME")
 			usage()
 			return
 		}
 	}
 
-	// RENDER LOOP
+	// Render loop
 	for !win.ShouldClose() {
 		// Clear buffers
 		gs.Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
@@ -349,7 +340,7 @@ func updateFPS(ctx *Context) {
 	ctx.lastTime = currentTime
 }
 
-// Called when window resize event is received
+// winResizeEvent is called when the window resize event is received
 func winResizeEvent(ctx *Context) {
 
 	// Sets view port
@@ -364,7 +355,7 @@ func winResizeEvent(ctx *Context) {
 	ctx.root.SetSize(float32(width), float32(height))
 }
 
-// Setup scene resets the current scene for executing a new (or first) test
+// setupScene resets the current scene for executing a new (or first) test
 func setupScene(ctx *Context) {
 
 	// Cancel next events and clear all window subscriptions
@@ -457,9 +448,10 @@ func setupScene(ctx *Context) {
 	})
 }
 
-func openALS(ctx *Context) {
+// loadAudioLibs try to load audio libraries
+func loadAudioLibs(ctx *Context) {
 
-	// Try to start Audio Library Service
+	// Try to load OpenAL
 	err := al.Load()
 	if err != nil {
 		log.Warn("%s", err)
@@ -467,7 +459,6 @@ func openALS(ctx *Context) {
 	}
 
 	// Opens default audio device
-	log.Info("Audio libraries loaded")
 	dev, err := al.OpenDevice("")
 	if dev == nil {
 		log.Warn("Error: %s opening OpenAL default device", err)
@@ -507,13 +498,48 @@ func openALS(ctx *Context) {
 	if err == nil {
 		ctx.Vorbis = true
 		vorbis.Load()
-		log.Info("Loaded: %s", vorbis.VersionString())
+		log.Info("%s", vorbis.VersionString())
 	} else {
 		log.Warn("%s", err)
 	}
 }
 
-// Shows application usage
+// checkDirData try to find and return the complete data directory path.
+// Aborts if not found
+func checkDirData() string {
+
+	// Checks first if data directory is in the current directory
+	if _, err := os.Stat(dirDataName); err == nil {
+		return dirDataName
+	}
+
+	// Get the executable path
+	execPath, err := osext.Executable()
+	if err != nil {
+		panic(err)
+	}
+
+	// Checks if data directory is in the executable directory
+	execDir := filepath.Dir(execPath)
+	path := filepath.Join(execDir, "data")
+	if _, err := os.Stat(path); err == nil {
+		return path
+	}
+
+	// Assumes the executable is in $GOPATH/bin
+	goPath := filepath.Dir(execDir)
+	path = filepath.Join(goPath, "src", "github.com", "g3n", "g3nd", dirDataName)
+	// Checks data path
+	if _, err := os.Stat(path); err == nil {
+		return path
+	}
+
+	// Shows error message and aborts
+	log.Fatal("Data directory NOT FOUND")
+	return ""
+}
+
+// usage shows the application usage
 func usage() {
 
 	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", PROGNAME, VMAJOR, VMINOR)
