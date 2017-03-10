@@ -76,16 +76,17 @@ var TestMap = map[string]ITest{}
 
 // Command line options
 var (
-	oVersion  = flag.Bool("version", false, "Show version and exits")
-	oWidth    = flag.Int("width", 800, "Window width in pixels")
-	oHeight   = flag.Int("height", 600, "Window height in pixels")
-	oFull     = flag.Bool("full", false, "Full screen on primary monitor")
-	oNogui    = flag.Bool("nogui", false, "No GUI")
-	oNofps    = flag.Bool("nofps", false, "Do not show frames per second")
-	oInterval = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
-	oProfile  = flag.String("profile", "", "File to write cpuprofile to")
-	oLogColor = flag.Bool("logcolors", false, "Colored logs")
-	oLogs     = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
+	oVersion    = flag.Bool("version", false, "Show version and exits")
+	oWidth      = flag.Int("width", 800, "Window width in pixels")
+	oHeight     = flag.Int("height", 600, "Window height in pixels")
+	oFull       = flag.Bool("full", false, "Full screen on primary monitor")
+	oNogui      = flag.Bool("nogui", false, "No GUI")
+	oNofps      = flag.Bool("nofps", false, "Do not show frames per second")
+	oInterval   = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
+	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
+	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
+	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call")
+	oProfile    = flag.String("profile", "", "File to write cpuprofile to")
 )
 
 func main() {
@@ -108,7 +109,6 @@ func main() {
 	log.Info("%s v%d.%d starting", PROGNAME, VMAJOR, VMINOR)
 
 	// Apply log levels to engine package loggers
-	// For example:>g3nd -logs gui:debug,gls:info
 	if *oLogs != "" {
 		logs := strings.Split(*oLogs, ",")
 		for i := 0; i < len(logs); i++ {
@@ -153,6 +153,7 @@ func main() {
 	}
 	glVersion := gs.GetString(gls.VERSION)
 	log.Info("OpenGL version: %s", glVersion)
+	gs.SetCheckErrors(!*oNoGlErrors)
 
 	// Set swap buffers interval
 	win.SwapInterval(*oInterval)

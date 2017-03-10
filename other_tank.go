@@ -2,13 +2,14 @@ package main
 
 import (
 	"github.com/g3n/engine/core"
-	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/window"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/window"
 )
 
 func init() {
@@ -52,11 +53,11 @@ func (t *TankTest) Initialize(ctx *Context) {
 	// Sets camera position
 	ctx.Camera.GetCamera().SetPosition(0, 4, 10)
 
-    //// Add help label
-	//label1 := gui.NewLabel("Use ASDW to drive tank\nUse JKLI to move cannon")
-    //label1.SetFontSize(16)
-	//label1.SetPosition(10, 10)
-	//ctx.Gui.Add(label1)
+	// Add help label
+	label1 := gui.NewLabel("Use ASDW to drive tank\nUse JKLI to move cannon")
+	label1.SetFontSize(16)
+	label1.SetPosition(10, 10)
+	ctx.Gui.Add(label1)
 
 	// Creates tank model
 	t.model = t.newTankModel()
@@ -278,7 +279,7 @@ func (t *TankTest) newTankModel() *TankModel {
 		if i%2 == 0 {
 			zdir = -1.0
 		}
-		meshTrack.SetPosition( 0, TRACK_HEIGHT/2, zdir*zWheel)
+		meshTrack.SetPosition(0, TRACK_HEIGHT/2, zdir*zWheel)
 		meshTrack.SetRotationX(math32.Pi / 2)
 		model.node.Add(meshTrack)
 	}
@@ -326,4 +327,3 @@ func (t *TankTest) newTankModel() *TankModel {
 	model.node.Add(model.nodeTop)
 	return model
 }
-
