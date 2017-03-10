@@ -86,8 +86,8 @@ var (
 	oInterval   = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
 	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
 	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
-	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call")
-	oProfile    = flag.String("profile", "", "File to write cpuprofile to")
+	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (increase FPS)")
+	oProfile    = flag.String("profile", "", "Active cpu profile writing profile to the specified file")
 )
 
 func main() {
