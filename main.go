@@ -20,6 +20,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"runtime/pprof"
 	"sort"
 	"strconv"
 	"strings"
@@ -206,6 +207,20 @@ func main() {
 			usage()
 			return
 		}
+	}
+
+	// Start profiling if requested
+	if *oProfile != "" {
+		f, err := os.Create(*oProfile)
+		if err != nil {
+			log.Fatal("Error creating profile file:%s", err)
+		}
+		err = pprof.StartCPUProfile(f)
+		if err != nil {
+			log.Fatal("%s", err)
+		}
+		log.Info("Started writing CPU profile to:%s", *oProfile)
+		defer pprof.StopCPUProfile()
 	}
 
 	// Render loop
