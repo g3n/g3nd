@@ -73,4 +73,3 @@ func (t *Plane) Render(ctx *Context) {
 	t.plane2.AddRotationX(0.01)
 	t.plane3.AddRotationX(-0.01)
 }
-
