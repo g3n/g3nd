@@ -59,10 +59,10 @@ shows some controls which can change the parameters of the current demo.
 
 To exit the program press ESC or close the window.
 
-You can start G3ND to show a specific demo specifying the demo name (category plus underscore plus name) in the command
+You can start G3ND to show a specific demo specifying the demo name (category plus "." plus name) in the command
 line such as:
 
-`>g3nd geometry_box`
+`>g3nd geometry.box`
 
 To check the maximum FPS rate (frames per second) of your system for any demo,
 run G3ND with the option `-interval 0`.
@@ -72,7 +72,7 @@ The FPS will be lower when the screen is maximized or full.
 # Creating a new demo/test
 
 You can use the `tests_model.go` file as a template
-for your test. You can can change it directly or copy it to a
+for your tests. You can can change it directly or copy it to a
 new file such as `tests_mytest.go` and
 experiment with the engine. Your new test will appear under the
 `|tests|` category with `mytest` name. The contents of the `tests_model.go`
