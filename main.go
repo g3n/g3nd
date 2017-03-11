@@ -280,21 +280,22 @@ func buildGui(ctx *Context) {
 	}
 
 	// Header title
+	const fontSize = 20
 	title := gui.NewLabel(" ")
-	title.SetFontSize(20)
+	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	title.SetText(fmt.Sprintf("%s v%d.%d", PROGNAME, VMAJOR, VMINOR))
 	header.Add(title)
 	// FPS
 	if !*oNofps {
 		l1 := gui.NewLabel(" ")
-		l1.SetFontSize(20)
+		l1.SetFontSize(fontSize)
 		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 		l1.SetText("  FPS: ")
 		header.Add(l1)
 		// FPS value
 		ctx.labelFPS = gui.NewLabel(" ")
-		ctx.labelFPS.SetFontSize(20)
+		ctx.labelFPS.SetFontSize(fontSize)
 		ctx.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 		header.Add(ctx.labelFPS)
 	}
