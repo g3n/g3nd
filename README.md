@@ -7,7 +7,7 @@ It is very easy to create a new demo as the main program takes care
 of a lot of necessary initializations and housekeeping.
 
 <p align="center">
-  <img style="float: right;" src="data/images/screenshot.jpg" alt="G3ND Screenshot"/>
+  <img style="float: right;" src="data/images/g3nd.gif" alt="G3ND In Action"/>
 </p>
 
 # Dependencies for installation
