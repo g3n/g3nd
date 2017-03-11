@@ -40,28 +40,28 @@ func (t *Earth) Initialize(ctx *Context) {
 	dir1.SetPosition(0, 0, 100)
 	ctx.Scene.Add(dir1)
 
-	// Creates day texture
+	// Create day texture
 	texDay, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_clouds_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texDay.SetFlipY(false)
 
-	// Creates specular map texture
+	// Create specular map texture
 	texSpecular, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_spec_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texSpecular.SetFlipY(false)
 
-	// Creates night texture
+	// Create night texture
 	texNight, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_night_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texNight.SetFlipY(false)
 
-	// Creates bump map texture
+	// Create bump map texture
 	texBump, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_bump_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
@@ -82,13 +82,13 @@ func (t *Earth) Initialize(ctx *Context) {
 		panic(err)
 	}
 
-	// Creates custom material using the custom shader
+	// Create custom material using the custom shader
 	matEarth := NewEarthMaterial(math32.NewColor(1, 1, 1))
 	matEarth.SetShininess(20)
 	//matEarth.SetSpecularColor(&math32.Color{0., 1, 1})
 	//matEarth.SetColor(&math32.Color{0.8, 0.8, 0.8})
 
-	// Creates sphere
+	// Create sphere
 	geom := geometry.NewSphere(1, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
 	matEarth.AddTexture(texDay)
 	matEarth.AddTexture(texSpecular)
