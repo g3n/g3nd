@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
@@ -12,7 +12,7 @@ import (
 type ShaderBricks struct {
 	ctx     *Context
 	plane1  *graphic.Mesh
-    box1    *graphic.Mesh
+	box1    *graphic.Mesh
 	sphere1 *graphic.Mesh
 }
 
@@ -32,31 +32,31 @@ func (t *ShaderBricks) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Create custom shader
-    err := ctx.Renderer.AddShader("shaderBricksVertex", shaderBricksVertex)
-    if err != nil {
-        panic(err)
-    }
+	err := ctx.Renderer.AddShader("shaderBricksVertex", shaderBricksVertex)
+	if err != nil {
+		panic(err)
+	}
 	err = ctx.Renderer.AddShader("shaderBricksFrag", shaderBricksFrag)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	err = ctx.Renderer.AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 
 	// Creates plane 1
 	geom1 := geometry.NewPlane(2, 2, 4, 4)
 	mat1 := NewBricksMaterial(math32.NewColor(0.8, 0.2, 0.1))
 	mat1.SetSide(material.SideDouble)
-    mat1.SetShininess(10)
-    mat1.SetSpecularColor(math32.NewColor(0,0,0))
+	mat1.SetShininess(10)
+	mat1.SetSpecularColor(math32.NewColor(0, 0, 0))
 	t.plane1 = graphic.NewMesh(geom1, mat1)
 	t.plane1.SetPosition(-1.2, 1, 0)
 	ctx.Scene.Add(t.plane1)
 
-    // Creates box1
-	geom2:= geometry.NewBox(2, 2, 1, 2, 2, 2)
+	// Creates box1
+	geom2 := geometry.NewBox(2, 2, 1, 2, 2, 2)
 	mat2 := NewBricksMaterial(math32.NewColor(0.2, 0.4, 0.8))
 	t.box1 = graphic.NewMesh(geom2, mat2)
 	t.box1.SetPosition(1.2, 1, 0)
@@ -72,9 +72,9 @@ func (t *ShaderBricks) Initialize(ctx *Context) {
 
 func (t *ShaderBricks) Render(ctx *Context) {
 
-    t.plane1.AddRotationY(-0.005)
-    t.box1.AddRotationY(0.01)
-    t.sphere1.AddRotationZ(0.01)
+	t.plane1.AddRotationY(-0.005)
+	t.box1.AddRotationY(0.01)
+	t.sphere1.AddRotationZ(0.01)
 }
 
 //
@@ -110,13 +110,12 @@ func NewBricksMaterial(color *math32.Color) *BricksMaterial {
 
 func (m *BricksMaterial) RenderSetup(gl *gls.GLS) {
 
-    m.Standard.RenderSetup(gl)
+	m.Standard.RenderSetup(gl)
 	m.brickColor.Transfer(gl)
 	m.mortarColor.Transfer(gl)
 	m.brickSize.Transfer(gl)
 	m.brickPercent.Transfer(gl)
 }
-
 
 //
 // Vertex Shader
@@ -222,4 +221,3 @@ void main() {
 }
 
 `
-

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
+	"github.com/g3n/engine/math32"
 )
 
 func init() {
@@ -16,11 +16,11 @@ type Points struct{}
 
 func (t *Points) Initialize(ctx *Context) {
 
-    // Adds axis helper to the scene
+	// Adds axis helper to the scene
 	axis := graphic.NewAxisHelper(2)
 	ctx.Scene.Add(axis)
 
-    // Creates geometry
+	// Creates geometry
 	geom := geometry.NewGeometry()
 	positions := math32.NewArrayF32(0, 0)
 	positions.Append(
@@ -47,7 +47,7 @@ func (t *Points) Initialize(ctx *Context) {
 	mat := material.NewPoint(math32.NewColor(0, 0, 0))
 	mat.SetSize(2000)
 
-    // Creates points mesh
+	// Creates points mesh
 	mesh := graphic.NewPoints(geom, mat)
 	mesh.SetScale(1, 1, 1)
 	ctx.Scene.Add(mesh)
@@ -55,4 +55,3 @@ func (t *Points) Initialize(ctx *Context) {
 
 func (t *Points) Render(ctx *Context) {
 }
-

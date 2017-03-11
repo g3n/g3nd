@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
 )
 
 func init() {
@@ -88,5 +88,3 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 
 func (t *GuiLayoutGrid) Render(ctx *Context) {
 }
-
-

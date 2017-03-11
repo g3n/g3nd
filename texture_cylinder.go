@@ -87,4 +87,3 @@ func (t *TextureCylinder) Render(ctx *Context) {
 	t.mesh2.AddRotationY(-0.004)
 	t.mesh3.AddRotationY(0.003)
 }
-

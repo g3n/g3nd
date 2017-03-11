@@ -1,12 +1,10 @@
 package main
 
 import (
-	//"github.com/davecgh/go-spew/spew"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/collada"
 	"github.com/g3n/engine/math32"
-	//"fmt"
 	"io"
 	"os"
 )
@@ -67,19 +65,18 @@ func (t *ColladaAnim) Initialize(ctx *Context) {
 	if err != nil {
 		log.Fatal("%s", err)
 	}
-    t.animTargets = ats
-    for _, at := range ats {
-        at.SetStart(-1.0)
-        at.Reset()
-        at.SetLoop(true)
-    }
+	t.animTargets = ats
+	for _, at := range ats {
+		at.SetStart(-1.0)
+		at.Reset()
+		at.SetLoop(true)
+	}
 }
 
 func (t *ColladaAnim) Render(ctx *Context) {
 
 	dt := float32(ctx.TimeDelta.Seconds())
-    for _, at := range t.animTargets {
-        at.Update(dt)
-    }
+	for _, at := range t.animTargets {
+		at.Update(dt)
+	}
 }
-

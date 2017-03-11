@@ -30,9 +30,9 @@ func (t *Earth) Initialize(ctx *Context) {
 		ctx.DirData + "/images/space/dark-s_", "jpg",
 		[6]string{"px", "nx", "py", "ny", "pz", "nz"}}
 	skybox, err := graphic.NewSkybox(skyboxData)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	ctx.Scene.Add(skybox)
 
 	// Adds directional front light
@@ -41,28 +41,28 @@ func (t *Earth) Initialize(ctx *Context) {
 	ctx.Scene.Add(dir1)
 
 	// Creates day texture
-	texDay, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/earth_clouds_big.jpg")
+	texDay, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_clouds_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texDay.SetFlipY(false)
 
 	// Creates specular map texture
-	texSpecular, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/earth_spec_big.jpg")
+	texSpecular, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_spec_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texSpecular.SetFlipY(false)
 
 	// Creates night texture
-	texNight, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/earth_night_big.jpg")
+	texNight, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_night_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	texNight.SetFlipY(false)
 
 	// Creates bump map texture
-	texBump, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/earth_bump_big.jpg")
+	texBump, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/earth_bump_big.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
@@ -70,17 +70,17 @@ func (t *Earth) Initialize(ctx *Context) {
 
 	// Create custom shader
 	err = t.ctx.Renderer.AddShader("shaderEarthVertex", shaderEarthVertex)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	err = t.ctx.Renderer.AddShader("shaderEarthFrag", shaderEarthFrag)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	err = t.ctx.Renderer.AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 
 	// Creates custom material using the custom shader
 	matEarth := NewEarthMaterial(math32.NewColor(1, 1, 1))
@@ -237,4 +237,3 @@ void main() {
 }
 
 `
-

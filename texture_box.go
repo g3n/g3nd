@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/g3n/engine/geometry"
-	"github.com/g3n/engine/window"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/window"
 )
 
 type Texbox struct {
@@ -154,4 +154,3 @@ func (t *Texbox) onKey(ctx *Context, ev interface{}) {
 		}
 	}
 }
-

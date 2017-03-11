@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 	"github.com/g3n/engine/geometry"
-	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/text"
+	"github.com/g3n/engine/texture"
 )
 
 type Text1 struct {
 	planeTime *graphic.Mesh
-    planeTex  *texture.Texture2D
+	planeTex  *texture.Texture2D
 	font      *text.Font
 }
 
@@ -66,7 +66,7 @@ func (t *Text1) Initialize(ctx *Context) {
 		tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
 		mat := material.NewStandard(math32.NewColor(1, 1, 1))
 		mat.AddTexture(tex)
-        mesh1.AddGroupMaterial(mat, idx)
+		mesh1.AddGroupMaterial(mat, idx)
 	}
 	ctx.Scene.Add(mesh1)
 
@@ -89,7 +89,7 @@ func (t *Text1) Initialize(ctx *Context) {
 	ctx.Scene.Add(mesh2)
 
 	// Sprite1
-    stext := "Sprite1\nSprite1\nSprite1"
+	stext := "Sprite1\nSprite1\nSprite1"
 	swidth, sheight := font.MeasureText(stext)
 	canvas = text.NewCanvas(swidth, sheight, math32.NewColor4(0, 1, 1, 1))
 	canvas.DrawText(0, 0, stext, font)
@@ -144,4 +144,3 @@ func (t *Text1) Render(ctx *Context) {
 	t.planeTex.SetFromRGBA(canvas.RGBA)
 	t.planeTime.AddRotationY(0.01)
 }
-

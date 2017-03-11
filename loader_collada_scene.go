@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/g3n/engine/loader/collada"
 	"github.com/g3n/engine/graphic"
-	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/light"
+	"github.com/g3n/engine/loader/collada"
+	"github.com/g3n/engine/math32"
 	"io"
 )
 
@@ -36,25 +36,24 @@ func (t *ColladaScene) Initialize(ctx *Context) {
 	// Sets camera position
 	ctx.Camera.GetCamera().SetPosition(0, 4, 10)
 
-    // Adds axix helper
-    ah := graphic.NewAxisHelper(1.5)
-    ctx.Scene.Add(ah)
+	// Adds axix helper
+	ah := graphic.NewAxisHelper(1.5)
+	ctx.Scene.Add(ah)
 
 	dec, err := collada.Decode(ctx.DirData + "/collada/scene.dae")
 	if err != nil && err != io.EOF {
 		log.Fatal("%s", err)
 	}
-    dec.SetDirImages(ctx.DirData + "/images")
+	dec.SetDirImages(ctx.DirData + "/images")
 
-    // Loads collada scene
-    s, err := dec.NewScene()
-    if err != nil {
+	// Loads collada scene
+	s, err := dec.NewScene()
+	if err != nil {
 		log.Fatal("%s", err)
-    }
-    ctx.Scene.Add(s)
+	}
+	ctx.Scene.Add(s)
 }
 
 func (t *ColladaScene) Render(ctx *Context) {
 
 }
-

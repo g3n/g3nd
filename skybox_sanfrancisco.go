@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/texture"
 )
 
 func init() {
@@ -33,7 +33,7 @@ func (t *Skybox) Initialize(ctx *Context) {
 	geom := geometry.NewBox(50, 50, 50, 2, 2, 2)
 	skybox := graphic.NewMesh(geom, nil)
 	for i := 0; i < 6; i++ {
-		tex, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/"+textures[i])
+		tex, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/" + textures[i])
 		if err != nil {
 			log.Fatal("Error loading texture: %s", err)
 		}
@@ -47,4 +47,3 @@ func (t *Skybox) Initialize(ctx *Context) {
 
 func (t *Skybox) Render(ctx *Context) {
 }
-

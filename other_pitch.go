@@ -1,16 +1,15 @@
 package main
 
 import (
-	"math"
-	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/window"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/window"
+	"math"
 )
-
 
 func init() {
 	TestMap["other.pitch"] = &Pitch{}
@@ -22,7 +21,7 @@ type Pitch struct {
 
 func (t *Pitch) Initialize(ctx *Context) {
 
-    // Subscribe to key events
+	// Subscribe to key events
 	ctx.Win.Subscribe(window.OnKeyDown, t.onKey)
 
 	// Top directional light
@@ -30,7 +29,7 @@ func (t *Pitch) Initialize(ctx *Context) {
 	l1.SetPosition(0, 1, 0)
 	ctx.Scene.Add(l1)
 
-    // Creates plane base mesh
+	// Creates plane base mesh
 	base_geom := geometry.NewCircle(1, 3, 0, 2*math.Pi)
 	base_mat := material.NewStandard(math32.NewColor(0, 1, 0))
 	base_mat.SetWireframe(false)
@@ -38,9 +37,9 @@ func (t *Pitch) Initialize(ctx *Context) {
 	t.base = graphic.NewMesh(base_geom, base_mat)
 
 	vert_geom := geometry.NewGeometry()
-    positions   := math32.NewArrayF32(0,0)
-    normals := math32.NewArrayF32(0,0)
-    indices  := math32.NewArrayU32(0,0)
+	positions := math32.NewArrayF32(0, 0)
+	normals := math32.NewArrayF32(0, 0)
+	indices := math32.NewArrayU32(0, 0)
 	positions.Append(0, 0, 0, 1, 0, 0, 0, 1, 0)
 	normals.Append(0, 0, 1, 0, 0, 1, 0, 0, 1)
 	indices.Append(0, 1, 2)
@@ -63,9 +62,9 @@ func (t *Pitch) Initialize(ctx *Context) {
 
 	ctx.Scene.Add(t.base)
 
-    cam := ctx.Camera.GetCamera()
+	cam := ctx.Camera.GetCamera()
 	cam.SetPosition(-3, 3, 3)
-    spos := ctx.Scene.Position()
+	spos := ctx.Scene.Position()
 	cam.LookAt(&spos)
 
 	// Show axis helper
@@ -78,7 +77,7 @@ func (t *Pitch) Render(ctx *Context) {
 
 func (t *Pitch) onKey(evname string, ev interface{}) {
 
-    kev := ev.(*window.KeyEvent)
+	kev := ev.(*window.KeyEvent)
 
 	var q math32.Quaternion
 	xaxis := math32.Vector3{1, 0, 0}
@@ -121,5 +120,3 @@ func (t *Pitch) onKey(evname string, ev interface{}) {
 		t.base.SetRotation(-math.Pi/2, 0, math.Pi/2)
 	}
 }
-
-

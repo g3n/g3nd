@@ -69,4 +69,3 @@ func (t *Sphere) Render(ctx *Context) {
 	t.normals.Update()
 	t.sphere2.AddRotationY(-0.005)
 }
-

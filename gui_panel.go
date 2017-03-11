@@ -1,11 +1,11 @@
 package main
 
 import (
-	"math"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"math"
 )
 
 type GuiPanel struct {
@@ -196,4 +196,3 @@ func (t *GuiPanel) Render(ctx *Context) {
 	t.p2.SetContentSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
 	t.p3.SetPosition(t.p3.Position().X+math32.Sin(float32(time)), t.p3.Position().Y)
 }
-

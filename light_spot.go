@@ -2,9 +2,7 @@ package main
 
 import (
 	"github.com/g3n/engine/geometry"
-	//"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
-	//"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
@@ -76,25 +74,25 @@ func (t *SpotLight) Initialize(ctx *Context) {
 	ctx.Scene.Add(t.spot3.Mesh)
 
 	// Subscribe to key events
-//	ctx.Gl.Subscribe(gls.OnKeyDown, t.onKey)
-//
-//	// Add controls
-//	if ctx.Control == nil {
-//		return
-//	}
-//	g := ctx.Control.AddGroup("Show lights")
-//	cb1 := g.AddCheckBox("Red").SetValue(t.spot1.Mesh.Visible())
-//	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-//		t.spot1.Mesh.SetVisible(!t.spot1.Mesh.Visible())
-//	})
-//	cb2 := g.AddCheckBox("Green").SetValue(t.spot2.Mesh.Visible())
-//	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-//		t.spot2.Mesh.SetVisible(!t.spot2.Mesh.Visible())
-//	})
-//	cb3 := g.AddCheckBox("Blue").SetValue(t.spot3.Mesh.Visible())
-//	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-//		t.spot3.Mesh.SetVisible(!t.spot3.Mesh.Visible())
-//	})
+	//	ctx.Gl.Subscribe(gls.OnKeyDown, t.onKey)
+	//
+	//	// Add controls
+	//	if ctx.Control == nil {
+	//		return
+	//	}
+	//	g := ctx.Control.AddGroup("Show lights")
+	//	cb1 := g.AddCheckBox("Red").SetValue(t.spot1.Mesh.Visible())
+	//	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+	//		t.spot1.Mesh.SetVisible(!t.spot1.Mesh.Visible())
+	//	})
+	//	cb2 := g.AddCheckBox("Green").SetValue(t.spot2.Mesh.Visible())
+	//	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+	//		t.spot2.Mesh.SetVisible(!t.spot2.Mesh.Visible())
+	//	})
+	//	cb3 := g.AddCheckBox("Blue").SetValue(t.spot3.Mesh.Visible())
+	//	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+	//		t.spot3.Mesh.SetVisible(!t.spot3.Mesh.Visible())
+	//	})
 }
 
 func (t *SpotLight) Render(ctx *Context) {
@@ -162,4 +160,3 @@ func (l *SpotLightMesh) SetRotationZ(rot float32) {
 	direction.ApplyQuaternion(&quat)
 	l.Light.SetDirection(&direction)
 }
-

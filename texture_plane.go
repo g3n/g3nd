@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
-    "github.com/g3n/engine/texture"
+	"github.com/g3n/engine/texture"
 )
 
 type Texplane struct {
@@ -38,13 +38,13 @@ func (t *Texplane) Initialize(ctx *Context) {
 	dir3.SetPosition(0, 0, 1)
 	ctx.Scene.Add(dir3)
 
-    // Loads texture from image
-    texfile := ctx.DirData + "/images/uvgrid.jpg"
-    tex1, err := texture.NewTexture2DFromImage(texfile)
+	// Loads texture from image
+	texfile := ctx.DirData + "/images/uvgrid.jpg"
+	tex1, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-        log.Fatal("Error:%s loading texture:%s", err, texfile)
+		log.Fatal("Error:%s loading texture:%s", err, texfile)
 	}
-    // Creates plane 1
+	// Creates plane 1
 	plane1_geom := geometry.NewPlane(2, 2, 1, 1)
 	plane1_mat := material.NewStandard(math32.NewColor(1, 1, 1))
 	plane1_mat.SetSide(material.SideDouble)
@@ -53,13 +53,13 @@ func (t *Texplane) Initialize(ctx *Context) {
 	t.plane1.SetPosition(0, 1.1, 0)
 	ctx.Scene.Add(t.plane1)
 
-    // Loads texture from image
-    texfile = ctx.DirData + "/images/tiger1.jpg"
+	// Loads texture from image
+	texfile = ctx.DirData + "/images/tiger1.jpg"
 	tex2, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-        log.Fatal("Error:%s loading texture:%s", err, texfile)
+		log.Fatal("Error:%s loading texture:%s", err, texfile)
 	}
-    // Creates plane2
+	// Creates plane2
 	plane2_geom := geometry.NewPlane(2, 2, 1, 1)
 	plane2_mat := material.NewPhong(math32.NewColor(1, 1, 1))
 	plane2_mat.SetSide(material.SideDouble)
@@ -74,4 +74,3 @@ func (t *Texplane) Render(ctx *Context) {
 	t.plane1.AddRotationY(0.01)
 	t.plane2.AddRotationY(-0.01)
 }
-

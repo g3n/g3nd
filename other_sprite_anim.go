@@ -18,15 +18,15 @@ func init() {
 
 func (t *SpriteAnim) Initialize(ctx *Context) {
 
-    // Initialize list of animators
+	// Initialize list of animators
 	t.anims = make([]*texture.Animator, 0)
 
-    // Adds axis helper
+	// Adds axis helper
 	axis := graphic.NewAxisHelper(2)
 	ctx.Scene.Add(axis)
 
-    // Creates texture 1 and animator
-	tex1, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/explosion7.png")
+	// Creates texture 1 and animator
+	tex1, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/explosion7.png")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
@@ -42,8 +42,8 @@ func (t *SpriteAnim) Initialize(ctx *Context) {
 	s1.SetPosition(-2, 2, 0)
 	ctx.Scene.Add(s1)
 
-    // Creates texture 2 and animator
-	tex2, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/explosion3.png")
+	// Creates texture 2 and animator
+	tex2, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/explosion3.png")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
@@ -58,8 +58,8 @@ func (t *SpriteAnim) Initialize(ctx *Context) {
 	s2.SetPosition(2, 2, 0)
 	ctx.Scene.Add(s2)
 
-    // Creates texture 3 and animator
-	tex3, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/explosion4.png")
+	// Creates texture 3 and animator
+	tex3, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/explosion4.png")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
@@ -74,8 +74,8 @@ func (t *SpriteAnim) Initialize(ctx *Context) {
 	s3.SetPosition(-2, -2, 0)
 	ctx.Scene.Add(s3)
 
-    // Creates texture 4 and animator
-	tex4, err := texture.NewTexture2DFromImage(ctx.DirData+"/images/walksequence.png")
+	// Creates texture 4 and animator
+	tex4, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/walksequence.png")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
@@ -97,5 +97,3 @@ func (t *SpriteAnim) Render(ctx *Context) {
 		anim.Update(ctx.Time)
 	}
 }
-
-

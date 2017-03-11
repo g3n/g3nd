@@ -1,14 +1,14 @@
 package main
 
 import (
-	"math"
-	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/texture"
+	"math"
 )
 
 type Texsphere struct {
@@ -107,4 +107,3 @@ func (t *Texsphere) Render(ctx *Context) {
 	t.sphere3.AddRotationY(0.01)
 	t.sphere4.AddRotationY(-0.01)
 }
-

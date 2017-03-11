@@ -1,14 +1,14 @@
 package main
 
 import (
-	"math"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/texture"
-    "github.com/g3n/engine/gls"
+	"math"
 )
 
 func init() {
@@ -43,12 +43,12 @@ func (t *Texcircle) Initialize(ctx *Context) {
 	ctx.Scene.Add(t.mesh1)
 
 	geom2 := geometry.NewCircle(1, 50, 0, 2*math.Pi)
-	mat2 := material.NewStandard(math32.NewColor(0.5,0.5,0.5))
+	mat2 := material.NewStandard(math32.NewColor(0.5, 0.5, 0.5))
 	tex2, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/tiger1.jpg")
 	if err != nil {
 		log.Fatal("Error loading texture: %s", err)
 	}
-    mat2.SetSide(material.SideDouble)
+	mat2.SetSide(material.SideDouble)
 	mat2.AddTexture(tex2)
 	t.mesh2 = graphic.NewMesh(geom2, mat2)
 	t.mesh2.SetVisible(true)
@@ -74,11 +74,8 @@ func (t *Texcircle) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 }
 
-
 func (t *Texcircle) Render(ctx *Context) {
 
 	t.mesh1.AddRotationZ(0.01)
 	t.mesh3.AddRotationZ(-0.01)
 }
-
-

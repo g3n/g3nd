@@ -1,17 +1,17 @@
 package main
 
 import (
-	"math/rand"
-	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/gls"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-    "github.com/g3n/engine/graphic"
-    "github.com/g3n/engine/geometry"
-    "github.com/g3n/engine/gls"
+	"github.com/g3n/engine/texture"
+	"math/rand"
 )
 
 type Points2 struct {
-    points  *graphic.Points
+	points *graphic.Points
 }
 
 func init() {
@@ -44,7 +44,7 @@ func (t *Points2) Initialize(ctx *Context) {
 	// Creates geometry with random points
 	geom := geometry.NewGeometry()
 	positions := math32.NewArrayF32(0, 0)
-    numPoints := 10000
+	numPoints := 10000
 	coord := float32(10)
 	for i := 0; i < numPoints; i++ {
 		var vertex math32.Vector3
@@ -58,23 +58,21 @@ func (t *Points2) Initialize(ctx *Context) {
 	geom.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
 
 	t.points = graphic.NewPoints(geom, nil)
-    start := 0
-    count := numPoints / len(sprites)
-    for _, tex := range sprites {
-	    mat := material.NewPoint(math32.NewColor(1, 1, 1))
-        mat.AddTexture(tex)
-	    mat.SetSize(1000)
+	start := 0
+	count := numPoints / len(sprites)
+	for _, tex := range sprites {
+		mat := material.NewPoint(math32.NewColor(1, 1, 1))
+		mat.AddTexture(tex)
+		mat.SetSize(1000)
 		mat.SetBlending(material.BlendingAdditive)
 		mat.SetDepthTest(false)
-        t.points.AddMaterial(t.points, mat, start, count)
-        start += count
-    }
+		t.points.AddMaterial(t.points, mat, start, count)
+		start += count
+	}
 	ctx.Scene.Add(t.points)
 }
 
 func (t *Points2) Render(ctx *Context) {
 
-    t.points.AddRotationY(0.005)
+	t.points.AddRotationY(0.005)
 }
-
-

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/g3n/engine/geometry"
-	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 )
@@ -53,4 +53,3 @@ func (t *Boxmulti) Render(ctx *Context) {
 
 	t.box.AddRotationY(0.01)
 }
-

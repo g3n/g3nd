@@ -1,12 +1,12 @@
 package main
 
 import (
-    "github.com/g3n/engine/texture"
 	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/texture"
 )
 
 type Boxmulti2 struct {
@@ -69,12 +69,12 @@ func (t *Boxmulti2) Initialize(ctx *Context) {
 
 	geom := geometry.NewBox(1, 1, 1, 2, 2, 2)
 	t.box = graphic.NewMesh(geom, nil)
-    t.box.AddGroupMaterial(mat0, 0)
-    t.box.AddGroupMaterial(mat1, 1)
-    t.box.AddGroupMaterial(mat2, 2)
-    t.box.AddGroupMaterial(mat3, 3)
-    t.box.AddGroupMaterial(mat4, 4)
-    t.box.AddGroupMaterial(mat5, 5)
+	t.box.AddGroupMaterial(mat0, 0)
+	t.box.AddGroupMaterial(mat1, 1)
+	t.box.AddGroupMaterial(mat2, 2)
+	t.box.AddGroupMaterial(mat3, 3)
+	t.box.AddGroupMaterial(mat4, 4)
+	t.box.AddGroupMaterial(mat5, 5)
 
 	ctx.Scene.Add(t.box)
 }
@@ -83,4 +83,3 @@ func (t *Boxmulti2) Render(ctx *Context) {
 
 	t.box.AddRotationY(0.01)
 }
-

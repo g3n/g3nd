@@ -120,11 +120,10 @@ func (t *GuiTree) Initialize(ctx *Context) {
 	b5 := gui.NewButton("Clear")
 	b5.SetPosition(b4.Position().X+b4.Width()+10, 10)
 	b5.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-        tree.Clear()
+		tree.Clear()
 	})
 	ctx.Gui.Add(b5)
 }
 
 func (t *GuiTree) Render(ctx *Context) {
 }
-

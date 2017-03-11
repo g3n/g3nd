@@ -22,7 +22,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b1 := gui.NewButton("button 1")
 	b1.SetPosition(10, 10)
 	b1.Subscribe(gui.OnClick, func(name string, ev interface{}) {
-        log.Info("button 1 OnClick")
+		log.Info("button 1 OnClick")
 	})
 	ctx.Gui.Add(b1)
 
@@ -108,4 +108,3 @@ func (t *GuiButton) Initialize(ctx *Context) {
 func (t *GuiButton) Render(ctx *Context) {
 
 }
-

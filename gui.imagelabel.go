@@ -1,11 +1,11 @@
 package main
 
 import (
-	"strings"
-	"github.com/g3n/engine/gui/assets"
-	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
+	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/math32"
+	"strings"
 )
 
 func init() {
@@ -106,7 +106,7 @@ func (t *GuiImageLabel) Initialize(ctx *Context) {
 
 	l11 := gui.NewImageLabel("label11")
 	l11.SetPosition(300, l8.Position().Y)
-    l11.SetImageFromFile(ctx.DirData + "/icons/add2.png")
+	l11.SetImageFromFile(ctx.DirData + "/icons/add2.png")
 	l11.SetBgColor(&math32.Blue)
 	//l4.SetBgAlpha(1)
 	l11.SetColor(&math32.White)
@@ -116,10 +116,12 @@ func (t *GuiImageLabel) Initialize(ctx *Context) {
 	ctx.Gui.Add(l11)
 
 	l12 := gui.NewImageLabel("label12")
-    img, err := gui.NewImage(ctx.DirData + "/images/tiger1.jpg")
-    if err != nil { log.Fatal("%s", err) }
-    img.SetContentAspectWidth(64)
-    l12.SetImage(img)
+	img, err := gui.NewImage(ctx.DirData + "/images/tiger1.jpg")
+	if err != nil {
+		log.Fatal("%s", err)
+	}
+	img.SetContentAspectWidth(64)
+	l12.SetImage(img)
 	l12.SetPosition(460, l8.Position().Y)
 	l12.SetFontSize(28)
 	l12.SetColor(&math32.Red)
@@ -132,5 +134,3 @@ func (t *GuiImageLabel) Initialize(ctx *Context) {
 
 func (t *GuiImageLabel) Render(ctx *Context) {
 }
-
-

@@ -46,9 +46,9 @@ func (t *GuiScroller) Initialize(ctx *Context) {
 	b2 := gui.NewButton("Del")
 	b2.SetPosition(s1.Position().X+s1.Width()+10, s1.Position().Y+30)
 	b2.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-        if s1.Len() > 0 {
-		    s1.RemoveAt(0)
-        }
+		if s1.Len() > 0 {
+			s1.RemoveAt(0)
+		}
 	})
 	ctx.Gui.Add(b2)
 
@@ -83,13 +83,12 @@ func (t *GuiScroller) Initialize(ctx *Context) {
 	b22 := gui.NewButton("Del")
 	b22.SetPosition(s2.Position().X+50, s2.Position().Y+s2.Height()+10)
 	b22.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-        if s2.Len() > 0 {
-		    s2.RemoveAt(0)
-        }
+		if s2.Len() > 0 {
+			s2.RemoveAt(0)
+		}
 	})
 	ctx.Gui.Add(b22)
 }
 
 func (t *GuiScroller) Render(ctx *Context) {
 }
-
