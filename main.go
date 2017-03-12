@@ -87,7 +87,7 @@ var (
 	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
 	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (increase FPS)")
-	oProfile    = flag.String("profile", "", "Active cpu profile writing profile to the specified file")
+	oProfile    = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
 )
 
 func main() {
