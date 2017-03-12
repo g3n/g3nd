@@ -1,20 +1,19 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/obj"
 	"github.com/g3n/engine/math32"
 )
 
 func init() {
-	TestMap["loader.obj_scene"] = &ObjLoader{}
+	TestMap["loader.obj_plane"] = &ObjLoaderPlane{}
 }
 
-type ObjLoader struct {
+type ObjLoaderPlane struct {
 }
 
-func (t *ObjLoader) Initialize(ctx *Context) {
+func (t *ObjLoaderPlane) Initialize(ctx *Context) {
 
 	// Adds white directional front light
 	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
@@ -31,12 +30,8 @@ func (t *ObjLoader) Initialize(ctx *Context) {
 	l3.SetPosition(10, 0, 0)
 	ctx.Scene.Add(l3)
 
-	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
-	ctx.Scene.Add(axis)
-
 	// Decodes obj file and associated mtl file
-	objfile := "group.obj"
+	objfile := "spitfire.obj"
 	dec, err := obj.Decode(ctx.DirData+"/obj/"+objfile, "")
 	if err != nil {
 		log.Fatal(err.Error())
@@ -48,8 +43,11 @@ func (t *ObjLoader) Initialize(ctx *Context) {
 		log.Fatal(err.Error())
 	}
 	ctx.Scene.Add(group)
+
+	// Sets camera position
+	ctx.Camera.GetCamera().SetPosition(-4, 3, -6)
 }
 
-func (t *ObjLoader) Render(ctx *Context) {
+func (t *ObjLoaderPlane) Render(ctx *Context) {
 
 }
