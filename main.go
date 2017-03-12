@@ -445,9 +445,6 @@ func setupScene(ctx *Context) {
 	// Adds camera to the scene
 	ctx.Scene.Add(ctx.Camera.GetCamera())
 
-	// Creates orbit camera control
-	ctx.Orbit = control.NewOrbitControl(ctx.CamPersp, ctx.Win)
-
 	// Subscribe to window key events to exit when ESC received
 	ctx.Win.Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
 		kev := ev.(*window.KeyEvent)
@@ -461,7 +458,13 @@ func setupScene(ctx *Context) {
 		winResizeEvent(ctx)
 	})
 
+	// Root is the base panel for GUI
 	ctx.root.SubscribeWin()
+
+	// Creates orbit camera control
+	// It is important to do this after the root panel subscription
+	// to avoid GUI events being propagated to the orbit control.
+	ctx.Orbit = control.NewOrbitControl(ctx.CamPersp, ctx.Win)
 
 	// If audio active, resets global listener parameters
 	if ctx.Audio {
