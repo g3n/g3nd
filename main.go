@@ -261,11 +261,15 @@ func buildGui(ctx *Context) {
 	dl := gui.NewDockLayout()
 	ctx.root.SetLayout(dl)
 
+	// Set header colors
+	headerColor := math32.Color{0, 0.15, 0.3}
+	lightTextColor := math32.Color{0.8, 0.8, 0.8}
+
 	// Header
 	header := gui.NewPanel(600, 40)
 	header.SetBorders(0, 0, 0, 0)
 	header.SetPaddings(4, 4, 4, 4)
-	header.SetColor(&math32.Color{0, 0.5, 0.9})
+	header.SetColor(&headerColor)
 	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
 	// Horizontal box layout for the header
 	hbox := gui.NewHBoxLayout()
@@ -273,7 +277,7 @@ func buildGui(ctx *Context) {
 	ctx.root.Add(header)
 
 	// Add an optional image to header
-	logo, err := gui.NewImage(ctx.DirData + "/images/g3n_logo.png")
+	logo, err := gui.NewImage(ctx.DirData + "/images/g3n_logo_32.png")
 	if err == nil {
 		logo.SetContentAspectWidth(32)
 		header.Add(logo)
@@ -285,6 +289,7 @@ func buildGui(ctx *Context) {
 	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	title.SetText(fmt.Sprintf("%s v%d.%d", PROGNAME, VMAJOR, VMINOR))
+	title.SetColor(&lightTextColor)
 	header.Add(title)
 	// FPS
 	if !*oNofps {
@@ -292,11 +297,13 @@ func buildGui(ctx *Context) {
 		l1.SetFontSize(fontSize)
 		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 		l1.SetText("  FPS: ")
+		l1.SetColor(&lightTextColor)
 		header.Add(l1)
 		// FPS value
 		ctx.labelFPS = gui.NewLabel(" ")
 		ctx.labelFPS.SetFontSize(fontSize)
 		ctx.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
+		ctx.labelFPS.SetColor(&lightTextColor)
 		header.Add(ctx.labelFPS)
 	}
 
@@ -308,6 +315,8 @@ func buildGui(ctx *Context) {
 	// Adds control folder in the header
 	ctx.Control = gui.NewControlFolder("Controls", 100)
 	ctx.Control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
+	ctx.Control.SetBgColor(&headerColor)
+	ctx.Control.SetFgColor(&lightTextColor)
 	header.Add(ctx.Control)
 
 	// Test list
@@ -477,8 +486,10 @@ func setupScene(ctx *Context) {
 	if ctx.Control == nil {
 		return
 	}
+
 	// Remove all controls and adds default ones
 	ctx.Control.Clear()
+
 	cb := ctx.Control.AddCheckBox("Perspective camera")
 	cb.SetValue(true)
 	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
@@ -491,6 +502,7 @@ func setupScene(ctx *Context) {
 		ctx.Orbit.Dispose()
 		ctx.Orbit = control.NewOrbitControl(ctx.Camera, ctx.Win)
 	})
+
 	s1 := ctx.Control.AddSlider("Ambient light:", 2.0, ctx.AmbLight.Intensity())
 	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		ctx.AmbLight.SetIntensity(s1.Value())
