@@ -15,7 +15,7 @@ type Earth struct {
 }
 
 func init() {
-	TestMap["skybox.earth"] = &Earth{}
+	TestMap["shader.earth"] = &Earth{}
 }
 
 func (t *Earth) Initialize(ctx *Context) {
