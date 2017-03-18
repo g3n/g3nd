@@ -315,8 +315,14 @@ func buildGui(ctx *Context) {
 	// Adds control folder in the header
 	ctx.Control = gui.NewControlFolder("Controls", 100)
 	ctx.Control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
-	ctx.Control.SetBgColor(&headerColor)
-	ctx.Control.SetFgColor(&lightTextColor)
+
+	styles := gui.StyleDefault.ControlFolder
+	styles.Folder.Normal.BgColor = headerColor
+	styles.Folder.Over.BgColor = headerColor
+	styles.Folder.Normal.FgColor = lightTextColor
+	styles.Folder.Over.FgColor = lightTextColor
+	ctx.Control.SetStyles(&styles)
+
 	header.Add(ctx.Control)
 
 	// Test list
