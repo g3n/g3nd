@@ -320,7 +320,7 @@ func buildGui(ctx *Context) {
 	header.Add(ctx.Control)
 
 	// Test list
-	ctx.treeTests = gui.NewTree(200, 0)
+	ctx.treeTests = gui.NewTree(150, 0)
 	ctx.treeTests.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockLeft})
 	// Sort test names
 	tnames := []string{}
