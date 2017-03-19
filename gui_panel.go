@@ -134,9 +134,6 @@ func (t *GuiPanel) Initialize(ctx *Context) {
 	c1.SetPosition(10, 10)
 	c1.SetBorders(1, 1, 1, 1)
 	c.Add(c1)
-	//c1.Subscribe(gui.OnMouse, func(name string, ev interface{}) {
-	//    log.Debug("Child 1.1: %v", name)
-	//})
 
 	// Image panel 1
 	im, err := gui.NewImage(ctx.DirData + "/images/tiger1.jpg")

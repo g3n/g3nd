@@ -261,16 +261,22 @@ func buildGui(ctx *Context) {
 	dl := gui.NewDockLayout()
 	ctx.root.SetLayout(dl)
 
-	// Set header colors
+	// Add transparent panel at the center to contain GUI tests
+	ctx.Gui = gui.NewPanel(0, 0)
+	ctx.Gui.SetRenderable(false)
+	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
+	ctx.root.Add(ctx.Gui)
+
+	// Adds header after the gui central panel to ensure that the control folder
+	// stays over the gui panel when opened.
 	headerColor := math32.Color{0, 0.15, 0.3}
 	lightTextColor := math32.Color{0.8, 0.8, 0.8}
-
-	// Header
 	header := gui.NewPanel(600, 40)
 	header.SetBorders(0, 0, 0, 0)
 	header.SetPaddings(4, 4, 4, 4)
 	header.SetColor(&headerColor)
 	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
+
 	// Horizontal box layout for the header
 	hbox := gui.NewHBoxLayout()
 	header.SetLayout(hbox)
@@ -315,14 +321,12 @@ func buildGui(ctx *Context) {
 	// Adds control folder in the header
 	ctx.Control = gui.NewControlFolder("Controls", 100)
 	ctx.Control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
-
 	styles := gui.StyleDefault.ControlFolder
 	styles.Folder.Normal.BgColor = headerColor
 	styles.Folder.Over.BgColor = headerColor
 	styles.Folder.Normal.FgColor = lightTextColor
 	styles.Folder.Over.FgColor = lightTextColor
 	ctx.Control.SetStyles(&styles)
-
 	header.Add(ctx.Control)
 
 	// Test list
@@ -374,11 +378,6 @@ func buildGui(ctx *Context) {
 	})
 	ctx.root.Add(ctx.treeTests)
 
-	// Transparent panel at the center to contain GUI tests
-	ctx.Gui = gui.NewPanel(0, 0)
-	ctx.Gui.SetRenderable(false)
-	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
-	ctx.root.Add(ctx.Gui)
 }
 
 // UpdateFPS calculates and updates the fps value in the window title.
