@@ -261,6 +261,12 @@ func buildGui(ctx *Context) {
 	dl := gui.NewDockLayout()
 	ctx.root.SetLayout(dl)
 
+	// Add transparent panel at the center to contain GUI tests
+	ctx.Gui = gui.NewPanel(0, 0)
+	ctx.Gui.SetRenderable(false)
+	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
+	ctx.root.Add(ctx.Gui)
+
 	// Set header colors
 	headerColor := math32.Color{0, 0.15, 0.3}
 	lightTextColor := math32.Color{0.8, 0.8, 0.8}
@@ -374,11 +380,6 @@ func buildGui(ctx *Context) {
 	})
 	ctx.root.Add(ctx.treeTests)
 
-	// Transparent panel at the center to contain GUI tests
-	ctx.Gui = gui.NewPanel(0, 0)
-	ctx.Gui.SetRenderable(false)
-	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
-	ctx.root.Add(ctx.Gui)
 }
 
 // UpdateFPS calculates and updates the fps value in the window title.

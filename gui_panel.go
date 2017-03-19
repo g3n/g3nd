@@ -5,7 +5,7 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
-	"math"
+	//"math"
 )
 
 type GuiPanel struct {
@@ -135,7 +135,7 @@ func (t *GuiPanel) Initialize(ctx *Context) {
 	c1.SetBorders(1, 1, 1, 1)
 	c.Add(c1)
 	//c1.Subscribe(gui.OnMouse, func(name string, ev interface{}) {
-	//    log.Debug("Child 1.1: %v", name)
+	//	log.Debug("Child 1.1: %v", name)
 	//})
 
 	// Image panel 1
@@ -152,22 +152,22 @@ func (t *GuiPanel) Initialize(ctx *Context) {
 	im.SetContentAspectWidth(128)
 	ctx.Gui.Add(im)
 
-	// Image panel 2
-	im, err = gui.NewImage(ctx.DirData + "/images/tiger1.jpg")
-	if err != nil {
-		log.Fatal("%s", err)
-	}
-	im.SetPosition(250, 400)
-	im.SetMargins(0, 0, 0, 0)
-	im.SetBorders(2, 2, 2, 2)
-	im.SetBordersColor(&math32.Black)
-	im.SetPaddings(0, 0, 40, 40)
-	im.SetColor(&math32.White)
-	im.SetContentAspectWidth(90)
-	ctx.Gui.Add(im)
-
-	// Subscribe to key events
-	ctx.Win.Subscribe(window.OnKeyDown, t.onKey)
+	//	// Image panel 2
+	//	im, err = gui.NewImage(ctx.DirData + "/images/tiger1.jpg")
+	//	if err != nil {
+	//		log.Fatal("%s", err)
+	//	}
+	//	im.SetPosition(250, 400)
+	//	im.SetMargins(0, 0, 0, 0)
+	//	im.SetBorders(2, 2, 2, 2)
+	//	im.SetBordersColor(&math32.Black)
+	//	im.SetPaddings(0, 0, 40, 40)
+	//	im.SetColor(&math32.White)
+	//	im.SetContentAspectWidth(90)
+	//	ctx.Gui.Add(im)
+	//
+	//	// Subscribe to key events
+	//	ctx.Win.Subscribe(window.OnKeyDown, t.onKey)
 }
 
 func (t *GuiPanel) onKey(evname string, ev interface{}) {
@@ -188,11 +188,11 @@ func (t *GuiPanel) onKey(evname string, ev interface{}) {
 
 func (t *GuiPanel) Render(ctx *Context) {
 
-	time := ctx.Win.GetTime()
-	delta := (math.Sin(time) + 1.0) / 2
-	maxWidth := 200
-	maxHeight := 100
-	t.p1.SetSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
-	t.p2.SetContentSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
-	t.p3.SetPosition(t.p3.Position().X+math32.Sin(float32(time)), t.p3.Position().Y)
+	//	time := ctx.Win.GetTime()
+	//	delta := (math.Sin(time) + 1.0) / 2
+	//	maxWidth := 200
+	//	maxHeight := 100
+	//	t.p1.SetSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
+	//	t.p2.SetContentSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
+	//	t.p3.SetPosition(t.p3.Position().X+math32.Sin(float32(time)), t.p3.Position().Y)
 }
