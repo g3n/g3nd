@@ -191,5 +191,5 @@ func (t *GuiPanel) Render(ctx *Context) {
 	maxHeight := 100
 	t.p1.SetSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
 	t.p2.SetContentSize(float32(delta)*float32(maxWidth), float32(delta)*float32(maxHeight))
-	t.p3.SetPosition(t.p3.Position().X+math32.Sin(float32(time)), t.p3.Position().Y)
+	t.p3.SetPosition(50+60*math32.Sin(float32(time)), t.p3.Position().Y)
 }
