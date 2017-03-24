@@ -47,7 +47,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbX.SetPosition(cbTitle.Position().X+cbTitle.Width()+10, cbTitle.Position().Y)
 	cbX.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbX.Value() {
-			cl1.SetScaleX(10, &math32.Color{0.8, 0.8, 0.8})
+			cl1.SetScaleX(4, &math32.Color{1.8, 0.8, 0.8})
 		} else {
 			cl1.ClearScaleX()
 		}
@@ -66,10 +66,10 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	})
 	ctx.Gui.Add(cbY)
 
-	data1 := []float32{0, 1, 1.5, 3, 15, 5, 5.5, 7, 7.5, 9, 9.5}
-	cl1.SetRangeX(0, len(data1), 0, 1)
-	cl1.SetRangeY(0, 12)
-	cl1.AddGraph(&math32.Color{0, 0, 1}, data1)
+	//data1 := []float32{0, 1, 1.5, 3, 15, 5, 5.5, 7, 7.5, 9, 9.5}
+	//cl1.SetRangeX(0, len(data1), 0, 1)
+	//cl1.SetRangeY(0, 12)
+	//cl1.AddGraph(&math32.Color{0, 0, 1}, data1)
 
 }
 
