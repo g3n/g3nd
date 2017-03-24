@@ -28,19 +28,43 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cl1.SetPosition(0, 0)
 	ctx.Gui.Add(cl1)
 
-	title := gui.NewLabel("title")
-	cl1.SetTitle(title)
+	// Title checkbox
+	cbTitle := gui.NewCheckBox("Chart Title")
+	cbTitle.SetPosition(10, cl1.Height()+10)
+	cbTitle.Subscribe(gui.OnChange, func(name string, ev interface{}) {
+		if cbTitle.Value() {
+			title := gui.NewLabel("Chart Title")
+			title.SetFontSize(16)
+			cl1.SetTitle(title)
+		} else {
+			cl1.SetTitle(nil)
+		}
+	})
+	ctx.Gui.Add(cbTitle)
 
-	// Sets X scale
-	cl1.SetScaleX(10, &math32.Color{0.8, 0.8, 0.8})
+	// X Scale checkbox
+	cbX := gui.NewCheckBox("X Scale")
+	cbX.SetPosition(cbTitle.Position().X+cbTitle.Width()+10, cbTitle.Position().Y)
+	cbX.Subscribe(gui.OnChange, func(name string, ev interface{}) {
+		if cbX.Value() {
+			cl1.SetScaleX(10, &math32.Color{0.8, 0.8, 0.8})
+		} else {
+			cl1.ClearScaleX()
+		}
+	})
+	ctx.Gui.Add(cbX)
 
-	//sx := gui.NewChartScaleX(500, 200, 10, &math32.Color{0, 0, 0})
-	//ctx.Gui.Add(sx)
-
-	////cl1.SetGrid(21, 11, &math32.Color{0.8, 0.8, 0.8})
-
-	////cl1.SetScaleX(10, &math32.Color{0.8, 0.8, 0.8})
-	//cl1.SetScaleY(5, &math32.Color{0.8, 0.8, 0.8})
+	// Y Scale checkbox
+	cbY := gui.NewCheckBox("Y Scale")
+	cbY.SetPosition(cbX.Position().X+cbX.Width()+10, cbX.Position().Y)
+	cbY.Subscribe(gui.OnChange, func(name string, ev interface{}) {
+		if cbY.Value() {
+			cl1.SetScaleY(10, &math32.Color{0.8, 0.8, 0.8})
+		} else {
+			cl1.ClearScaleY()
+		}
+	})
+	ctx.Gui.Add(cbY)
 
 	//data1 := []float32{0.1, 0.5, 0.6}
 	//cl1.AddGraph("g1", "Graph1", &math32.Color{0, 0, 1}, data1)
