@@ -66,30 +66,11 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	})
 	ctx.Gui.Add(cbY)
 
-	//data1 := []float32{0.1, 0.5, 0.6}
-	//cl1.AddGraph("g1", "Graph1", &math32.Color{0, 0, 1}, data1)
+	data1 := []float32{0, 1, 1.5, 3, 15, 5, 5.5, 7, 7.5, 9, 9.5}
+	cl1.SetRangeX(0, len(data1), 0, 1)
+	cl1.SetRangeY(0, 12)
+	cl1.AddGraph(&math32.Color{0, 0, 1}, data1)
 
-	//data2 := []float32{0.2, 0.8, 0.9, 0.6, 0.61, 0.63, 0.68, 0.63, 0.54}
-	//cl1.AddGraph("g2", "Graph2", &math32.Color{1, 0, 0}, data2)
-
-	//cl2 := gui.NewChartLine(500, 200)
-	//cl2.SetBorders(2, 2, 2, 2)
-	//cl2.SetBordersColor(&math32.Black)
-	//cl2.SetColor(&math32.White)
-	//cl2.SetPosition(10, 10+200+10)
-	//cl2.SetScaleX(10, &math32.Color{0.8, 0.8, 0.8})
-	//cl2.AddGraph("g1", "Graph1", &math32.Color{0, 0, 1}, data1)
-	//ctx.Gui.Add(cl2)
-
-	// Label
-	//l1 := gui.NewLabel("This is the Graph1")
-	//l1.SetPosition(10, 10)
-	//cl.Add(l1)
-
-	//// Panel
-	//b1 := gui.NewButton("button 1")
-	//b1.SetPosition(10, 10)
-	//cl.Add(b1)
 }
 
 func (t *GuiChart) Render(ctx *Context) {
