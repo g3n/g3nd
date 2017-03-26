@@ -34,6 +34,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbTitle.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbTitle.Value() {
 			title := gui.NewLabel("Chart Title")
+			title.SetBgColor(&math32.White)
 			title.SetFontSize(16)
 			cl1.SetTitle(title)
 		} else {
@@ -66,10 +67,23 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	})
 	ctx.Gui.Add(cbY)
 
-	//data1 := []float32{0, 1, 1.5, 3, 15, 5, 5.5, 7, 7.5, 9, 9.5}
-	//cl1.SetRangeX(0, len(data1), 0, 1)
-	//cl1.SetRangeY(0, 12)
-	//cl1.AddGraph(&math32.Color{0, 0, 1}, data1)
+	// Graph1
+	var g1 *gui.LineGraph
+	cbG1 := gui.NewCheckBox("Graph1")
+	cbG1.SetPosition(cbY.Position().X+cbY.Width()+10, cbY.Position().Y)
+	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
+		if cbG1.Value() {
+			data1 := []float32{0, 1, 1.5, 3, 20, 5, -8, 7, 7.5, 9, 9.5}
+			cl1.SetRangeX(0, len(data1), 0, 1)
+			cl1.SetRangeY(0, 12)
+			g1 = cl1.AddGraph(&math32.Color{0, 0, 1}, data1)
+			g1.SetLineWidth(2.0)
+			cl1.SetScaleY(10, &math32.Color{0.8, 0.8, 0.8})
+		} else {
+			cl1.RemoveGraph(g1)
+		}
+	})
+	ctx.Gui.Add(cbG1)
 
 }
 

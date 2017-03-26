@@ -246,7 +246,10 @@ func main() {
 
 		// Render GUI over everything
 		gs.Clear(gls.DEPTH_BUFFER_BIT)
-		ctx.Renderer.Render(ctx.root, ctx.Camera)
+		err := ctx.Renderer.Render(ctx.root, ctx.Camera)
+		if err != nil {
+			log.Fatal("Render error: %s\n", err)
+		}
 
 		win.SwapBuffers()
 		win.PollEvents()
