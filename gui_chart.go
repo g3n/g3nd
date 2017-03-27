@@ -20,7 +20,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Creates ChartLine panel
-	cl1 := gui.NewChartLine(500, 200)
+	cl1 := gui.NewChartLine(500, 300)
 	cl1.SetMargins(10, 10, 10, 10)
 	cl1.SetBorders(10, 10, 10, 10)
 	cl1.SetBordersColor(&math32.Black)
@@ -35,21 +35,23 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	ctx.Gui.Add(cl1)
 
 	startX := 0
-	countX := 4000
 	minY := float32(-12.0)
 	maxY := float32(12.0)
 
-	cl1.SetRangeX(startX, countX)
 	cl1.SetRangeY(minY, maxY)
 
 	// Graph1
 	var g1 *gui.LineGraph
-	//data1 := []float32{0, 1, 1.5, 3, 20, 5, -8, 7, 7.5, 9, 9.5}
-	data1 := make([]float32, 0)
-	var x float32
-	for x = 0; x < 2*math.Pi*50; x += 0.01 {
-		data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
-	}
+	data1 := []float32{0, 1, 1.5, 3, 20, 5, -8, 7, 7.5, 9, 9.5}
+
+	countX := len(data1)
+	cl1.SetRangeX(startX, countX)
+
+	//data1 := make([]float32, 0)
+	//var x float32
+	//for x = 0; x < 2*math.Pi*50; x += 0.01 {
+	//	data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
+	//}
 	cbG1 := gui.NewCheckBox("Graph1")
 	cbG1.SetPosition(cl1.Position().X+10, cl1.Position().Y+cl1.Height()+10)
 	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
@@ -94,6 +96,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 			cl1.SetTitle(nil)
 		}
 	})
+	cbTitle.SetValue(true)
 	ctx.Gui.Add(cbTitle)
 
 	// X Scale checkbox
@@ -106,6 +109,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 			cl1.ClearScaleX()
 		}
 	})
+	cbX.SetValue(true)
 	ctx.Gui.Add(cbX)
 
 	// Y Scale checkbox
@@ -113,11 +117,12 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbY.SetPosition(cbX.Position().X+cbX.Width()+10, cbX.Position().Y)
 	cbY.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbY.Value() {
-			cl1.SetScaleY(8, &math32.Color{0.8, 0.8, 0.8})
+			cl1.SetScaleY(5, &math32.Color{0.8, 0.8, 0.8})
 		} else {
 			cl1.ClearScaleY()
 		}
 	})
+	cbY.SetValue(true)
 	ctx.Gui.Add(cbY)
 
 	// Graph1 startX
