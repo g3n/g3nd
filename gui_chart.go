@@ -142,7 +142,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	sG1sx.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		startX = int(sG1sx.Value() * float32(len(data1)))
 		sG1sx.SetText(fmt.Sprintf("startX:%d", startX))
-		firstX := float32(startX)
+		firstX = float32(startX)
 		cl1.SetRangeX(firstX, stepX, countStepX)
 		if g1 != nil {
 			g1.SetData(data1[startX:])
@@ -159,10 +159,10 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	sG1cx.SetValue(float32(stepX))
 	sG1cx.SetText(fmt.Sprintf("stepX:%2.1f", stepX))
 	sG1cx.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		stepX = float32(math.Trunc(float64(1 + 10*sG1cx.Value())))
+		stepX = float32(math.Trunc(float64(1 + 20*sG1cx.Value())))
 		countStepX = 10 * stepX
 		sG1cx.SetText(fmt.Sprintf("stepX:%2.1f", stepX))
-		cl1.SetRangeX(0, stepX, countStepX)
+		cl1.SetRangeX(firstX, stepX, countStepX)
 	})
 	ctx.Gui.Add(sG1cx)
 
