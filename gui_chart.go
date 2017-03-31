@@ -31,27 +31,33 @@ func (t *GuiChart) Initialize(ctx *Context) {
 
 	cl1.SetFormatX("%3.2f")
 	cl1.SetFormatY("%2.1f")
-	cl1.SetLabelX(0, 0.01)
 	ctx.Gui.Add(cl1)
 
-	startX := 0
 	minY := float32(-12.0)
 	maxY := float32(12.0)
+	startX := 0
+	firstX := float32(0)
+	stepX := float32(2.0)
+	countStepX := float32(2.0)
 
 	cl1.SetRangeY(minY, maxY)
 
 	// Graph1
 	var g1 *gui.LineGraph
-	data1 := []float32{0, 1, 1.5, 3, 20, 5, -8, 7, 7.5, 9, 9.5}
+	//data1 := []float32{0, 1, 1.5, 3, 20, 5, -8, 7, 7.5, 9, 9.5}
+	//data1 := []float32{0, 1, -1, 2, -2, 3, -3, 4}
+	stepX = float32(2.0)
+	countStepX = float32(2.0)
 
-	countX := len(data1)
-	cl1.SetRangeX(startX, countX)
+	data1 := make([]float32, 0)
+	var x float32
+	for x = 0; x < 2*math.Pi*10; x += 0.1 {
+		//data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
+		data1 = append(data1, 10*math32.Sin(x))
+	}
+	stepX = float32(2.0)
+	countStepX = float32(20)
 
-	//data1 := make([]float32, 0)
-	//var x float32
-	//for x = 0; x < 2*math.Pi*50; x += 0.01 {
-	//	data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
-	//}
 	cbG1 := gui.NewCheckBox("Graph1")
 	cbG1.SetPosition(cl1.Position().X+10, cl1.Position().Y+cl1.Height()+10)
 	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
@@ -60,6 +66,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 			g1.SetLineWidth(2.0)
 		} else {
 			cl1.RemoveGraph(g1)
+			g1 = nil
 		}
 	})
 	ctx.Gui.Add(cbG1)
@@ -68,8 +75,8 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	var g2 *gui.LineGraph
 	data2 := make([]float32, 0)
 	var x2 float32
-	for x2 = 0; x2 < 2*math.Pi*50; x2 += 0.01 {
-		data2 = append(data2, 5*math32.Cos(x2/6))
+	for x2 = 0; x2 < 2*math.Pi*10; x2 += 0.1 {
+		data2 = append(data2, 5*math32.Cos(x2/3))
 	}
 	cbG2 := gui.NewCheckBox("Graph2")
 	cbG2.SetPosition(cbG1.Position().X+cbG1.Width()+10, cbG1.Position().Y)
@@ -79,6 +86,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 			g2.SetLineWidth(2.0)
 		} else {
 			cl1.RemoveGraph(g2)
+			g2 = nil
 		}
 	})
 	ctx.Gui.Add(cbG2)
@@ -104,7 +112,8 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbX.SetPosition(cbTitle.Position().X+cbTitle.Width()+10, cbTitle.Position().Y)
 	cbX.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbX.Value() {
-			cl1.SetScaleX(8, &math32.Color{0.8, 0.8, 0.8})
+			cl1.SetScaleX(5, &math32.Color{0.8, 0.8, 0.8})
+			cl1.SetRangeX(firstX, stepX, countStepX)
 		} else {
 			cl1.ClearScaleX()
 		}
@@ -125,7 +134,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbY.SetValue(true)
 	ctx.Gui.Add(cbY)
 
-	// Graph1 startX
+	// startX
 	sG1sx := gui.NewHSlider(100, 20)
 	sG1sx.SetPosition(cbTitle.Position().X, cbTitle.Position().Y+cbTitle.Height()+10)
 	sG1sx.SetValue(0)
@@ -133,19 +142,27 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	sG1sx.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		startX = int(sG1sx.Value() * float32(len(data1)))
 		sG1sx.SetText(fmt.Sprintf("startX:%d", startX))
-		cl1.SetRangeX(startX, countX)
+		firstX := float32(startX)
+		cl1.SetRangeX(firstX, stepX, countStepX)
+		if g1 != nil {
+			g1.SetData(data1[startX:])
+		}
+		if g2 != nil {
+			g2.SetData(data2[startX:])
+		}
 	})
 	ctx.Gui.Add(sG1sx)
 
-	// countX
+	// step and countStepX
 	sG1cx := gui.NewHSlider(100, 20)
 	sG1cx.SetPosition(sG1sx.Position().X+sG1sx.Width()+10, sG1sx.Position().Y)
-	sG1cx.SetValue(float32(countX))
-	sG1cx.SetText(fmt.Sprintf("countX:%d", countX))
+	sG1cx.SetValue(float32(stepX))
+	sG1cx.SetText(fmt.Sprintf("stepX:%2.1f", stepX))
 	sG1cx.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		countX = int(sG1cx.Value() * float32(len(data1)))
-		sG1cx.SetText(fmt.Sprintf("countX:%d", countX))
-		cl1.SetRangeX(startX, countX)
+		stepX = float32(math.Trunc(float64(1 + 10*sG1cx.Value())))
+		countStepX = 10 * stepX
+		sG1cx.SetText(fmt.Sprintf("stepX:%2.1f", stepX))
+		cl1.SetRangeX(0, stepX, countStepX)
 	})
 	ctx.Gui.Add(sG1cx)
 
