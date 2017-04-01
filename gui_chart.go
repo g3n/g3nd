@@ -86,10 +86,9 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	cbTitle.SetPosition(cbG1.Position().X, cbG1.Position().Y+cbG1.Height()+10)
 	cbTitle.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbTitle.Value() {
-			chart.SetTitle("Chart Title")
-			chart.Title().SetFontSize(16)
+			chart.SetTitle("Chart Title", 16)
 		} else {
-			chart.SetTitle("")
+			chart.SetTitle("", 0)
 		}
 	})
 	cbTitle.SetValue(true)
