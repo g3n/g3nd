@@ -26,7 +26,6 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	chart.SetBordersColor(&math32.Black)
 	chart.SetColor(&math32.White)
 	chart.SetPaddings(8, 8, 8, 8)
-	//chart.SetPaddingsColor(&math32.Green)
 	chart.SetPosition(0, 0)
 
 	chart.SetFormatX("%3.2f")
@@ -38,22 +37,16 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	startX := 0
 	firstX := float32(0)
 	stepX := float32(2.0)
-	countStepX := float32(2.0)
-
+	countStepX := float32(20)
 	chart.SetRangeY(minY, maxY)
 
 	// Graph1
 	var g1 *gui.Graph
-	stepX = float32(2.0)
-	countStepX = float32(2.0)
 	data1 := make([]float32, 0)
 	var x float32
 	for x = 0; x < 2*math.Pi*10; x += 0.1 {
 		data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
 	}
-	stepX = float32(2.0)
-	countStepX = float32(20)
-
 	cbG1 := gui.NewCheckBox("Graph1")
 	cbG1.SetPosition(chart.Position().X+10, chart.Position().Y+chart.Height()+10)
 	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
