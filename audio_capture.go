@@ -40,7 +40,7 @@ func (t *AudioCapture) Initialize(ctx *Context) {
 	// Save capture device so main program can close it.
 	ctx.CapDev = dev
 
-	// Creates Chart panel
+	// Creates chart panel
 	t.chart = gui.NewChart(500, 300)
 	t.chart.SetMargins(10, 10, 10, 10)
 	t.chart.SetBorders(2, 2, 2, 2)
@@ -66,7 +66,7 @@ func (t *AudioCapture) Initialize(ctx *Context) {
 	t.buf = make([]byte, 2*capSamples)
 	t.samples = make([]float32, capSamples)
 
-	// Start capturing samples
+	// Start capturing audio samples
 	al.CaptureStart(ctx.CapDev)
 }
 
