@@ -57,6 +57,8 @@ type Context struct {
 	Audio       bool                  // Audio available
 	AudioEFX    bool                  // Audio effects available
 	Vorbis      bool                  // Vorbis decoder available
+	AudioDev    *al.Device            // Audio player device
+	CapDev      *al.Device            // Audio capture device
 	root        *gui.Root             // GUI root container
 	currentTest ITest                 // current test object
 	frameCount  int                   // frame counter for FPS calculation
@@ -488,6 +490,12 @@ func setupScene(ctx *Context) {
 		al.Listener3f(al.Position, 0, 0, 0)
 		al.Listener3f(al.Velocity, 0, 0, 0)
 		al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
+		// If audio capture device was opened, close it
+		if ctx.CapDev != nil {
+			al.CaptureStop(ctx.CapDev)
+			al.CaptureCloseDevice(ctx.CapDev)
+			ctx.CapDev = nil
+		}
 	}
 
 	// If no gui, nothing more to do
@@ -528,8 +536,8 @@ func loadAudioLibs(ctx *Context) {
 	}
 
 	// Opens default audio device
-	dev, err := al.OpenDevice("")
-	if dev == nil {
+	ctx.AudioDev, err = al.OpenDevice("")
+	if ctx.AudioDev == nil {
 		log.Warn("Error: %s opening OpenAL default device", err)
 		return
 	}
@@ -544,7 +552,7 @@ func loadAudioLibs(ctx *Context) {
 	if ctx.AudioEFX {
 		attribs = []int{al.MAX_AUXILIARY_SENDS, 4}
 	}
-	acx, err := al.CreateContext(dev, attribs)
+	acx, err := al.CreateContext(ctx.AudioDev, attribs)
 	if err != nil {
 		log.Error("Error creating audio context:%s", err)
 		return
