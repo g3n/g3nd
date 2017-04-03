@@ -28,7 +28,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	chart.SetPaddings(8, 8, 8, 8)
 	chart.SetPosition(0, 0)
 
-	chart.SetFormatX("%3.2f")
+	chart.SetFormatX("%3.1f")
 	chart.SetFormatY("%2.1f")
 	ctx.Gui.Add(chart)
 
@@ -124,13 +124,16 @@ func (t *GuiChart) Initialize(ctx *Context) {
 	ctx.Gui.Add(cbY)
 
 	// startX ranger
-	rStartx := newRanger(100, 20, 0, float32(len(data1)), "startX:%2.0f")
+	rStartx := newRanger(100, 20, 0, 2*math.Pi*10, "startX:%2.0f")
 	rStartx.SetPosition(cbTitle.Position().X, cbTitle.Position().Y+cbTitle.Height()+10)
 	rStartx.SetValue(0)
 	rStartx.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		firstX = float32(int(rStartx.Value()))
-		startX = int(firstX)
+		firstX = math32.Round(rStartx.Value())
+		startX = int(firstX * 10)
 		chart.SetRangeX(firstX, stepX, countStepX)
+		if startX >= len(data1) {
+			return
+		}
 		if g1 != nil {
 			g1.SetData(data1[startX:])
 		}
