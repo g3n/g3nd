@@ -49,7 +49,8 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	m1.AddOption("Menu1/Option4").
 		SetId("option4")
 	mb.AddMenu("Menu1", m1).
-		SetId("menu1")
+		SetId("menu1").
+		SetShortcut(window.ModAlt, window.Key1)
 
 	// Create Menu2 and adds it to the menu bar
 	m2 := gui.NewMenu()
@@ -75,7 +76,8 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 		SetIcon(assets.Search).
 		SetShortcut(window.ModAlt|window.ModShift|window.ModControl, window.KeyE)
 	mb.AddMenu("Menu2", m2).
-		SetId("menu2")
+		SetId("menu2").
+		SetShortcut(window.ModAlt, window.Key2)
 
 	// Create Menu3 and adds it to the menu bar
 	m3 := gui.NewMenu()
@@ -117,7 +119,8 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	m3.AddOption("Menu3/Option3").
 		SetId("option3")
 	mb.AddMenu("Menu3", m3).
-		SetId("menu3")
+		SetId("menu3").
+		SetShortcut(window.ModAlt, window.Key3)
 
 	// Add separators and options to the menu bar
 	mb.AddSeparator()
@@ -127,6 +130,7 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 		SetId("option2")
 
 	ctx.Gui.Add(mb)
+	ctx.Gui.Root().SetKeyFocus(mb)
 
 }
 
