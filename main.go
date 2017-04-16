@@ -235,6 +235,9 @@ func main() {
 		ctx.TimeDelta = now.Sub(ctx.Time)
 		ctx.Time = now
 
+		// Process root panel timers
+		ctx.root.TimerManager.ProcessTimers()
+
 		// If current test active, render test scene
 		if ctx.currentTest != nil {
 			ctx.currentTest.Render(&ctx)

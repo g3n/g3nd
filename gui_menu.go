@@ -26,6 +26,7 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	mbOption.SetBorders(1, 1, 1, 1)
 	ctx.Gui.Add(mbOption)
 
+	// Event handler for menu clicks
 	onClick := func(evname string, ev interface{}) {
 		path := strings.Join(ev.(*gui.MenuItem).IdPath(), "/")
 		mbOption.SetText(mbText + path)
@@ -124,10 +125,12 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 
 	// Add separators and options to the menu bar
 	mb.AddSeparator()
-	mb.AddOption("Option1").
-		SetId("option1")
-	mb.AddOption("Option2").
-		SetId("option2")
+	mb.AddOption("OptionA").
+		SetId("optionA").
+		SetShortcut(window.ModAlt, window.KeyA)
+	mb.AddOption("OptionB").
+		SetId("optionB").
+		SetShortcut(window.ModAlt, window.KeyB)
 
 	ctx.Gui.Add(mb)
 	ctx.Gui.Root().SetKeyFocus(mb)
