@@ -51,6 +51,13 @@ func (t *GuiList) Initialize(ctx *Context) {
 		}
 	})
 	ctx.Gui.Add(b2)
+	// List 1 - clear button
+	b3 := gui.NewButton("Clear")
+	b3.SetPosition(li1.Position().X+li1.Width()+10, li1.Position().Y+60)
+	b3.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		li1.Clear()
+	})
+	ctx.Gui.Add(b3)
 
 	// List 2 vertical/multi selection
 	li2 := gui.NewVList(100, 200)
@@ -58,46 +65,60 @@ func (t *GuiList) Initialize(ctx *Context) {
 	li2.SetPosition(b1.Position().X+b1.Width()+50, 10)
 	ctx.Gui.Add(li2)
 	// List 2 - add button
-	b3 := gui.NewButton("Add")
-	b3.SetPosition(li2.Position().X+li2.Width()+10, li2.Position().Y)
-	b3.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+	b4 := gui.NewButton("Add")
+	b4.SetPosition(li2.Position().X+li2.Width()+10, li2.Position().Y)
+	b4.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		item := gui.NewImageLabel(fmt.Sprintf("label %d", li2.Len()))
 		li2.Add(item)
 	})
-	ctx.Gui.Add(b3)
+	ctx.Gui.Add(b4)
 	// List 2 - remove button
-	b4 := gui.NewButton("Del")
-	b4.SetPosition(li2.Position().X+li2.Width()+10, li2.Position().Y+30)
-	b4.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+	b5 := gui.NewButton("Del")
+	b5.SetPosition(li2.Position().X+li2.Width()+10, li2.Position().Y+30)
+	b5.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		if li2.Len() > 0 {
 			li2.RemoveAt(0)
 		}
 	})
-	ctx.Gui.Add(b4)
+	ctx.Gui.Add(b5)
+	// List 2 - clear button
+	b6 := gui.NewButton("Clear")
+	b6.SetPosition(li2.Position().X+li2.Width()+10, li2.Position().Y+60)
+	b6.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		li2.Clear()
+	})
+	ctx.Gui.Add(b6)
 
 	// List 3 horizontal/single selection
 	li3 := gui.NewHList(400, 64)
 	li3.SetPosition(10, 250)
 	ctx.Gui.Add(li3)
 	// List 3 - add button
-	b5 := gui.NewButton("Add")
-	b5.SetPosition(li3.Position().X, li3.Position().Y+li3.Height()+10)
-	b5.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+	b7 := gui.NewButton("Add")
+	b7.SetPosition(li3.Position().X, li3.Position().Y+li3.Height()+10)
+	b7.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		pos := li3.Len()
 		item := gui.NewImageLabel(fmt.Sprintf("label %d", pos))
 		item.SetIcon(icons[pos%len(icons)])
 		li3.Add(item)
 	})
-	ctx.Gui.Add(b5)
+	ctx.Gui.Add(b7)
 	// List 3 - remove button
-	b6 := gui.NewButton("Del")
-	b6.SetPosition(li3.Position().X+b5.Width()+50, li3.Position().Y+li3.Height()+10)
-	b6.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+	b8 := gui.NewButton("Del")
+	b8.SetPosition(b7.Position().X+b7.Width()+40, li3.Position().Y+li3.Height()+10)
+	b8.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		if li3.Len() > 0 {
 			li3.RemoveAt(0)
 		}
 	})
-	ctx.Gui.Add(b6)
+	ctx.Gui.Add(b8)
+	// List 3 - clear button
+	b9 := gui.NewButton("Clear")
+	b9.SetPosition(b8.Position().X+b8.Width()+40, li3.Position().Y+li3.Height()+10)
+	b9.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		li3.Clear()
+	})
+	ctx.Gui.Add(b9)
 }
 
 func (t *GuiList) Render(ctx *Context) {
