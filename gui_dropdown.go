@@ -42,7 +42,7 @@ func (t *GuiDropdown) Initialize(ctx *Context) {
 	}
 	model := gui.NewImageLabel("")
 	dd2 := gui.NewDropDown(150, model)
-	dd2.SetPosition(200, 10)
+	dd2.SetPosition(100, dd1.Position().Y+dd1.Height()+50)
 	ctx.Gui.Add(dd2)
 	for i := 1; i <= 10; i++ {
 		item := gui.NewImageLabel(fmt.Sprintf("item %2d", i))
@@ -57,7 +57,7 @@ func (t *GuiDropdown) Initialize(ctx *Context) {
 	}
 	model = gui.NewImageLabel("")
 	dd3 := gui.NewDropDown(150, model)
-	dd3.SetPosition(400, 10)
+	dd3.SetPosition(200, dd2.Position().Y+dd2.Height()+50)
 	ctx.Gui.Add(dd3)
 	for i := 1; i <= 10; i++ {
 		item := gui.NewImageLabel(fmt.Sprintf("item %2d", i))
