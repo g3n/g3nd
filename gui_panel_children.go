@@ -10,6 +10,7 @@ type GuiPanelChildren struct {
 	p0 *gui.Panel
 	p1 *gui.Panel
 	p2 *gui.Panel
+	p3 *gui.Panel
 }
 
 func init() {
@@ -46,7 +47,7 @@ func (t *GuiPanelChildren) Initialize(ctx *Context) {
 	t.p1.Add(l1)
 
 	// Panel2
-	t.p2 = gui.NewPanel(200, 100)
+	t.p2 = gui.NewPanel(240, 80)
 	t.p2.SetPosition(20, 20)
 	t.p2.SetColor(&math32.Color{0.9, 0.9, 0.95})
 	t.p2.SetBorders(6, 6, 6, 4)
@@ -56,6 +57,20 @@ func (t *GuiPanelChildren) Initialize(ctx *Context) {
 	l2 := gui.NewLabel("P2(JKLI): Child of P1")
 	t.p2.Add(l2)
 	t.p1.Add(t.p2)
+
+	// Panel3
+	t.p3 = gui.NewPanel(240, 80)
+	t.p3.SetPosition(20, 150)
+	t.p3.SetColor(&math32.Color{0.9, 0.9, 0.95})
+	t.p3.SetBorders(6, 6, 6, 4)
+	t.p3.SetBordersColor(&math32.Red)
+	t.p3.SetPaddings(8, 8, 8, 8)
+	t.p3.SetPaddingsColor(&math32.Black)
+	t.p3.SetBounded(false)
+	l3 := gui.NewLabel("P3(FGHT): Child of P1 (unbounded)")
+	t.p3.Add(l3)
+	t.p1.Add(t.p3)
+	t.p1.SetTopChild(t.p2)
 
 	// Subscribe to key events
 	ctx.Win.Subscribe(window.OnKeyDown, t.onKey)
@@ -104,6 +119,23 @@ func (t *GuiPanelChildren) onKey(evname string, ev interface{}) {
 		py := t.p2.Position().Y
 		py += step
 		t.p2.SetPositionY(py)
+	// Move panel 3
+	case window.KeyF:
+		px := t.p3.Position().X
+		px -= step
+		t.p3.SetPositionX(px)
+	case window.KeyH:
+		px := t.p3.Position().X
+		px += step
+		t.p3.SetPositionX(px)
+	case window.KeyT:
+		py := t.p3.Position().Y
+		py -= step
+		t.p3.SetPositionY(py)
+	case window.KeyG:
+		py := t.p3.Position().Y
+		py += step
+		t.p3.SetPositionY(py)
 	}
 }
 
