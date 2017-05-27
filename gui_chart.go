@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"math"
@@ -16,18 +15,14 @@ type GuiChart struct{}
 
 func (t *GuiChart) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
-
-	// Creates ChartLine panel
-	chart := gui.NewChart(500, 300)
+	// Creates Chart panel
+	chart := gui.NewChart(0, 0)
 	chart.SetMargins(10, 10, 10, 10)
 	chart.SetBorders(2, 2, 2, 2)
 	chart.SetBordersColor(&math32.Black)
 	chart.SetColor(&math32.White)
 	chart.SetPaddings(8, 8, 8, 8)
 	chart.SetPosition(0, 0)
-
 	chart.SetFormatX("%3.1f")
 	chart.SetFormatY("%2.1f")
 	ctx.Gui.Add(chart)
@@ -48,7 +43,7 @@ func (t *GuiChart) Initialize(ctx *Context) {
 		data1 = append(data1, 10*math32.Sin(x)*math32.Sin(x/10))
 	}
 	cbG1 := gui.NewCheckBox("Graph1")
-	cbG1.SetPosition(chart.Position().X+10, chart.Position().Y+chart.Height()+10)
+	cbG1.SetPosition(10, 10)
 	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbG1.Value() {
 			g1 = chart.AddLineGraph(&math32.Color{0, 0, 1}, data1)
@@ -193,6 +188,14 @@ func (t *GuiChart) Initialize(ctx *Context) {
 		}
 	})
 	ctx.Gui.Add(cbAutoy)
+
+	// Sets chart position and size
+	chartY := cbAutoy.Position().Y + cbAutoy.Height() + 10
+	chart.SetPosition(0, chartY)
+	chart.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-chartY)
+	ctx.Gui.Subscribe(gui.OnResize, func(evname string, ev interface{}) {
+		chart.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-chartY)
+	})
 }
 
 func (t *GuiChart) Render(ctx *Context) {
