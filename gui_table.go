@@ -11,22 +11,23 @@ func init() {
 	TestMap["gui.table"] = &GuiTable{}
 }
 
-type GuiTable struct{}
+type GuiTable struct {
+}
 
 func (t *GuiTable) Initialize(ctx *Context) {
 
 	// Generates data rows
-	genRows := func(start, count int) []map[string]interface{} {
+	nextRow := 0
+	genRows := func(count int) []map[string]interface{} {
 
-		n := start
 		values := make([]map[string]interface{}, 0, count)
 		for i := 0; i < count; i++ {
 			rval := make(map[string]interface{})
-			rval["1"] = strconv.Itoa(n)
-			rval["2"] = float64(n) / 3
+			rval["1"] = strconv.Itoa(nextRow)
+			rval["2"] = float64(nextRow) / 3
 			rval["3"] = time.Now()
 			values = append(values, rval)
-			n++
+			nextRow++
 		}
 		return values
 	}
@@ -70,7 +71,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	}
 
 	// Sets the table data
-	tab.SetRows(genRows(0, 2))
+	tab.SetRows(genRows(2))
 	ctx.Gui.Add(tab)
 
 	tab.SetBorders(1, 1, 1, 1)
@@ -81,7 +82,6 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		tab.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-tableY)
 	})
 
-	rowNumber := 0
 	mb.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		opid := ev.(*gui.MenuItem).Id()
 		switch opid {
@@ -90,20 +90,16 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		case "hideHeader":
 			tab.ShowHeader(false)
 		case "addRow":
-			tab.AddRow(genRows(rowNumber, 1)[0])
-			rowNumber++
+			tab.AddRow(genRows(1)[0])
 		case "add10Rows":
-			values := genRows(rowNumber, 10)
-			rowNumber += 10
+			values := genRows(10)
 			for i := 0; i < len(values); i++ {
 				tab.AddRow(values[i])
 			}
 		case "insRow":
-			tab.InsertRow(0, genRows(rowNumber, 1)[0])
-			rowNumber++
+			tab.InsertRow(0, genRows(1)[0])
 		case "ins10Rows":
-			values := genRows(rowNumber, 10)
-			rowNumber += 10
+			values := genRows(10)
 			for i := 0; i < len(values); i++ {
 				tab.InsertRow(0, values[i])
 			}
@@ -122,7 +118,11 @@ func (t *GuiTable) Initialize(ctx *Context) {
 				tab.RemoveRow(tab.Len() - 1)
 			}
 		case "rem10BottomRows":
-
+			count := 10
+			for count > 0 && tab.Len() > 0 {
+				tab.RemoveRow(tab.Len() - 1)
+				count--
+			}
 		}
 	})
 
