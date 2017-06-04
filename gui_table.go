@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/g3n/engine/gui"
+	"github.com/g3n/engine/window"
 )
 
 func init() {
@@ -16,7 +17,7 @@ type GuiTable struct {
 
 func (t *GuiTable) Initialize(ctx *Context) {
 
-	// Generates data rows
+	// Function to generate table data rows
 	nextRow := 0
 	genRows := func(count int) []map[string]interface{} {
 
@@ -40,6 +41,8 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mh := gui.NewMenu()
 	mh.AddOption("Show header").SetId("showHeader")
 	mh.AddOption("Hide header").SetId("hideHeader")
+	mh.AddSeparator()
+	mh.AddOption("Show all columns").SetId("showAllColumns")
 	mb.AddMenu("Header", mh)
 
 	// Create Row Menu
@@ -82,6 +85,58 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		tab.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-tableY)
 	})
 
+	// Creates column context menu
+	mCol := gui.NewMenu()
+	mCol.AddOption("Hide column").SetId("hideColumn")
+	mCol.AddOption("Show all columns").SetId("showColumns")
+	mCol.AddSeparator()
+	mCol.AddOption("Move column left").SetId("moveColumnLeft")
+	mCol.SetVisible(false)
+	mCol.SetBounded(false)
+	tab.Add(mCol)
+
+	// Creates row context menu
+	mRow := gui.NewMenu()
+	mRow.AddOption("Delete row").SetId("delRow")
+	mRow.AddOption("Delete row above").SetId("delRowAbove")
+	mRow.AddOption("Delete row below").SetId("delRowBelow")
+	mRow.AddSeparator()
+	mRow.AddOption("Insert row above").SetId("insRowAbove")
+	mRow.AddOption("Insert row below").SetId("insRowBelow")
+	mRow.SetVisible(false)
+	mRow.SetBounded(false)
+	tab.Add(mRow)
+
+	// Subscribe to table on click
+	var tce gui.TableClickEvent
+	tab.Subscribe(gui.OnTableClick, func(evname string, ev interface{}) {
+		tce = ev.(gui.TableClickEvent)
+		mRow.SetVisible(false)
+		mCol.SetVisible(false)
+		//log.Debug("evname:%v -> %+v", evname, e)
+		if tce.Button != window.MouseButtonRight {
+			return
+		}
+		if tce.Header {
+			mCol.SetPosition(tce.X, tce.Y)
+			mCol.SetVisible(true)
+			return
+		}
+		if tce.Row >= 0 {
+			mRow.SetPosition(tce.X, tce.Y)
+			mRow.SetVisible(true)
+			return
+		}
+	})
+	mCol.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		mCol.SetVisible(false)
+		opid := ev.(*gui.MenuItem).Id()
+		switch opid {
+		case "hideColumn":
+			tab.ShowColumn(tce.Col, false)
+		}
+	})
+
 	mb.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		opid := ev.(*gui.MenuItem).Id()
 		switch opid {
@@ -89,6 +144,8 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.ShowHeader(true)
 		case "hideHeader":
 			tab.ShowHeader(false)
+		case "showAllColumns":
+			tab.ShowAllColumns()
 		case "addRow":
 			tab.AddRow(genRows(1)[0])
 		case "add10Rows":
@@ -104,23 +161,23 @@ func (t *GuiTable) Initialize(ctx *Context) {
 				tab.InsertRow(0, values[i])
 			}
 		case "remTopRow":
-			if tab.Len() > 0 {
+			if tab.RowCount() > 0 {
 				tab.RemoveRow(0)
 			}
 		case "rem10TopRows":
 			count := 10
-			for count > 0 && tab.Len() > 0 {
+			for count > 0 && tab.RowCount() > 0 {
 				tab.RemoveRow(0)
 				count--
 			}
 		case "remBottomRow":
-			if tab.Len() > 0 {
-				tab.RemoveRow(tab.Len() - 1)
+			if tab.RowCount() > 0 {
+				tab.RemoveRow(tab.RowCount() - 1)
 			}
 		case "rem10BottomRows":
 			count := 10
-			for count > 0 && tab.Len() > 0 {
-				tab.RemoveRow(tab.Len() - 1)
+			for count > 0 && tab.RowCount() > 0 {
+				tab.RemoveRow(tab.RowCount() - 1)
 				count--
 			}
 		}
