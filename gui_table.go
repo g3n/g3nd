@@ -38,17 +38,21 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mb.SetPosition(10, 10)
 
 	// Create Header Menu
-	mh := gui.NewMenu()
-	mh.AddOption("Show header").SetId("showHeader")
-	mh.AddOption("Hide header").SetId("hideHeader")
-	mh.AddSeparator()
-	mh.AddOption("Show all columns").SetId("showAllColumns")
-	mb.AddMenu("Header", mh)
+	mt := gui.NewMenu()
+	mt.AddOption("Show header").SetId("showHeader")
+	mt.AddOption("Hide header").SetId("hideHeader")
+	mt.AddSeparator()
+	mt.AddOption("Show all columns").SetId("showAllColumns")
+	mt.AddSeparator()
+	mt.AddOption("Show status").SetId("showStatus")
+	mt.AddOption("Hide status").SetId("showStatus")
+	mb.AddMenu("Table", mt)
 
 	// Create Row Menu
 	mr := gui.NewMenu()
 	mr.AddOption("Add row").SetId("addRow")
 	mr.AddOption("Add 10 rows").SetId("add10Rows")
+	mr.AddOption("Add 50 rows").SetId("add50Rows")
 	mr.AddSeparator()
 	mr.AddOption("Insert row").SetId("insRow")
 	mr.AddOption("Insert 10 rows").SetId("ins10Rows")
@@ -88,7 +92,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	// Creates column context menu
 	mCol := gui.NewMenu()
 	mCol.AddOption("Hide column").SetId("hideColumn")
-	mCol.AddOption("Show all columns").SetId("showColumns")
+	mCol.AddOption("Show all columns").SetId("showAllColumns")
 	mCol.AddSeparator()
 	mCol.AddOption("Move column left").SetId("moveColumnLeft")
 	mCol.SetVisible(false)
@@ -98,8 +102,6 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	// Creates row context menu
 	mRow := gui.NewMenu()
 	mRow.AddOption("Delete row").SetId("delRow")
-	mRow.AddOption("Delete row above").SetId("delRowAbove")
-	mRow.AddOption("Delete row below").SetId("delRowBelow")
 	mRow.AddSeparator()
 	mRow.AddOption("Insert row above").SetId("insRowAbove")
 	mRow.AddOption("Insert row below").SetId("insRowBelow")
@@ -134,6 +136,23 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		switch opid {
 		case "hideColumn":
 			tab.ShowColumn(tce.Col, false)
+		case "showAllColumns":
+			tab.ShowAllColumns()
+		}
+	})
+
+	mRow.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		mRow.SetVisible(false)
+		opid := ev.(*gui.MenuItem).Id()
+		switch opid {
+		case "delRow":
+			tab.RemoveRow(tce.Row)
+		case "insRowAbove":
+			values := genRows(1)
+			tab.InsertRow(tce.Row, values[0])
+		case "insRowBelow":
+			values := genRows(1)
+			tab.InsertRow(tce.Row+1, values[0])
 		}
 	})
 
@@ -150,6 +169,11 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.AddRow(genRows(1)[0])
 		case "add10Rows":
 			values := genRows(10)
+			for i := 0; i < len(values); i++ {
+				tab.AddRow(values[i])
+			}
+		case "add50Rows":
+			values := genRows(50)
 			for i := 0; i < len(values); i++ {
 				tab.AddRow(values[i])
 			}
