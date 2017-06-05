@@ -73,6 +73,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		{Id: "1", Name: "Col1", Width: 100},
 		{Id: "2", Name: "Col2", Width: 100},
 		{Id: "3", Name: "Col3", Width: 100},
+		{Id: "4", Name: "Col4", Width: 100, Hidden: true},
 	})
 	if err != nil {
 		panic(err)
