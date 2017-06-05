@@ -53,16 +53,14 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mr := gui.NewMenu()
 	mr.AddOption("Add row").SetId("addRow")
 	mr.AddOption("Add 10 rows").SetId("add10Rows")
-	mr.AddOption("Add 50 rows").SetId("add50Rows")
-	mr.AddSeparator()
-	mr.AddOption("Insert row").SetId("insRow")
-	mr.AddOption("Insert 10 rows").SetId("ins10Rows")
-	mb.AddMenu("Row", mr)
+	mr.AddOption("Add 100 rows").SetId("add100Rows")
 	mr.AddSeparator()
 	mr.AddOption("Remove top row").SetId("remTopRow")
 	mr.AddOption("Remove 10 top rows").SetId("rem10TopRows")
-	mr.AddOption("Remove bottom row").SetId("remBottomRow")
-	mr.AddOption("Remove 10 bottom rows").SetId("rem10BottomRows")
+	mr.AddOption("Remove 100 top rows").SetId("rem100TopRows")
+	mr.AddSeparator()
+	mr.AddOption("Remove all rows").SetId("remAllRows")
+	mb.AddMenu("Row", mr)
 
 	ctx.Gui.Add(mb)
 	ctx.Gui.Root().SetKeyFocus(mb)
@@ -153,18 +151,15 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		}
 	})
 
-	// Subscribe to table row count event
-	tab.Subscribe(gui.OnTableRowCount, func(evname string, ev interface{}) {
+	// Subscribe to events to update the table status line
+	updateStatus := func(evname string, ev interface{}) {
 		selRow := tab.SelectedRow()
-		tab.SetStatusText(fmt.Sprintf("Count:%d Selected:%d", tab.RowCount(), selRow))
-	})
+		tab.SetStatusText(fmt.Sprintf("Count: %d Selected: %d", tab.RowCount(), selRow))
+	}
+	tab.Subscribe(gui.OnTableRowCount, updateStatus)
+	tab.Subscribe(gui.OnChange, updateStatus)
 
-	// Subscribe to table onchange event
-	tab.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		selRow := tab.SelectedRow()
-		tab.SetStatusText(fmt.Sprintf("Count:%d Selected:%d", tab.RowCount(), selRow))
-	})
-
+	// Subscribe to column menu
 	mCol.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		mCol.SetVisible(false)
 		opid := ev.(*gui.MenuItem).Id()
@@ -176,6 +171,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		}
 	})
 
+	// Subscribe to row context menu
 	mRow.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		mRow.SetVisible(false)
 		opid := ev.(*gui.MenuItem).Id()
@@ -211,8 +207,8 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			for i := 0; i < len(values); i++ {
 				tab.AddRow(values[i])
 			}
-		case "add50Rows":
-			values := genRows(50)
+		case "add100Rows":
+			values := genRows(100)
 			for i := 0; i < len(values); i++ {
 				tab.AddRow(values[i])
 			}
@@ -220,6 +216,11 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.InsertRow(0, genRows(1)[0])
 		case "ins10Rows":
 			values := genRows(10)
+			for i := 0; i < len(values); i++ {
+				tab.InsertRow(0, values[i])
+			}
+		case "ins100Rows":
+			values := genRows(100)
 			for i := 0; i < len(values); i++ {
 				tab.InsertRow(0, values[i])
 			}
@@ -233,16 +234,14 @@ func (t *GuiTable) Initialize(ctx *Context) {
 				tab.RemoveRow(0)
 				count--
 			}
-		case "remBottomRow":
-			if tab.RowCount() > 0 {
-				tab.RemoveRow(tab.RowCount() - 1)
-			}
-		case "rem10BottomRows":
-			count := 10
+		case "rem100TopRows":
+			count := 100
 			for count > 0 && tab.RowCount() > 0 {
-				tab.RemoveRow(tab.RowCount() - 1)
+				tab.RemoveRow(0)
 				count--
 			}
+		case "remAllRows":
+			tab.Clear()
 		}
 	})
 
