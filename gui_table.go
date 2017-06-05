@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/g3n/engine/gui"
@@ -25,9 +24,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 		values := make([]map[string]interface{}, 0, count)
 		for i := 0; i < count; i++ {
 			rval := make(map[string]interface{})
-			rval["1"] = strconv.Itoa(nextRow)
-			rval["2"] = float64(nextRow) / 3
-			rval["3"] = time.Now()
+			rval["1"] = nextRow // column id
+			rval["2"] = time.Now()
+			rval["3"] = float64(nextRow) / 3
+			rval["4"] = ""
 			values = append(values, rval)
 			nextRow++
 		}
@@ -67,13 +67,33 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	ctx.Gui.Add(mb)
 	ctx.Gui.Root().SetKeyFocus(mb)
 
+	// Time formatting function
+	//formatTime := func(row int, col string, val interface{}) string {
+	formatTime := func(cell gui.TableCell) string {
+		if cell.Value == nil {
+			return ""
+		}
+		t := cell.Value.(time.Time)
+		return time.Time(t).Format("15:04:05.000")
+	}
+
+	// Formatting function for calculated column 4
+	formatCalc := func(cell gui.TableCell) string {
+		c1 := cell.Tab.Cell("1", cell.Row)
+		if c1 == nil {
+			return ""
+		}
+		v := c1.(int)
+		return fmt.Sprintf("Col1 / 5 = %6.2f", float64(v)/5)
+	}
+
 	// Creates Table
 	tableY := mb.Position().Y + mb.Height() + 10
 	tab, err := gui.NewTable(400, 200, []gui.TableColumn{
-		{Id: "1", Name: "Col1", Width: 100},
-		{Id: "2", Name: "Col2", Width: 100},
-		{Id: "3", Name: "Col3", Width: 100},
-		{Id: "4", Name: "Col4", Width: 100, Hidden: true},
+		{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%04d"},
+		{Id: "2", Name: "Col2", Width: 100, Align: gui.AlignCenter, FormatFunc: formatTime},
+		{Id: "3", Name: "Col3", Width: 100, Align: gui.AlignRight, Format: "US$%6.2f"},
+		{Id: "4", Name: "Col4", Width: 140, Hidden: true, Align: gui.AlignCenter, FormatFunc: formatCalc},
 	})
 	if err != nil {
 		panic(err)
