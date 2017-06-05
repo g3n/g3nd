@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -130,6 +131,19 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			return
 		}
 	})
+
+	// Subscribe to table row count event
+	tab.Subscribe(gui.OnTableRowCount, func(evname string, ev interface{}) {
+		selRow := tab.SelectedRow()
+		tab.SetStatusText(fmt.Sprintf("Count:%d Selected:%d", tab.RowCount(), selRow))
+	})
+
+	// Subscribe to table onchange event
+	tab.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		selRow := tab.SelectedRow()
+		tab.SetStatusText(fmt.Sprintf("Count:%d Selected:%d", tab.RowCount(), selRow))
+	})
+
 	mCol.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		mCol.SetVisible(false)
 		opid := ev.(*gui.MenuItem).Id()
