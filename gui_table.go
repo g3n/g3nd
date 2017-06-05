@@ -45,7 +45,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mt.AddOption("Show all columns").SetId("showAllColumns")
 	mt.AddSeparator()
 	mt.AddOption("Show status").SetId("showStatus")
-	mt.AddOption("Hide status").SetId("showStatus")
+	mt.AddOption("Hide status").SetId("hideStatus")
 	mb.AddMenu("Table", mt)
 
 	// Create Row Menu
@@ -165,6 +165,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.ShowHeader(false)
 		case "showAllColumns":
 			tab.ShowAllColumns()
+		case "showStatus":
+			tab.ShowStatus(true)
+		case "hideStatus":
+			tab.ShowStatus(false)
 		case "addRow":
 			tab.AddRow(genRows(1)[0])
 		case "add10Rows":
