@@ -88,11 +88,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	// Creates Table
 	tableY := mb.Position().Y + mb.Height() + 10
 	tab, err := gui.NewTable(400, 200, []gui.TableColumn{
-		//{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%04d"},
-		{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%d"},
-		{Id: "2", Name: "Col2", Width: 100, Align: gui.AlignCenter, FormatFunc: formatTime},
-		{Id: "3", Name: "Col3", Width: 100, Align: gui.AlignRight, Format: "US$%6.2f"},
-		{Id: "4", Name: "Col4", Width: 140, Hidden: true, Align: gui.AlignCenter, FormatFunc: formatCalc},
+		{Id: "1", Header: "Col1", Width: 100, Align: gui.AlignLeft, Format: "%d", Sort: gui.TableSortNumber},
+		{Id: "2", Header: "Col2", Width: 100, Align: gui.AlignCenter, FormatFunc: formatTime, Resize: true},
+		{Id: "3", Header: "Col3", Width: 100, Align: gui.AlignRight, Format: "US$%6.2f", Resize: true},
+		{Id: "4", Header: "Col4", Width: 140, Hidden: true, Align: gui.AlignCenter, FormatFunc: formatCalc},
 	})
 	if err != nil {
 		panic(err)
