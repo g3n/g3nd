@@ -88,7 +88,8 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	// Creates Table
 	tableY := mb.Position().Y + mb.Height() + 10
 	tab, err := gui.NewTable(400, 200, []gui.TableColumn{
-		{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%04d"},
+		//{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%04d"},
+		{Id: "1", Name: "Col1", Width: 40, Align: gui.AlignLeft, Format: "%d"},
 		{Id: "2", Name: "Col2", Width: 100, Align: gui.AlignCenter, FormatFunc: formatTime},
 		{Id: "3", Name: "Col3", Width: 100, Align: gui.AlignRight, Format: "US$%6.2f"},
 		{Id: "4", Name: "Col4", Width: 140, Hidden: true, Align: gui.AlignCenter, FormatFunc: formatCalc},
@@ -115,6 +116,13 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mCol.AddOption("Show all columns").SetId("showAllColumns")
 	mCol.AddSeparator()
 	mCol.AddOption("Move column left").SetId("moveColumnLeft")
+	mCol.AddOption("Move column right").SetId("moveColumnRight")
+	mCol.AddSeparator()
+	mCol.AddOption("Sort string column asc").SetId("sortStrColAsc")
+	mCol.AddOption("Sort string column desc").SetId("sortSrtColDesc")
+	mCol.AddSeparator()
+	mCol.AddOption("Sort number column asc").SetId("sortNumColAsc")
+	mCol.AddOption("Sort number column desc").SetId("sortNumColDesc")
 	mCol.SetVisible(false)
 	mCol.SetBounded(false)
 	tab.Add(mCol)
@@ -168,6 +176,22 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.ShowColumn(tce.Col, false)
 		case "showAllColumns":
 			tab.ShowAllColumns()
+		case "moveColumnLeft":
+			if tce.ColOrder >= 1 {
+				tab.SetColOrder(tce.Col, tce.ColOrder-1)
+			}
+		case "moveColumnRight":
+			if tce.ColOrder < 3 {
+				tab.SetColOrder(tce.Col, tce.ColOrder+1)
+			}
+		case "sortStrColAsc":
+			tab.SortColumn(tce.Col, true, true)
+		case "sortSrtColDesc":
+			tab.SortColumn(tce.Col, true, false)
+		case "sortNumColAsc":
+			tab.SortColumn(tce.Col, false, true)
+		case "sortNumColDesc":
+			tab.SortColumn(tce.Col, false, false)
 		}
 	})
 
