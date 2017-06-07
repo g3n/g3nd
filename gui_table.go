@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/g3n/engine/gui"
@@ -47,6 +48,9 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mt.AddSeparator()
 	mt.AddOption("Show status").SetId("showStatus")
 	mt.AddOption("Hide status").SetId("hideStatus")
+	mt.AddSeparator()
+	mt.AddOption("Enable multi row selection").SetId("enableMultirow")
+	mt.AddOption("Disable multi row selection").SetId("disableMultirow")
 	mb.AddMenu("Table", mt)
 
 	// Create Row Menu
@@ -63,7 +67,6 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mb.AddMenu("Row", mr)
 
 	ctx.Gui.Add(mb)
-	ctx.Gui.Root().SetKeyFocus(mb)
 
 	// Time formatting function
 	//formatTime := func(row int, col string, val interface{}) string {
@@ -96,15 +99,15 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	if err != nil {
 		panic(err)
 	}
-
 	// Sets the table data
 	tab.SetRows(genRows(2))
-	ctx.Gui.Add(tab)
-
 	tab.SetBorders(1, 1, 1, 1)
 	tab.SetPosition(0, tableY)
 	tab.SetMargins(10, 10, 10, 10)
 	tab.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-tableY)
+	ctx.Gui.Add(tab)
+
+	// Resize table
 	ctx.Gui.Subscribe(gui.OnResize, func(evname string, ev interface{}) {
 		tab.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-tableY)
 	})
@@ -160,8 +163,12 @@ func (t *GuiTable) Initialize(ctx *Context) {
 
 	// Subscribe to events to update the table status line
 	updateStatus := func(evname string, ev interface{}) {
-		selRow := tab.SelectedRow()
-		tab.SetStatusText(fmt.Sprintf("Count: %d Selected: %d", tab.RowCount(), selRow))
+		selRows := tab.SelectedRows()
+		current := ""
+		if len(selRows) > 0 {
+			current = strconv.Itoa(selRows[0])
+		}
+		tab.SetStatusText(fmt.Sprintf("Rows: %d Selected: %d Current: %s", tab.RowCount(), len(selRows), current))
 	}
 	tab.Subscribe(gui.OnTableRowCount, updateStatus)
 	tab.Subscribe(gui.OnChange, updateStatus)
@@ -223,6 +230,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			tab.ShowStatus(true)
 		case "hideStatus":
 			tab.ShowStatus(false)
+		case "enableMultirow":
+			tab.SetSelectionType(gui.TableSelMultiRow)
+		case "disableMultirow":
+			tab.SetSelectionType(gui.TableSelSingleRow)
 		case "addRow":
 			tab.AddRow(genRows(1)[0])
 		case "add10Rows":
