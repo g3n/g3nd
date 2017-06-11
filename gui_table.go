@@ -28,7 +28,7 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			rval["1"] = nextRow // column id
 			rval["2"] = time.Now()
 			rval["3"] = float64(nextRow) / 3
-			rval["4"] = ""
+			rval["4"] = nil
 			values = append(values, rval)
 			nextRow++
 		}
@@ -60,8 +60,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mr.AddOption("Add 100 rows").SetId("add100Rows")
 	mr.AddSeparator()
 	mr.AddOption("Remove top row").SetId("remTopRow")
-	mr.AddOption("Remove 10 top rows").SetId("rem10TopRows")
 	mr.AddOption("Remove 100 top rows").SetId("rem100TopRows")
+	mr.AddSeparator()
+	mr.AddOption("Remove bottom row").SetId("remBottomRow")
+	mr.AddOption("Remove 100 bottom rows").SetId("rem100BottomRows")
 	mr.AddSeparator()
 	mr.AddOption("Remove all rows").SetId("remAllRows")
 	mb.AddMenu("Row", mr)
@@ -91,10 +93,10 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	// Creates Table
 	tableY := mb.Position().Y + mb.Height() + 10
 	tab, err := gui.NewTable(400, 200, []gui.TableColumn{
-		{Id: "1", Header: "Col1", Width: 100, Align: gui.AlignLeft, Format: "%d", Sort: gui.TableSortNumber},
-		{Id: "2", Header: "Col2", Width: 100, Align: gui.AlignCenter, FormatFunc: formatTime, Resize: true},
-		{Id: "3", Header: "Col3", Width: 100, Align: gui.AlignRight, Format: "US$%6.2f", Resize: true},
-		{Id: "4", Header: "Col4", Width: 140, Hidden: true, Align: gui.AlignCenter, FormatFunc: formatCalc},
+		{Id: "1", Header: "Col1", Width: 100, Minwidth: 32, Align: gui.AlignLeft, Format: "%d", Resize: true, Sort: gui.TableSortNumber, Expand: 0},
+		{Id: "2", Header: "Col2", Width: 100, Minwidth: 32, Align: gui.AlignCenter, FormatFunc: formatTime, Resize: true, Expand: 0},
+		{Id: "3", Header: "Col3", Width: 100, Minwidth: 32, Align: gui.AlignRight, Format: "US$%6.2f", Resize: true, Expand: 0},
+		{Id: "4", Header: "Col4", Width: 100, Minwidth: 32, Align: gui.AlignCenter, FormatFunc: formatCalc, Expand: 0},
 	})
 	if err != nil {
 		panic(err)
@@ -120,11 +122,12 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mCol.AddOption("Move column left").SetId("moveColumnLeft")
 	mCol.AddOption("Move column right").SetId("moveColumnRight")
 	mCol.AddSeparator()
-	mCol.AddOption("Sort string column asc").SetId("sortStrColAsc")
-	mCol.AddOption("Sort string column desc").SetId("sortSrtColDesc")
+	mCol.AddOption("Enable resize").SetId("enableColResize")
+	mCol.AddOption("Disable resize").SetId("disableColResize")
 	mCol.AddSeparator()
-	mCol.AddOption("Sort number column asc").SetId("sortNumColAsc")
-	mCol.AddOption("Sort number column desc").SetId("sortNumColDesc")
+	mCol.AddOption("Set expand to 0").SetId("setExpand0")
+	mCol.AddOption("Set expand to 1").SetId("setExpand1")
+	mCol.AddOption("Set expand to 2").SetId("setExpand2")
 	mCol.SetVisible(false)
 	mCol.SetBounded(false)
 	tab.Add(mCol)
@@ -190,14 +193,16 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			if tce.ColOrder < 3 {
 				tab.SetColOrder(tce.Col, tce.ColOrder+1)
 			}
-		case "sortStrColAsc":
-			tab.SortColumn(tce.Col, true, true)
-		case "sortSrtColDesc":
-			tab.SortColumn(tce.Col, true, false)
-		case "sortNumColAsc":
-			tab.SortColumn(tce.Col, false, true)
-		case "sortNumColDesc":
-			tab.SortColumn(tce.Col, false, false)
+		case "enableColResize":
+			tab.EnableColResize(tce.Col, true)
+		case "disableColResize":
+			tab.EnableColResize(tce.Col, false)
+		case "setExpand0":
+			tab.SetColExpand(tce.Col, 0)
+		case "setExpand1":
+			tab.SetColExpand(tce.Col, 1)
+		case "setExpand2":
+			tab.SetColExpand(tce.Col, 2)
 		}
 	})
 
@@ -262,16 +267,20 @@ func (t *GuiTable) Initialize(ctx *Context) {
 			if tab.RowCount() > 0 {
 				tab.RemoveRow(0)
 			}
-		case "rem10TopRows":
-			count := 10
-			for count > 0 && tab.RowCount() > 0 {
-				tab.RemoveRow(0)
-				count--
-			}
 		case "rem100TopRows":
 			count := 100
 			for count > 0 && tab.RowCount() > 0 {
 				tab.RemoveRow(0)
+				count--
+			}
+		case "remBottomRow":
+			if tab.RowCount() > 0 {
+				tab.RemoveRow(tab.RowCount() - 1)
+			}
+		case "rem100BottomRows":
+			count := 100
+			for count > 0 && tab.RowCount() > 0 {
+				tab.RemoveRow(tab.RowCount() - 1)
 				count--
 			}
 		case "remAllRows":
