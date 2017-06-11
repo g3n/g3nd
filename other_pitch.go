@@ -4,6 +4,7 @@ import (
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
@@ -19,10 +20,24 @@ type Pitch struct {
 	base *graphic.Mesh
 }
 
+const otherPitchHelp = `
+SW keys control pitch
+AD keys control heading (yaw)
+ZX keys control banking (roll)
+R key resets to original position
+`
+
 func (t *Pitch) Initialize(ctx *Context) {
 
 	// Subscribe to key events
+	ctx.Win.Subscribe(window.OnKeyRepeat, t.onKey)
 	ctx.Win.Subscribe(window.OnKeyDown, t.onKey)
+
+	// Add help label
+	label1 := gui.NewLabel(otherPitchHelp)
+	label1.SetFontSize(16)
+	label1.SetPosition(10, 10)
+	ctx.Gui.Add(label1)
 
 	// Top directional light
 	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 0.5)
@@ -117,6 +132,6 @@ func (t *Pitch) onKey(evname string, ev interface{}) {
 	}
 	// Reset
 	if kev.Keycode == window.KeyR {
-		t.base.SetRotation(-math.Pi/2, 0, math.Pi/2)
+		t.base.SetRotation(-math.Pi/2, 0, 0)
 	}
 }
