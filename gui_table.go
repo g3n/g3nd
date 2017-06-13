@@ -130,6 +130,9 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mCol.AddOption("Set expand to 2").SetId("setExpand2")
 	mCol.SetVisible(false)
 	mCol.SetBounded(false)
+	mCol.Subscribe(gui.OnMouseOut, func(evname string, ev interface{}) {
+		mCol.SetVisible(false)
+	})
 	tab.Add(mCol)
 
 	// Creates row context menu
@@ -140,14 +143,15 @@ func (t *GuiTable) Initialize(ctx *Context) {
 	mRow.AddOption("Insert row below").SetId("insRowBelow")
 	mRow.SetVisible(false)
 	mRow.SetBounded(false)
+	mRow.Subscribe(gui.OnMouseOut, func(evname string, ev interface{}) {
+		mRow.SetVisible(false)
+	})
 	tab.Add(mRow)
 
 	// Subscribe to table on click
 	var tce gui.TableClickEvent
 	tab.Subscribe(gui.OnTableClick, func(evname string, ev interface{}) {
 		tce = ev.(gui.TableClickEvent)
-		mRow.SetVisible(false)
-		mCol.SetVisible(false)
 		//log.Debug("evname:%v -> %+v", evname, e)
 		if tce.Button != window.MouseButtonRight {
 			return
