@@ -467,11 +467,18 @@ func setupScene(ctx *Context) {
 	// Adds camera to the scene
 	ctx.Scene.Add(ctx.Camera.GetCamera())
 
-	// Subscribe to window key events to exit when ESC received
+	// Subscribe to window key events
 	ctx.Win.Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
 		kev := ev.(*window.KeyEvent)
+		// ESC terminates program
 		if kev.Keycode == window.KeyEscape {
 			ctx.Win.SetShouldClose(true)
+			return
+		}
+		// F10 toggles full screen
+		if kev.Keycode == window.KeyF10 {
+			ctx.Win.SetFullScreen(!ctx.Win.FullScreen())
+			return
 		}
 	})
 
