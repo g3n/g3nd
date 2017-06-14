@@ -3,6 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+	"runtime/pprof"
+	"sort"
+	"strings"
+	"time"
+
 	"github.com/g3n/engine/audio/al"
 	"github.com/g3n/engine/audio/ov"
 	"github.com/g3n/engine/audio/vorbis"
@@ -17,20 +25,14 @@ import (
 	"github.com/g3n/engine/util/logger"
 	"github.com/g3n/engine/window"
 	"github.com/kardianos/osext"
-	"os"
-	"path/filepath"
-	"runtime"
-	"runtime/pprof"
-	"sort"
-	"strconv"
-	"strings"
-	"time"
 )
 
-// PROGNAME is this program name
-const PROGNAME = "G3N Demo"
-const VMAJOR = 0
-const VMINOR = 1
+const (
+	ProgName = "G3N Demo"
+	ExecName = "g3nd"
+	Vmajor   = 0
+	Vminor   = 2
+)
 
 // Package logger
 var log *logger.Logger
@@ -61,11 +63,9 @@ type Context struct {
 	CapDev      *al.Device            // Audio capture device
 	root        *gui.Root             // GUI root container
 	currentTest ITest                 // current test object
-	frameCount  int                   // frame counter for FPS calculation
-	lastTime    float64               // time of last calculated FPS
-	lastFPS     int                   // last calculated fps value
 	labelFPS    *gui.Label            // header FPS label
 	treeTests   *gui.Tree             // tree with test names
+	frameRater  *FrameRater           // frame rate controller
 }
 
 // ITest is the interface that must be satisfied for all test objects
@@ -80,15 +80,17 @@ var TestMap = map[string]ITest{}
 // Command line options
 var (
 	oVersion    = flag.Bool("version", false, "Show version and exits")
-	oWidth      = flag.Int("width", 800, "Window width in pixels")
-	oHeight     = flag.Int("height", 600, "Window height in pixels")
+	oWidth      = flag.Int("width", 800, "Initial window width in pixels")
+	oHeight     = flag.Int("height", 600, "Initial window height in pixels")
 	oFull       = flag.Bool("full", false, "Full screen on primary monitor")
-	oNogui      = flag.Bool("nogui", false, "No GUI")
-	oNofps      = flag.Bool("nofps", false, "Do not show frames per second")
-	oInterval   = flag.Int("interval", 1, "Swap interval in number of vertical retraces")
+	oNogui      = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
+	oHideFPS    = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
+	oUpdateFPS  = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
+	oFPS        = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
+	oInterval   = flag.Int("interval", -1, "If >= 0, sets the swap interval to this value")
 	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
 	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
-	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (increase FPS)")
+	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
 	oProfile    = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
 )
 
@@ -100,7 +102,7 @@ func main() {
 
 	// If requested, print version and exits
 	if *oVersion == true {
-		fmt.Fprintf(os.Stderr, "%s v%d.%d\n", PROGNAME, VMAJOR, VMINOR)
+		fmt.Fprintf(os.Stderr, "%s v%d.%d\n", ProgName, Vmajor, Vminor)
 		return
 	}
 
@@ -109,7 +111,7 @@ func main() {
 	log.AddWriter(logger.NewConsole(*oLogColor))
 	log.SetFormat(logger.FTIME | logger.FMICROS)
 	log.SetLevel(logger.DEBUG)
-	log.Info("%s v%d.%d starting", PROGNAME, VMAJOR, VMINOR)
+	log.Info("%s v%d.%d starting", ProgName, Vmajor, Vminor)
 
 	// Apply log levels to engine package loggers
 	if *oLogs != "" {
@@ -159,7 +161,9 @@ func main() {
 	gs.SetCheckErrors(!*oNoGlErrors)
 
 	// Set swap buffers interval
-	win.SwapInterval(*oInterval)
+	if *oInterval >= 0 {
+		win.SwapInterval(*oInterval)
+	}
 
 	// Starts building context which is passed to all tests
 	var ctx Context
@@ -167,6 +171,7 @@ func main() {
 	ctx.Win = win
 	ctx.Time = time.Now()
 	ctx.DirData = dirData
+	ctx.frameRater = NewFrameRater(win, *oFPS)
 
 	// Try to load audio libraries and sets its availability in the context
 	loadAudioLibs(&ctx)
@@ -227,6 +232,7 @@ func main() {
 
 	// Render loop
 	for !win.ShouldClose() {
+
 		// Clear buffers
 		gs.Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
 
@@ -256,8 +262,12 @@ func main() {
 			log.Fatal("Render error: %s\n", err)
 		}
 
+		// Swap window framebuffers and poll input events
 		win.SwapBuffers()
 		win.PollEvents()
+
+		// Controls the frame rate and updates the FPS for the user
+		ctx.frameRater.Wait()
 		updateFPS(&ctx)
 	}
 }
@@ -302,11 +312,11 @@ func buildGui(ctx *Context) {
 	title := gui.NewLabel(" ")
 	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-	title.SetText(fmt.Sprintf("%s v%d.%d", PROGNAME, VMAJOR, VMINOR))
+	title.SetText(fmt.Sprintf("%s v%d.%d", ProgName, Vmajor, Vminor))
 	title.SetColor(&lightTextColor)
 	header.Add(title)
 	// FPS
-	if !*oNofps {
+	if !*oHideFPS {
 		l1 := gui.NewLabel(" ")
 		l1.SetFontSize(fontSize)
 		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
@@ -388,24 +398,87 @@ func buildGui(ctx *Context) {
 
 }
 
-// UpdateFPS calculates and updates the fps value in the window title.
+// FrameRater implements a frame rate controller
+type FrameRater struct {
+	win        window.IWindow // reference to the window
+	targetFPS  float64        // desired number of frames per second
+	targetTime float64        // desired duration of a frame in seconds (1/targetFPS)
+	frames     uint           // frame counter used to calculate the real FPS
+	start      float64        // start time of the last frame
+	frameTimes float64        // accumulated frame times for potential FPS calculation
+	updateTime float64        // last update time for FPS calculation
+}
+
+// NewFrameRater returns a frame rate controller object for the specified
+// window and target frames per second
+func NewFrameRater(win window.IWindow, targetFPS uint) *FrameRater {
+
+	f := new(FrameRater)
+	f.win = win
+	f.targetFPS = float64(targetFPS)
+	f.targetTime = 1.0 / f.targetFPS
+	f.updateTime = f.win.GetTime()
+	f.start = f.win.GetTime()
+	return f
+}
+
+// Wait should be called after the frame was rendered and will
+// sleep, if necessary, to implement the desired frame rate.
+func (f *FrameRater) Wait() {
+
+	// Calculates the time duration of this frame
+	elapsed := f.win.GetTime() - f.start
+	f.frames++
+	// Accumulates this frame time for potential FPS calculation
+	f.frameTimes += elapsed
+	// If this frame time is less than the target time, sleeps
+	diff := f.targetTime - elapsed
+	if diff > 0 {
+		t := time.Duration(diff * float64(time.Second))
+		time.Sleep(t)
+	}
+	f.start = f.win.GetTime()
+}
+
+// FPS calculates and returns the current measured FPS and the maximum
+// potential FPS after the specified time interval has elapsed.
+// It returns an indication if the results are valid
+func (f *FrameRater) FPS(t time.Duration) (float64, float64, bool) {
+
+	// If the time from the last update has not passed, nothing to do
+	elapsed := f.win.GetTime() - f.updateTime
+	if elapsed < t.Seconds() {
+		return 0, 0, false
+	}
+
+	// Calculates the measured frame rate
+	fps := float64(f.frames) / elapsed
+	// Calculates the average duration of a frame and the potential FPS
+	frameDur := f.frameTimes / float64(f.frames)
+	pfps := 1.0 / frameDur
+	// Resets the frame counter and times
+	f.frames = 0
+	f.frameTimes = 0
+	f.updateTime = f.win.GetTime()
+	return fps, pfps, true
+}
+
+// UpdateFPS updates the fps value in the window title or header label
 func updateFPS(ctx *Context) {
 
-	currentTime := ctx.Win.GetTime()
-	ctx.frameCount++
-	if currentTime-ctx.lastTime < 1.0 {
+	// Get the FPS and potential FPS from the frameRater
+	fps, pfps, ok := ctx.frameRater.FPS(time.Duration(*oUpdateFPS) * time.Millisecond)
+	if !ok {
 		return
 	}
 
-	msg := strconv.Itoa(ctx.frameCount)
+	// Shows the values in the window title or header label
+	msg := fmt.Sprintf("%3.1f / %3.1f", fps, pfps)
 	if *oNogui {
 		ctx.Win.SetTitle(msg)
-	} else {
+	} else if !*oHideFPS {
 		ctx.labelFPS.SetText(msg)
 	}
-
-	ctx.frameCount = 0
-	ctx.lastTime = currentTime
 }
 
 // winResizeEvent is called when the window resize event is received
@@ -629,8 +702,8 @@ func checkDirData() string {
 // usage shows the application usage
 func usage() {
 
-	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", PROGNAME, VMAJOR, VMINOR)
-	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", strings.ToLower(PROGNAME))
+	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", ProgName, Vmajor, Vminor)
+	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", ExecName)
 	flag.PrintDefaults()
 	os.Exit(2)
 }
