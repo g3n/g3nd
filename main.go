@@ -23,6 +23,7 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/renderer"
 	"github.com/g3n/engine/util/logger"
+	"github.com/g3n/engine/util/stats"
 	"github.com/g3n/engine/window"
 	"github.com/kardianos/osext"
 )
@@ -66,6 +67,8 @@ type Context struct {
 	labelFPS    *gui.Label            // header FPS label
 	treeTests   *gui.Tree             // tree with test names
 	frameRater  *FrameRater           // frame rate controller
+	stats       *stats.Stats          // statistics object
+	statsTable  *stats.StatsTable     // statistics table panel
 }
 
 // ITest is the interface that must be satisfied for all test objects
@@ -92,6 +95,7 @@ var (
 	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
 	oProfile    = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
+	oStats      = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
 )
 
 func main() {
@@ -172,6 +176,7 @@ func main() {
 	ctx.Time = time.Now()
 	ctx.DirData = dirData
 	ctx.frameRater = NewFrameRater(win, *oFPS)
+	ctx.stats = stats.NewStats(gs)
 
 	// Try to load audio libraries and sets its availability in the context
 	loadAudioLibs(&ctx)
@@ -262,6 +267,14 @@ func main() {
 			log.Fatal("Render error: %s\n", err)
 		}
 
+		// Update statistics
+		if ctx.stats.Update(time.Second) {
+			// Update statistics table
+			if ctx.statsTable != nil {
+				ctx.statsTable.Update(ctx.stats)
+			}
+		}
+
 		// Swap window framebuffers and poll input events
 		win.SwapBuffers()
 		win.PollEvents()
@@ -331,6 +344,31 @@ func buildGui(ctx *Context) {
 		header.Add(ctx.labelFPS)
 	}
 
+	// New styles for control folder
+	styles := gui.StyleDefault.ControlFolder
+	styles.Folder.Normal.BgColor = headerColor
+	styles.Folder.Over.BgColor = headerColor
+	styles.Folder.Normal.FgColor = lightTextColor
+	styles.Folder.Over.FgColor = lightTextColor
+
+	// Adds statistics table control folder if requested
+	if *oStats {
+		// Adds spacer to right justify the control folder in the header
+		spacer := gui.NewPanel(0, 0)
+		spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1.2})
+		header.Add(spacer)
+
+		// Creates control folder for statistics table
+		statsControlFolder := gui.NewControlFolder("Stats", 100)
+		statsControlFolder.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
+		statsControlFolder.SetStyles(&styles)
+		header.Add(statsControlFolder)
+
+		// Adds stats table in the control folder
+		ctx.statsTable = stats.NewStatsTable(220, 200, ctx.GS)
+		statsControlFolder.AddPanel(ctx.statsTable)
+	}
+
 	// Adds spacer to right justify the control folder in the header
 	spacer := gui.NewPanel(0, 0)
 	spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1})
@@ -339,11 +377,6 @@ func buildGui(ctx *Context) {
 	// Adds control folder in the header
 	ctx.Control = gui.NewControlFolder("Controls", 100)
 	ctx.Control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
-	styles := gui.StyleDefault.ControlFolder
-	styles.Folder.Normal.BgColor = headerColor
-	styles.Folder.Over.BgColor = headerColor
-	styles.Folder.Normal.FgColor = lightTextColor
-	styles.Folder.Over.FgColor = lightTextColor
 	ctx.Control.SetStyles(&styles)
 	header.Add(ctx.Control)
 
@@ -553,6 +586,10 @@ func setupScene(ctx *Context) {
 			ctx.Win.SetFullScreen(!ctx.Win.FullScreen())
 			return
 		}
+		// Ctr-Alt-S prints statistics in the console
+		if kev.Keycode == window.KeyS && kev.Mods == window.ModControl|window.ModAlt {
+			logStats(ctx)
+		}
 	})
 
 	// Subscribe to window resize events
@@ -589,6 +626,7 @@ func setupScene(ctx *Context) {
 	// Remove all controls and adds default ones
 	ctx.Control.Clear()
 
+	// Adds camera selection
 	cb := ctx.Control.AddCheckBox("Perspective camera")
 	cb.SetValue(true)
 	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
@@ -602,10 +640,34 @@ func setupScene(ctx *Context) {
 		ctx.Orbit = control.NewOrbitControl(ctx.Camera, ctx.Win)
 	})
 
+	// Adds ambient light slider
 	s1 := ctx.Control.AddSlider("Ambient light:", 2.0, ctx.AmbLight.Intensity())
 	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		ctx.AmbLight.SetIntensity(s1.Value())
 	})
+}
+
+// logStats generate log with current statistics
+func logStats(ctx *Context) {
+
+	const statsFormat = `
+         Shaders: %d
+            Vaos: %d
+         Buffers: %d
+        Textures: %d
+  Uniforms/frame: %d
+Draw calls/frame: %d
+ CGO calls/frame: %d
+`
+	log.Info(statsFormat,
+		ctx.stats.Glstats.Shaders,
+		ctx.stats.Glstats.Vaos,
+		ctx.stats.Glstats.Buffers,
+		ctx.stats.Glstats.Textures,
+		ctx.stats.Unisets,
+		ctx.stats.Drawcalls,
+		ctx.stats.Cgocalls,
+	)
 }
 
 // loadAudioLibs try to load audio libraries
