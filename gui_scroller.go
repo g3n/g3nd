@@ -47,7 +47,8 @@ func (t *GuiScroller) Initialize(ctx *Context) {
 	b2.SetPosition(s1.Position().X+s1.Width()+10, s1.Position().Y+30)
 	b2.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		if s1.Len() > 0 {
-			s1.RemoveAt(0)
+			p := s1.RemoveAt(0)
+			p.Dispose()
 		}
 	})
 	ctx.Gui.Add(b2)

@@ -113,6 +113,7 @@ func (t *GuiTree) Initialize(ctx *Context) {
 			return
 		}
 		tree.Remove(sel)
+		sel.Dispose()
 	})
 	ctx.Gui.Add(b4)
 
