@@ -440,6 +440,7 @@ type FrameRater struct {
 	start      float64        // start time of the last frame
 	frameTimes float64        // accumulated frame times for potential FPS calculation
 	updateTime float64        // last update time for FPS calculation
+	timer      *time.Timer    // timer for sleeping during frame
 }
 
 // NewFrameRater returns a frame rate controller object for the specified
@@ -452,6 +453,8 @@ func NewFrameRater(win window.IWindow, targetFPS uint) *FrameRater {
 	f.targetTime = 1.0 / f.targetFPS
 	f.updateTime = f.win.GetTime()
 	f.start = f.win.GetTime()
+	f.timer = time.NewTimer(0)
+	<-f.timer.C
 	return f
 }
 
@@ -468,7 +471,8 @@ func (f *FrameRater) Wait() {
 	diff := f.targetTime - elapsed
 	if diff > 0 {
 		t := time.Duration(diff * float64(time.Second))
-		time.Sleep(t)
+		f.timer.Reset(t)
+		<-f.timer.C
 	}
 	f.start = f.win.GetTime()
 }
@@ -499,6 +503,10 @@ func (f *FrameRater) FPS(t time.Duration) (float64, float64, bool) {
 // UpdateFPS updates the fps value in the window title or header label
 func updateFPS(ctx *Context) {
 
+	if *oHideFPS {
+		return
+	}
+
 	// Get the FPS and potential FPS from the frameRater
 	fps, pfps, ok := ctx.frameRater.FPS(time.Duration(*oUpdateFPS) * time.Millisecond)
 	if !ok {
@@ -509,7 +517,7 @@ func updateFPS(ctx *Context) {
 	msg := fmt.Sprintf("%3.1f / %3.1f", fps, pfps)
 	if *oNogui {
 		ctx.Win.SetTitle(msg)
-	} else if !*oHideFPS {
+	} else {
 		ctx.labelFPS.SetText(msg)
 	}
 }
