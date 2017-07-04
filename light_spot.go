@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
@@ -76,23 +77,23 @@ func (t *SpotLight) Initialize(ctx *Context) {
 	// Subscribe to key events
 	//	ctx.Gl.Subscribe(gls.OnKeyDown, t.onKey)
 	//
-	//	// Add controls
-	//	if ctx.Control == nil {
-	//		return
-	//	}
-	//	g := ctx.Control.AddGroup("Show lights")
-	//	cb1 := g.AddCheckBox("Red").SetValue(t.spot1.Mesh.Visible())
-	//	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-	//		t.spot1.Mesh.SetVisible(!t.spot1.Mesh.Visible())
-	//	})
-	//	cb2 := g.AddCheckBox("Green").SetValue(t.spot2.Mesh.Visible())
-	//	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-	//		t.spot2.Mesh.SetVisible(!t.spot2.Mesh.Visible())
-	//	})
-	//	cb3 := g.AddCheckBox("Blue").SetValue(t.spot3.Mesh.Visible())
-	//	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-	//		t.spot3.Mesh.SetVisible(!t.spot3.Mesh.Visible())
-	//	})
+	// Add controls
+	if ctx.Control == nil {
+		return
+	}
+	g := ctx.Control.AddGroup("Show lights")
+	cb1 := g.AddCheckBox("Red").SetValue(t.spot1.Mesh.Visible())
+	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.spot1.Mesh.SetVisible(!t.spot1.Mesh.Visible())
+	})
+	cb2 := g.AddCheckBox("Green").SetValue(t.spot2.Mesh.Visible())
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.spot2.Mesh.SetVisible(!t.spot2.Mesh.Visible())
+	})
+	cb3 := g.AddCheckBox("Blue").SetValue(t.spot3.Mesh.Visible())
+	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.spot3.Mesh.SetVisible(!t.spot3.Mesh.Visible())
+	})
 }
 
 func (t *SpotLight) Render(ctx *Context) {
@@ -135,8 +136,9 @@ func NewSpotLightMesh(color *math32.Color) *SpotLightMesh {
 	l.Mesh.AddGroupMaterial(mat1, 0)
 	l.Mesh.AddGroupMaterial(mat2, 1)
 	l.Light = light.NewSpot(color, 2.0)
+	l.Light.SetCutoffAngle(45)
 	l.Light.SetLinearDecay(0.5)
-	l.Light.SetQuadraticDecay(10)
+	l.Light.SetQuadraticDecay(0.1)
 	l.Mesh.Add(l.Light)
 	return l
 }

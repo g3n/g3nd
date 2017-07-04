@@ -163,7 +163,7 @@ void main() {
     // Flips texture coordinate Y if requested.
     vec2 texcoord = VertexTexcoord;
     {{ if .MatTexturesMax }}
-    if (MatTexFlipY[0] > 0) {
+    if (MatTexFlipY(0)) {
         texcoord.y = 1 - texcoord.y;
     }
     {{ end }}
@@ -200,11 +200,11 @@ void logisticInterp(vec4 a, vec4 b, float f, out float r) {
 
 void main() {
 
-    vec4 texDay = texture(MatTexture[0], FragTexcoord * MatTexRepeat[0] + MatTexOffset[0]);
-    vec4 texSpecular = texture(MatTexture[1], FragTexcoord * MatTexRepeat[1] + MatTexOffset[1]);
-    vec4 texNight = texture(MatTexture[2], FragTexcoord * MatTexRepeat[2] + MatTexOffset[2]);
+    vec4 texDay = texture(MatTexture[0], FragTexcoord * MatTexRepeat(0) + MatTexOffset(0));
+    vec4 texSpecular = texture(MatTexture[1], FragTexcoord * MatTexRepeat(1) + MatTexOffset(1));
+    vec4 texNight = texture(MatTexture[2], FragTexcoord * MatTexRepeat(2) + MatTexOffset(2));
 
-    vec3 sunDirection = normalize(DirLightPosition[0]);
+    vec3 sunDirection = normalize(DirLightPosition(0));
 
     //vec4 texDayOrNight;// = texDay;
 

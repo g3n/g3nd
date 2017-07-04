@@ -256,8 +256,6 @@ func main() {
 			if err != nil {
 				log.Fatal("Render error: %s\n", err)
 			}
-			//proginfo := ctx.Engine.ProgInfo()
-			//log.Fatal("Program info:\n%s", proginfo)
 		}
 
 		// Render GUI over everything
