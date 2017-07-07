@@ -33,6 +33,14 @@ func (t *Earth) Initialize(ctx *Context) {
 	if err != nil {
 		panic(err)
 	}
+	// For each skybox face sets the material to not use lights
+	// and to have emissive color.
+	sbmats := skybox.Materials()
+	for i := 0; i < len(sbmats); i++ {
+		sbmat := skybox.Materials()[i].GetMaterial().(*material.Standard)
+		sbmat.SetUseLights(material.UseLightNone)
+		sbmat.SetEmissiveColor(&math32.Color{1, 1, 1})
+	}
 	ctx.Scene.Add(skybox)
 
 	// Adds directional front light

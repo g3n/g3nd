@@ -137,7 +137,7 @@ func NewPlayerSphere(ctx *Context, filename string, color *math32.Color) *Player
 	// Creates sphere
 	geom := geometry.NewSphere(0.2, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
 	mat := material.NewStandard(color)
-	mat.SetUseLights(0)
+	mat.SetUseLights(material.UseLightNone)
 	mat.SetEmissiveColor(color)
 	ps.Mesh.Init(geom, mat)
 	ps.SetVisible(true)
