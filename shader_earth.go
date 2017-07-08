@@ -104,6 +104,17 @@ func (t *Earth) Initialize(ctx *Context) {
 	t.sphere = graphic.NewMesh(geom, matEarth)
 	ctx.Scene.Add(t.sphere)
 
+	// Create sun sprite
+	texSun, err := texture.NewTexture2DFromImage(ctx.DirData + "/images/lensflare0_alpha.png")
+	if err != nil {
+		log.Fatal("Error loading texture: %s", err)
+	}
+	sunMat := material.NewStandard(&math32.Color{1, 1, 1})
+	sunMat.AddTexture(texSun)
+	sun := graphic.NewSprite(10, 10, sunMat)
+	sun.SetPositionZ(20)
+	ctx.Scene.Add(sun)
+
 	// Add axis helper
 	axis := graphic.NewAxisHelper(5)
 	ctx.Scene.Add(axis)
