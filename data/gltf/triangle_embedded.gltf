@@ -7,8 +7,7 @@
   
   "nodes" : [
     {
-      "mesh" : 0,
-      "rotation" : [ 0.0, 0.0, 0.0, 1.0 ]
+      "mesh" : 0
     }
   ],
   
@@ -22,34 +21,11 @@
       } ]
     }
   ],
-  
-  "animations": [
-    {
-      "samplers" : [
-        {
-          "input" : 2,
-          "interpolation" : "LINEAR",
-          "output" : 3
-        }
-      ],
-      "channels" : [ {
-        "sampler" : 0,
-        "target" : {
-          "id" : 0,
-          "path" : "rotation"
-        }
-      } ]
-    }
-  ],
 
   "buffers" : [
     {
       "uri" : "data:application/octet-stream;base64,AAABAAIAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAA=",
       "byteLength" : 44
-    },
-    {
-      "uri" : "data:application/octet-stream;base64,AAAAAAAAgD4AAAA/AABAPwAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAD0/TQ/9P00PwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAPT9ND/0/TS/AAAAAAAAAAAAAAAAAACAPw==",
-      "byteLength" : 100
     }
   ],
   "bufferViews" : [
@@ -64,11 +40,6 @@
       "byteOffset" : 8,
       "byteLength" : 36,
       "target" : 34962
-    },
-    {
-      "buffer" : 1,
-      "byteOffset" : 0,
-      "byteLength" : 100
     }
   ],
   "accessors" : [
@@ -89,30 +60,11 @@
       "type" : "VEC3",
       "max" : [ 1.0, 1.0, 0.0 ],
       "min" : [ 0.0, 0.0, 0.0 ]
-    },
-    {
-      "bufferView" : 2,
-      "byteOffset" : 0,
-      "componentType" : 5126,
-      "count" : 5,
-      "type" : "SCALAR",
-      "max" : [ 1.0 ],
-      "min" : [ 0.0 ]
-    },
-    {
-      "bufferView" : 2,
-      "byteOffset" : 20,
-      "componentType" : 5126,
-      "count" : 5,
-      "type" : "VEC4",
-      "max" : [ 0.0, 0.0, 1.0, 1.0 ],
-      "min" : [ 0.0, 0.0, 0.0, -0.707 ]
     }
   ],
   
   "asset" : {
     "version" : "2.0"
   }
-  
 }
 

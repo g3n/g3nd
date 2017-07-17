@@ -24,7 +24,7 @@
 
   "buffers" : [
     {
-      "uri" : "data:application/octet-stream;base64,AAABAAIAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAA=",
+      "uri" : "simpleTriangle.bin",
       "byteLength" : 44
     }
   ],
