@@ -46,7 +46,8 @@ func (t *GltfLoader) Initialize(ctx *Context) {
 	dd := t.fileDropdown(ctx.DirData + "/gltf")
 	dd.SetPosition(10, 10)
 	dd.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		log.Debug("%v", dd.Selected().Text())
+		ctx.Gui.Root().SetKeyFocus(nil)
+		ctx.Gui.Root().SetScrollFocus(nil)
 		t.loadModel(ctx, dd.Selected().Text())
 	})
 	ctx.Gui.Add(dd)
@@ -72,8 +73,9 @@ func (t *GltfLoader) loadModel(ctx *Context, fname string) {
 	}
 
 	spew.Config.Indent = "   "
-	spew.Dump(g.Meshes)
-	spew.Dump(g.Accessors)
+	spew.Dump(g.Nodes)
+	//spew.Dump(g.Meshes)
+	//spew.Dump(g.Accessors)
 
 	// Get node
 	n, err := g.NewNode(0)
@@ -81,6 +83,12 @@ func (t *GltfLoader) loadModel(ctx *Context, fname string) {
 		panic(err)
 	}
 	log.Error("node:%v", n)
+
+	// Add normals helper
+	//box := n.GetNode().Children()[0]
+	//normals := graphic.NewNormalsHelper(box.(graphic.IGraphic), 0.5, &math32.Color{0, 0, 1}, 1)
+	//ctx.Scene.Add(normals)
+
 	ctx.Scene.Add(n)
 	t.prevLoaded = n
 }
