@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/davecgh/go-spew/spew"
@@ -44,13 +46,17 @@ func (t *GltfLoader) Initialize(ctx *Context) {
 
 	// Label for error message
 	errLabel := gui.NewLabel("")
-	errLabel.SetColor(&math32.Red)
-	errLabel.SetFontSize(24)
+	errLabel.SetFontSize(18)
 	ctx.Gui.Add(errLabel)
 
 	// Creates file selector
 	fs := NewFileSelect(400, 300)
 	fs.SetVisible(false)
+	err := fs.SetFileFilters("*.gltf", "*.glb")
+	if err != nil {
+		panic(err)
+	}
+	// Loads model when OK is clicked
 	fs.Subscribe("OnOK", func(evname string, ev interface{}) {
 		fpath := fs.Selected()
 		if fpath == "" {
@@ -59,12 +65,13 @@ func (t *GltfLoader) Initialize(ctx *Context) {
 		}
 		err := t.loadModel(ctx, fpath)
 		if err != nil {
-			errLabel.SetText(err.Error())
+			errLabel.SetText("ERROR: " + err.Error())
 		} else {
 			errLabel.SetText("")
 		}
 		fs.SetVisible(false)
 	})
+	// Hides file select Cancel is clicked
 	fs.Subscribe("OnCancel", func(evname string, ev interface{}) {
 		fs.SetVisible(false)
 	})
@@ -97,8 +104,20 @@ func (t *GltfLoader) loadModel(ctx *Context, fpath string) error {
 		t.prevLoaded = nil
 	}
 
-	// Parses gltf file
-	g, err := gltf.ParseJSON(fpath)
+	// Checks file extension
+	ext := filepath.Ext(fpath)
+	var g *gltf.GLTF
+	var err error
+
+	// Parses file
+	if ext == ".gltf" {
+		g, err = gltf.ParseJSON(fpath)
+	} else if ext == ".glb" {
+		g, err = gltf.ParseBin(fpath)
+	} else {
+		return fmt.Errorf("Unrecognized file extension:%s", ext)
+	}
+
 	if err != nil {
 		return err
 	}

@@ -1,20 +1,22 @@
 package main
 
 import (
-	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
-	"github.com/g3n/engine/math32"
 	"os"
 	"path/filepath"
 	"sort"
+
+	"github.com/g3n/engine/gui"
+	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/math32"
 )
 
 type FileSelect struct {
 	gui.Panel
-	path *gui.Label
-	list *gui.List
-	bok  *gui.Button
-	bcan *gui.Button
+	path        *gui.Label
+	list        *gui.List
+	bok         *gui.Button
+	bcan        *gui.Button
+	fileFilters []string
 }
 
 func NewFileSelect(width, height float32) *FileSelect {
@@ -106,12 +108,33 @@ func (fs *FileSelect) SetPath(path string) error {
 	fs.list.Add(prev)
 	// Adds directory files
 	for i := 0; i < len(files); i++ {
-		item := gui.NewImageLabel(files[i].Name())
+		// Checks if is directory
+		fname := files[i].Name()
 		if files[i].IsDir() {
+			item := gui.NewImageLabel(fname)
 			item.SetIcon(assets.FolderOpen)
-		} else {
-			item.SetIcon(assets.InsertPhoto)
+			fs.list.Add(item)
+			continue
 		}
+		// Checks file filters
+		if len(fs.fileFilters) > 0 {
+			show := false
+			for _, f := range fs.fileFilters {
+				match, err := filepath.Match(f, fname)
+				if err != nil {
+					return err
+				}
+				if match {
+					show = true
+				}
+			}
+			if !show {
+				continue
+			}
+		}
+		// Adds file item to the list
+		item := gui.NewImageLabel(fname)
+		item.SetIcon(assets.InsertPhoto)
 		fs.list.Add(item)
 	}
 	return nil
@@ -126,6 +149,16 @@ func (fs *FileSelect) Selected() string {
 	label := selist[0].(*gui.ImageLabel)
 	text := label.Text()
 	return filepath.Join(fs.path.Text(), text)
+}
+
+// SetFileFilters sets filters for file names which should be shown.
+// Each filter must be a valid regular expression.
+func (fs *FileSelect) SetFileFilters(filter ...string) error {
+
+	for _, f := range filter {
+		fs.fileFilters = append(fs.fileFilters, f)
+	}
+	return nil
 }
 
 func (fs *FileSelect) onSelect() {
