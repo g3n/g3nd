@@ -106,32 +106,29 @@
     ],
     "materials": [
         {
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.800000011920929,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            },
             "extensions": {
-                "KHR_materials_common": {
-                    "doubleSided": false,
-                    "technique": "PHONG",
-                    "transparent": false,
-                    "values": {
-                        "diffuse": [
-                            0.800000011920929,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "specular": [
-                            0.20000000298023225,
-                            0.20000000298023225,
-                            0.20000000298023225,
-                            1.0
-                        ],
-                        "shininess": [
-                            256.0
-                        ],
-                        "transparency": [
-                            1.0
-                        ]
-                    },
-                    "name": "Red"
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "diffuseFactor": [
+                        0.800000011920929,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "specularFactor": [
+                        0.20000000298023225,
+                        0.20000000298023225,
+                        0.20000000298023225
+                    ],
+                    "glossinessFactor": 1.0
                 }
             },
             "name": "Red"
@@ -155,13 +152,10 @@
     "buffers": [
         {
             "byteLength": 648,
-            "uri": "box_materials_common.bin"
+            "uri": "Box0.bin"
         }
     ],
-    "extensionsRequired": [
-        "KHR_materials_common"
-    ],
     "extensionsUsed": [
-        "KHR_materials_common"
+        "KHR_materials_pbrSpecularGlossiness"
     ]
 }

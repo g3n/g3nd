@@ -42,22 +42,53 @@ func (t *GltfLoader) Initialize(ctx *Context) {
 	axis := graphic.NewAxisHelper(2)
 	ctx.Scene.Add(axis)
 
-	// Adds dropdown to select model to show
-	dd := t.fileDropdown(ctx.DirData + "/gltf")
-	dd.SetPosition(10, 10)
-	dd.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		ctx.Gui.Root().SetKeyFocus(nil)
-		ctx.Gui.Root().SetScrollFocus(nil)
-		t.loadModel(ctx, dd.Selected().Text())
+	// Label for error message
+	errLabel := gui.NewLabel("")
+	errLabel.SetColor(&math32.Red)
+	errLabel.SetFontSize(24)
+	ctx.Gui.Add(errLabel)
+
+	// Creates file selector
+	fs := NewFileSelect(400, 300)
+	fs.SetVisible(false)
+	fs.Subscribe("OnOK", func(evname string, ev interface{}) {
+		fpath := fs.Selected()
+		if fpath == "" {
+			fs.SetVisible(false)
+			return
+		}
+		err := t.loadModel(ctx, fpath)
+		if err != nil {
+			errLabel.SetText(err.Error())
+		} else {
+			errLabel.SetText("")
+		}
+		fs.SetVisible(false)
 	})
-	ctx.Gui.Add(dd)
+	fs.Subscribe("OnCancel", func(evname string, ev interface{}) {
+		fs.SetVisible(false)
+	})
+	ctx.Gui.Add(fs)
+
+	// Adds button to open file selector
+	b := gui.NewButton("Select File")
+	b.SetPosition(10, 10)
+	b.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		fs.SetPath(ctx.DirData + "/gltf")
+		fs.SetVisible(true)
+	})
+	fs.SetPosition(b.Width()+20, b.Position().Y)
+	ctx.Gui.Add(b)
+
+	// Sets error label position
+	errLabel.SetPosition(b.Width()+20, b.Position().Y)
 }
 
 func (t *GltfLoader) Render(ctx *Context) {
 
 }
 
-func (t *GltfLoader) loadModel(ctx *Context, fname string) {
+func (t *GltfLoader) loadModel(ctx *Context, fpath string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
@@ -67,9 +98,9 @@ func (t *GltfLoader) loadModel(ctx *Context, fname string) {
 	}
 
 	// Parses gltf file
-	g, err := gltf.ParseJSON(ctx.DirData + "/gltf/" + fname)
+	g, err := gltf.ParseJSON(fpath)
 	if err != nil {
-		log.Fatal(err.Error())
+		return err
 	}
 
 	spew.Config.Indent = "   "
@@ -80,9 +111,8 @@ func (t *GltfLoader) loadModel(ctx *Context, fname string) {
 	// Get node
 	n, err := g.NewNode(0)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	log.Error("node:%v", n)
 
 	// Add normals helper
 	//box := n.GetNode().Children()[0]
@@ -91,6 +121,7 @@ func (t *GltfLoader) loadModel(ctx *Context, fname string) {
 
 	ctx.Scene.Add(n)
 	t.prevLoaded = n
+	return nil
 }
 
 func (t *GltfLoader) fileDropdown(dir string) *gui.DropDown {
