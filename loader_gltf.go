@@ -63,7 +63,7 @@ func (t *GltfLoader) Initialize(ctx *Context) {
 			fs.SetVisible(false)
 			return
 		}
-		err := t.loadModel(ctx, fpath)
+		err := t.loadScene(ctx, fpath)
 		if err != nil {
 			errLabel.SetText("ERROR: " + err.Error())
 		} else {
@@ -95,7 +95,7 @@ func (t *GltfLoader) Render(ctx *Context) {
 
 }
 
-func (t *GltfLoader) loadModel(ctx *Context, fpath string) error {
+func (t *GltfLoader) loadScene(ctx *Context, fpath string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
@@ -128,7 +128,7 @@ func (t *GltfLoader) loadModel(ctx *Context, fpath string) error {
 	//spew.Dump(g.Accessors)
 
 	// Get node
-	n, err := g.NewNode(0)
+	n, err := g.NewScene(0)
 	if err != nil {
 		return err
 	}
