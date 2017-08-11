@@ -80,13 +80,11 @@ func (t *CameraCircleLocation) Initialize(ctx *Context) {
 
 	// Point the camera to the box
 	ctx.Camera.GetCamera().LookAt(&math32.Vector3{t.boxLocationX, t.boxLocationY, t.boxLocationY})
-
 }
 
 func (t *CameraCircleLocation) Render(ctx *Context) {
-
 	// Move the camera arround the Y axis
-	t.radian += t.rotationSpeed * float32(ctx.TimeDelta.Seconds()) * math32.Pi / 180
+	t.radian += t.rotationSpeed * float32(ctx.TimeDelta.Seconds()) * math32.Pi / 180 // In real applications a method should be in place to prevent an overflow
 	cameraX := t.boxLocationX + t.radius*math32.Cos(t.radian)
 	cameraZ := t.boxLocationZ + t.radius*math32.Sin(t.radian)
 	ctx.Camera.GetCamera().SetPosition(float32(cameraX), t.boxLocationY, float32(cameraZ))
