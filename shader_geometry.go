@@ -4,15 +4,20 @@ import (
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 )
 
 type ShaderGeometry struct {
-	ctx    *Context
-	box    *graphic.Mesh
-	sphere *graphic.Mesh
+	ctx           *Context
+	plane         *graphic.Mesh
+	box           *graphic.Mesh
+	sphere        *graphic.Mesh
+	showWireframe int32
+	showVnormal   int32
+	showFnormal   int32
 }
 
 func init() {
@@ -30,6 +35,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	axis := graphic.NewAxisHelper(1)
 	ctx.Scene.Add(axis)
 
+	// Registers shaders and program
 	err := ctx.Renderer.AddShader("shaderGSDemoVertex", sourceGSDemoVertex)
 	if err != nil {
 		panic(err)
@@ -42,168 +48,234 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	if err != nil {
 		panic(err)
 	}
-	err = ctx.Renderer.AddProgram("progGeometryDemo", "shaderGSDemoVertex", "shaderGSDemoFrag")
+	err = ctx.Renderer.AddProgram("progGSDemo", "shaderGSDemoVertex", "shaderGSDemoFrag")
 	if err != nil {
 		panic(err)
 	}
-	err = ctx.Renderer.SetProgramShader("progGeometryDemo", gls.GEOMETRY_SHADER, "shaderGSDemoGeometry")
+	err = ctx.Renderer.SetProgramShader("progGSDemo", gls.GEOMETRY_SHADER, "shaderGSDemoGeometry")
 	if err != nil {
 		panic(err)
 	}
 
-	// Creates box
-	boxGeom := geometry.NewBox(1, 1, 1, 2, 2, 2)
-	boxMat := NewNormalsMaterial(math32.NewColor(0.5, 0, 0))
-	t.box = graphic.NewMesh(boxGeom, boxMat)
-	t.box.SetPosition(-2, 0, 0)
+	// Creates shared custom material to show normals
+	mat := newNormalsMaterial()
+
+	// Adds rectangular plane
+	planeGeom := geometry.NewPlane(1, 1, 1, 1)
+	mat.Incref()
+	t.plane = graphic.NewMesh(planeGeom, mat)
+	t.plane.SetPosition(-2.2, 0, 0)
+	ctx.Scene.Add(t.plane)
+
+	// Adds box
+	boxGeom := geometry.NewBox(1, 1, 1, 1, 1, 1)
+	mat.Incref()
+	t.box = graphic.NewMesh(boxGeom, mat)
+	t.box.SetPosition(0, 0, 0)
 	ctx.Scene.Add(t.box)
 
-	// Creates sphere
-	sphereGeom := geometry.NewSphere(1, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
-	sphereMat := NewNormalsMaterial(math32.NewColor(0, 0, 0.5))
-	t.sphere = graphic.NewMesh(sphereGeom, sphereMat)
-	t.sphere.SetPosition(2, 0, 0)
+	// Adds sphere
+	sphereGeom := geometry.NewSphere(0.8, 8, 8, 0, math32.Pi*2, 0, math32.Pi)
+	mat.Incref()
+	t.sphere = graphic.NewMesh(sphereGeom, mat)
+	t.sphere.SetPosition(2.2, 0, 0)
 	ctx.Scene.Add(t.sphere)
+
+	// Add controls
+	if ctx.Control == nil {
+		return
+	}
+	t.showWireframe = 1
+	t.showVnormal = 1
+	t.showFnormal = 1
+	g1 := ctx.Control.AddGroup("Show")
+	cb1 := g1.AddCheckBox("Wireframe").SetValue(true)
+	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if t.showWireframe == 0 {
+			t.showWireframe = 1
+		} else {
+			t.showWireframe = 0
+		}
+		mat.ShowWireframe.Set(t.showWireframe)
+	})
+	cb2 := g1.AddCheckBox("Vertex normals").SetValue(true)
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if t.showVnormal == 0 {
+			t.showVnormal = 1
+		} else {
+			t.showVnormal = 0
+		}
+		mat.ShowVnormal.Set(t.showVnormal)
+	})
+	cb3 := g1.AddCheckBox("Face normals").SetValue(true)
+	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if t.showFnormal == 0 {
+			t.showFnormal = 1
+		} else {
+			t.showFnormal = 0
+		}
+		mat.ShowFnormal.Set(t.showFnormal)
+	})
 }
 
 func (t *ShaderGeometry) Render(ctx *Context) {
 
 	t.box.AddRotationY(0.01)
-	t.sphere.AddRotationZ(0.01)
+	t.sphere.AddRotationZ(0.005)
 }
 
 //
 // Normals Custom material
 //
-
 type NormalsMaterial struct {
-	material.Standard // Embedded standard material
-	vnormalColor      gls.Uniform3f
+	material.Material // Embedded material
+	ShowWireframe     gls.Uniform1i
+	ShowVnormal       gls.Uniform1i
+	ShowFnormal       gls.Uniform1i
 }
 
-func NewNormalsMaterial(color *math32.Color) *NormalsMaterial {
+func newNormalsMaterial() *NormalsMaterial {
 
 	m := new(NormalsMaterial)
-	m.Standard.Init("progGeometryDemo", color)
+	m.Material.Init()
+	m.SetShader("progGSDemo")
 
 	// Creates uniforms
-	m.vnormalColor.Init("VnormalColor")
+	m.ShowWireframe.Init("ShowWireframe")
+	m.ShowVnormal.Init("ShowVnormal")
+	m.ShowFnormal.Init("ShowFnormal")
 
 	// Set initial values
-	m.vnormalColor.SetColor(color)
+	m.ShowWireframe.Set(1)
+	m.ShowVnormal.Set(1)
+	m.ShowFnormal.Set(1)
 	return m
 }
 
-func (m *NormalsMaterial) RenderSetup(gl *gls.GLS) {
+func (m *NormalsMaterial) RenderSetup(gs *gls.GLS) {
 
-	m.Standard.RenderSetup(gl)
-	m.vnormalColor.Transfer(gl)
+	m.Material.RenderSetup(gs)
+	m.ShowWireframe.Transfer(gs)
+	m.ShowVnormal.Transfer(gs)
+	m.ShowFnormal.Transfer(gs)
 }
 
+//
+// Vertex Shader
+// This is pass-through vertex shader which
+// sends its input directly to the geometry shader
+// without any processing.
+//
 const sourceGSDemoVertex = `
 #version {{.Version}}
 
 {{template "attributes" .}}
 
-// Model uniforms
-uniform mat4 ModelViewMatrix;
-uniform mat3 NormalMatrix;
-uniform mat4 MVP;
-
-{{template "lights" .}}
-{{template "material" .}}
-{{template "phong_model" .}}
-
-// Outputs for the geometry / fragment shader.
-out vec3 ColorFrontAmbdiff;
-out vec3 ColorFrontSpec;
-out vec3 ColorBackAmbdiff;
-out vec3 ColorBackSpec;
-out vec2 FragTexcoord;
-out vec3 VxNormal;
+// Outputs for geometry shader
+out Vertex {
+	vec3 normal;
+  	vec4 color;
+} vertex;
 
 void main() {
 
-    // Transform this vertex normal to camera coordinates.
-    vec3 normal = normalize(NormalMatrix * VertexNormal);
-
-    // Calculate this vertex position in camera coordinates
-    vec4 position = ModelViewMatrix * vec4(VertexPosition, 1.0);
-
-    // Calculate the direction vector from the vertex to the camera
-    // The camera is at 0,0,0
-    vec3 camDir = normalize(-position.xyz);
-
-    // Calculates the vertex Ambient+Diffuse and Specular colors using the Phong model
-    // for the front and back
-    phongModel(position,  normal, camDir, MatAmbientColor, MatDiffuseColor, ColorFrontAmbdiff, ColorFrontSpec);
-    phongModel(position, -normal, camDir, MatAmbientColor, MatDiffuseColor, ColorBackAmbdiff, ColorBackSpec);
-
-    vec2 texcoord = VertexTexcoord;
-    {{if .MatTexturesMax }}
-    // Flips texture coordinate Y if requested.
-    if (MatTexFlipY(0)) {
-        texcoord.y = 1 - texcoord.y;
-    }
-    {{ end }}
-    FragTexcoord = texcoord;
-
-	VxNormal = VertexNormal;
-
-    gl_Position = MVP * vec4(VertexPosition, 1.0);
+	gl_Position = vec4(VertexPosition, 1.0);
+  	vertex.normal = VertexNormal;
+  	vertex.color =  vec4(1.0, 1.0, 0.0, 1.0);
 }
+
 `
 
 //
 // Geometry Shader
+// This geometry shader receives triangles vertices
+// from the vertex shader and generates lines
 //
 const sourceGSDemoGeometry = `
 #version {{.Version}}
 
 layout (triangles) in;
-layout (line_strip, max_vertices = 3) out;
+layout (line_strip, max_vertices = 12) out;
 
 // Model uniforms
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
-// Inputs from Vertex shader
-in vec3 VxNormal[];
-in vec3 ColorFrontAmbdiff[];
-in vec3 ColorFrontSpec[];
-in vec3 ColorBackAmbdiff[];
-in vec3 ColorBackSpec[];
-in vec2 FragTexcoord[];
+// Inputs from Vertex Shader
+in Vertex {
+	vec3 normal;
+  	vec4 color;
+} vertex[];
 
-// Outputs for the fragment shader.
-out vec3 fColorFrontAmbdiff;
-out vec3 fColorFrontSpec;
-out vec3 fColorBackAmbdiff;
-out vec3 fColorBackSpec;
-out vec2 fFragTexcoord;
+// Inputs uniforms
+uniform int ShowWireframe;
+uniform int ShowVnormal;
+uniform int ShowFnormal;
 
-void main(void) {
+const vec4 colorWire    = vec4(1, 1, 0, 1);
+const vec4 colorVnormal = vec4(1, 0, 0, 1);
+const vec4 colorFnormal = vec4(0, 0, 1, 1);
+out vec4 vertex_color;
 
-	int n;
-	for (n = 0; n < gl_in.length(); n++) {
-		// Vertex position
-		gl_Position = gl_in[n].gl_Position;
+void main() {
 
-		// Copy colors received from vertex shader to fragment shader
-		fColorFrontAmbdiff = ColorFrontAmbdiff[n];
-		fColorFrontSpec = ColorFrontSpec[n];
-		fColorBackAmbdiff = ColorBackAmbdiff[n];
-		fColorBackSpec = ColorBackSpec[n];
+	if (ShowWireframe != 0) {
+		// Emits triangle's vertices as lines to show wireframe
+		for (int n = 0; n < gl_in.length(); n++) {
+			// Vertex position
+			gl_Position = MVP * gl_in[n].gl_Position;
+			vertex_color = colorWire;
+			EmitVertex();
+		}
+		// Emit first triangle vertex to close the last line strip.
+		gl_Position = MVP * gl_in[0].gl_Position;
+		vertex_color = colorWire;
 		EmitVertex();
-
-		// Normal position
-		//gl_Position = MVP * vec4(P + N * normal_length, 1.0);
-		//gl_Position = vec4(VxNormal[n], 1);
-		//EmitVertex();
-
+		EndPrimitive();
 	}
-	EndPrimitive();
+
+	// Vertices normals
+	if (ShowVnormal != 0) {
+		for (int i = 0; i < gl_in.length(); i++) {
+
+			vec3 position = gl_in[i].gl_Position.xyz;
+			vec3 normal = vertex[i].normal.xyz;
+			
+			gl_Position = MVP * vec4(position, 1.0);
+			vertex_color = colorVnormal;
+			EmitVertex();
+			
+			gl_Position = MVP * vec4(position + normal * 0.5, 1.0);
+			vertex_color = colorVnormal;
+			EmitVertex();
+			
+			EndPrimitive();
+		}
+	}
+
+	// Face normal
+	if (ShowFnormal != 0) {
+		vec3 p0 = gl_in[0].gl_Position.xyz;
+		vec3 p1 = gl_in[1].gl_Position.xyz;
+		vec3 p2 = gl_in[2].gl_Position.xyz;
+	  
+		vec3 v0 = p0 - p1;
+		vec3 v1 = p2 - p1;
+		vec3 faceN = normalize(cross(v1, v0));
+
+		// Center of the triangle
+		vec3 center = (p0 + p1 + p2) / 3.0;
+	  
+		gl_Position = MVP * vec4(center, 1.0);
+		vertex_color = colorFnormal;
+		EmitVertex();
+	  
+		gl_Position = MVP * vec4(center + faceN * 0.5, 1.0);
+		vertex_color = colorFnormal;
+		EmitVertex();
+		EndPrimitive();
+	}
 }
 
 `
@@ -214,47 +286,11 @@ void main(void) {
 const sourceGSDemoFrag = `
 #version {{.Version}}
 
-{{template "material" .}}
-
-// Inputs from Vertex shader
-in vec3 fColorFrontAmbdiff;
-in vec3 fColorFrontSpec;
-in vec3 fColorBackAmbdiff;
-in vec3 fColorBackSpec;
-in vec2 fFragTexcoord;
-
-// Output
-out vec4 FragColor;
-
+in vec4 vertex_color;
+out vec4 Out_Color;
 
 void main() {
-
-    vec4 texCombined = vec4(1);
-
-    // Combine all texture colors and opacity
-    // Use Go templates to unroll the loop because non-const
-    // array indexes are not allowed until GLSL 4.00.
-    {{ range loop .MatTexturesMax }}
-    if (MatTexVisible({{.}})) {
-        vec4 texcolor = texture(MatTexture[{{.}}], fFragTexcoord * MatTexRepeat({{.}}) + MatTexOffset({{.}}));
-        if ({{.}} == 0) {
-            texCombined = texcolor;
-        } else {
-            texCombined = mix(texCombined, texcolor, texcolor.a);
-        }
-    }
-    {{ end }}
-
-    vec4 colorAmbDiff;
-    vec4 colorSpec;
-    if (gl_FrontFacing) {
-        colorAmbDiff = vec4(fColorFrontAmbdiff, MatOpacity);
-        colorSpec = vec4(fColorFrontSpec, 0);
-    } else {
-        colorAmbDiff = vec4(fColorBackAmbdiff, MatOpacity);
-        colorSpec = vec4(fColorBackSpec, 0);
-    }
-    FragColor = min(colorAmbDiff * texCombined + colorSpec, vec4(1));
+	Out_Color = vertex_color;
 }
 
 `
