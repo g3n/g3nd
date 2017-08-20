@@ -18,6 +18,7 @@ type ShaderGeometry struct {
 	showWireframe int32
 	showVnormal   int32
 	showFnormal   int32
+	rotate        bool
 }
 
 func init() {
@@ -75,7 +76,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	ctx.Scene.Add(t.box)
 
 	// Adds sphere
-	sphereGeom := geometry.NewSphere(0.8, 8, 8, 0, math32.Pi*2, 0, math32.Pi)
+	sphereGeom := geometry.NewSphere(0.8, 4, 4, 0, math32.Pi*2, 0, math32.Pi)
 	mat.Incref()
 	t.sphere = graphic.NewMesh(sphereGeom, mat)
 	t.sphere.SetPosition(2.2, 0, 0)
@@ -88,7 +89,12 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	t.showWireframe = 1
 	t.showVnormal = 1
 	t.showFnormal = 1
+	t.rotate = true
 	g1 := ctx.Control.AddGroup("Show")
+	cb0 := g1.AddCheckBox("Rotate").SetValue(true)
+	cb0.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.rotate = !t.rotate
+	})
 	cb1 := g1.AddCheckBox("Wireframe").SetValue(true)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		if t.showWireframe == 0 {
@@ -120,8 +126,11 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 
 func (t *ShaderGeometry) Render(ctx *Context) {
 
-	t.box.AddRotationY(0.01)
-	t.sphere.AddRotationZ(0.005)
+	if t.rotate {
+		t.plane.AddRotationX(0.01)
+		t.box.AddRotationY(0.01)
+		t.sphere.AddRotationZ(0.005)
+	}
 }
 
 //
@@ -181,7 +190,6 @@ void main() {
 
 	gl_Position = vec4(VertexPosition, 1.0);
   	vertex.normal = VertexNormal;
-  	vertex.color =  vec4(1.0, 1.0, 0.0, 1.0);
 }
 
 `
