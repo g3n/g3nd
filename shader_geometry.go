@@ -114,13 +114,13 @@ uniform mat4 MVP;
 {{template "material" .}}
 {{template "phong_model" .}}
 
-
-// Outputs for the fragment shader.
+// Outputs for the geometry / fragment shader.
 out vec3 ColorFrontAmbdiff;
 out vec3 ColorFrontSpec;
 out vec3 ColorBackAmbdiff;
 out vec3 ColorBackSpec;
 out vec2 FragTexcoord;
+out vec3 VxNormal;
 
 void main() {
 
@@ -148,6 +148,8 @@ void main() {
     {{ end }}
     FragTexcoord = texcoord;
 
+	VxNormal = VertexNormal;
+
     gl_Position = MVP * vec4(VertexPosition, 1.0);
 }
 `
@@ -159,9 +161,15 @@ const sourceGSDemoGeometry = `
 #version {{.Version}}
 
 layout (triangles) in;
-layout (triangle_strip, max_vertices = 3) out;
+layout (line_strip, max_vertices = 3) out;
+
+// Model uniforms
+uniform mat4 ModelViewMatrix;
+uniform mat3 NormalMatrix;
+uniform mat4 MVP;
 
 // Inputs from Vertex shader
+in vec3 VxNormal[];
 in vec3 ColorFrontAmbdiff[];
 in vec3 ColorFrontSpec[];
 in vec3 ColorBackAmbdiff[];
@@ -179,12 +187,21 @@ void main(void) {
 
 	int n;
 	for (n = 0; n < gl_in.length(); n++) {
+		// Vertex position
 		gl_Position = gl_in[n].gl_Position;
+
+		// Copy colors received from vertex shader to fragment shader
 		fColorFrontAmbdiff = ColorFrontAmbdiff[n];
 		fColorFrontSpec = ColorFrontSpec[n];
 		fColorBackAmbdiff = ColorBackAmbdiff[n];
 		fColorBackSpec = ColorBackSpec[n];
 		EmitVertex();
+
+		// Normal position
+		//gl_Position = MVP * vec4(P + N * normal_length, 1.0);
+		//gl_Position = vec4(VxNormal[n], 1);
+		//EmitVertex();
+
 	}
 	EndPrimitive();
 }
