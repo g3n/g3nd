@@ -160,12 +160,12 @@ const shaderPE2Vertex = `
 #version {{.Version}}
 
 // Attribute inputs
-in vec3 PointPosition
-in vec3 PointVelocity
+in vec3 PointPosition;
+in vec3 PointVelocity;
 
 // Feedback outputs
-out vec3 OutPointPosition
-out vec3 OutPointVelocity
+out vec3 OutPointPosition;
+out vec3 OutPointVelocity;
 
 // Uniform inputs
 uniform mat4 MVP;
