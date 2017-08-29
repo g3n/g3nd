@@ -233,6 +233,26 @@ uniform float PLife;	// particles life time in seconds
 // Output to fragment shader
 smooth out vec4 vSmoothColor;
 
+// Lauch particle
+void launch() {
+
+
+}
+
+// Updates particle position and velocity
+void update(inout pos vec3, inout vel vec3) {
+
+//			pos.x += 0.01;
+//			pos.y += 0.01;
+//			pos.z += 0.01;
+//
+//			vel.x += 0.01;
+//			vel.y += 0.01;
+//			vel.z += 0.01;
+
+
+}
+
 void main() {
 
 	vec3 pos = Position;
@@ -248,13 +268,11 @@ void main() {
 		// If current particle life time is less the particle life time,
 		// this particle is active. Updates its position and velocity
 		if (PLife > life) {
-			pos.x += 0.01;
-			pos.y += 0.01;
-			pos.z += 0.01;
-
-			vel.x += 0.01;
-			vel.y += 0.01;
-			vel.z += 0.01;
+			if (vel == vec3(0)) {
+				launch();
+			} else {
+				update();
+			}
 		// Particle is not active any more. Prepare for recycle
 		} else {
 			pos = vec3(0);
@@ -269,12 +287,6 @@ void main() {
     gl_PointSize = 5;
 	gl_Position = MVP * vec4(pos, 1);
 	vSmoothColor = vec4(1,1,1,1);
-}
-
-
-void launch() {
-
-
 }
 
 
