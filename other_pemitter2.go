@@ -56,7 +56,7 @@ func (t *OtherPemitter2) Initialize(ctx *Context) {
 
 func (t *OtherPemitter2) Render(ctx *Context) {
 
-	//t.pe1.SetPositionX(t.pe1.Position().X + 0.001)
+	//t.pe1.SetPositionX(t.pe1.Position().X + 0.002)
 	t.pe1.Update()
 }
 
@@ -67,6 +67,8 @@ func (t *OtherPemitter2) Render(ctx *Context) {
 //
 type ParticleEmitter2 struct {
 	graphic.Graphic                           // Embedded graphic
+	mw              gls.UniformMatrix4f       // Model world matrix uniform
+	vp              gls.UniformMatrix4f       // View projection matrix uniform
 	mvpm            gls.UniformMatrix4f       // Model view projection matrix uniform
 	npoints         int                       // number of particles
 	start           time.Time                 // start simulation time
@@ -113,6 +115,8 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	e.AddMaterial(e, e.mat, 0, 0)
 
 	// Initialize uniforms
+	e.mw.Init("MW")
+	e.vp.Init("VP")
 	e.mvpm.Init("MVP")
 
 	return e
@@ -149,11 +153,20 @@ func (e *ParticleEmitter2) RenderSetup(gs *gls.GLS, rinfo *core.RenderInfo) {
 		gs.BufferData(gls.ARRAY_BUFFER, len(e.feedback)*int(unsafe.Sizeof(float32(0))), nil, gls.STATIC_READ)
 		//gs.BufferData(gls.ARRAY_BUFFER, len(e.feedback)*int(unsafe.Sizeof(float32(0))), nil, gls.STREAM_DRAW)
 		e.gs = gs
-		//log.Debug("Create tfb:%v", e.feedbackHandle)
 	}
 
-	// Calculates model view projection matrix and updates uniform
+	// Get matrix world and updates uniform
 	mw := e.MatrixWorld()
+	e.mw.SetMatrix4(&mw)
+	e.mw.Transfer(gs)
+
+	// Calculates view projection matrix and updates uniform
+	var vp math32.Matrix4
+	vp.MultiplyMatrices(&rinfo.ViewMatrix, &rinfo.ProjMatrix)
+	e.vp.SetMatrix4(&vp)
+	e.vp.Transfer(gs)
+
+	// Calculates model view projection matrix and updates uniform
 	var mvpm math32.Matrix4
 	mvpm.MultiplyMatrices(&rinfo.ViewMatrix, &mw)
 	mvpm.MultiplyMatrices(&rinfo.ProjMatrix, &mvpm)
@@ -194,7 +207,7 @@ func NewParticleEmitter2Material() *ParticleEmitter2Material {
 
 	// Particles life uniform
 	m.PLife.Init("PLife")
-	m.PLife.Set(1)
+	m.PLife.Set(1.0)
 	return m
 }
 
@@ -226,6 +239,8 @@ out vec3  OutVelocity;	// updated particle velocity
 out float OutPTime;		// copy of particle start time
 
 // Uniform inputs
+uniform mat4 MW;		// model world matrix
+uniform mat4 VP;		// view projection matrix
 uniform mat4 MVP;		// model view projection matrix
 uniform float STime;	// simulation time
 uniform float PLife;	// particles life time in seconds
@@ -238,7 +253,7 @@ const float PI = 3.14159;
 const float TWO_PI = 2*PI;
 
 // Forward functions declarations
-void launch(inout vec3 pos, inout vec3 vel);
+void initialize(inout vec3 pos, inout vec3 vel);
 void update(inout vec3 pos, inout vec3 vel);
 vec3 randomDir(vec2 v, float angle);
 float rand(vec2 co);
@@ -252,44 +267,50 @@ void main() {
 	// Copy current particle start time to feedback buffer
 	OutPTime = PTime;
 
+	// Initialize particle (only once)
+	if (PTime == 0) {
+		initialize(pos, vel);
+	}
+
 	// If simulation time greater than current particle start time, particle may be active
 	if (STime >= PTime) {
-		// Calculates current particle life time
-		float life = STime - PTime;
+		// Calculates current particle life time adding some random effect
+		vec2 xy = vec2(STime, gl_VertexID);
+		float life = STime - PTime + rand(xy) * 0.1;
 		// If current particle life time is less the particle life time,
 		// this particle is active. Updates its position and velocity
 		if (PLife > life) {
-			if (vel == vec3(0)) {
-				launch(pos, vel);
-			} else {
-				update(pos, vel);
-			}
+			update(pos, vel);
 		// Particle is not active any more. Prepare for recycle
 		} else {
-			pos = vec3(0);
-			vel = vec3(0);
-			OutPTime = STime;
+			initialize(pos, vel);
 		}
 	}
 
+	// Copy current particle position and velocity to feedback buffer
 	OutPosition = pos;
 	OutVelocity = vel;
 	
-    gl_PointSize = 2;
+    gl_PointSize = 5;
 	gl_Position = MVP * vec4(pos, 1);
 	vSmoothColor = vec4(1,1,1,1);
 }
 
-// Lauch particle
-void launch(inout vec3 pos, inout vec3 vel) {
+// Initialize particle
+// Sets the initial position in world coordinates
+// Sets random start velocity and random start time
+void initialize(inout vec3 pos, inout vec3 vel) {
+
+	// Resets start position
+	pos = vec3(0);
 
 	// Generates initial random velocity
-	vec2 xy = vec2(gl_VertexID, STime);
+	vec2 xy = vec2(STime, gl_VertexID);
 	vec3 dir = randomDir(xy, PI/8); 
- 	vel = 0.05 * dir;
+ 	vel = 0.03 * dir;
 
-	// Updates particle position
-	//update(pos, vel);
+	// Generates initial random start time
+	OutPTime = STime + rand(xy) * 1;
 }
 
 // Updates particle position and velocity
