@@ -49,7 +49,7 @@ func (t *OtherPemitter2) Initialize(ctx *Context) {
 	}
 
 	// Adds point particle emitter
-	t.pe1 = NewParticleEmitter2(1)
+	t.pe1 = NewParticleEmitter2(10)
 	t.pe1.SetPosition(0, 0, 0)
 	ctx.Scene.Add(t.pe1)
 }
@@ -89,9 +89,9 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	// Creates particle data buffer: position(3) + velocity(3) + ptime(1)
 	nfloats := npoints*3*2 + 1
 	e.data = math32.NewArrayF32(nfloats, nfloats)
-	e.data.Set(0, 0.1, 0.2, 0.3)
-	e.data.Set(3, 0.4, 0.5, 0.6)
-	e.data.Set(6, 1.0)
+	//e.data.Set(0, 0.1, 0.2, 0.3)
+	//e.data.Set(3, 0, 0, 0)
+	//e.data.Set(6, 1.0)
 
 	// Creates feedback buffer with the same sizes as the particle data buffer
 	e.feedback = math32.NewArrayF32(nfloats, nfloats)
@@ -135,7 +135,7 @@ func (e *ParticleEmitter2) Update() {
 
 	// Sends the feedback buffer as new data to the shader
 	e.vboData.SetBuffer(e.feedback)
-	log.Debug("stime:%v feedback: %v/%v/%v", e.mat.STime.Get(), e.feedbackHandle, len(e.feedback), e.feedback)
+	//log.Debug("stime:%v feedback: %v/%v/%v", e.mat.STime.Get(), e.feedbackHandle, len(e.feedback), e.feedback)
 
 }
 
@@ -194,7 +194,7 @@ func NewParticleEmitter2Material() *ParticleEmitter2Material {
 
 	// Particles life uniform
 	m.PLife.Init("PLife")
-	m.PLife.Set(2)
+	m.PLife.Set(1)
 	return m
 }
 
@@ -233,25 +233,16 @@ uniform float PLife;	// particles life time in seconds
 // Output to fragment shader
 smooth out vec4 vSmoothColor;
 
-// Lauch particle
-void launch() {
+// Global constants
+const float PI = 3.14159;
+const float TWO_PI = 2*PI;
 
+// Forward functions declarations
+void launch(inout vec3 pos, inout vec3 vel);
+void update(inout vec3 pos, inout vec3 vel);
+vec3 randomDir(vec2 v, float angle);
+float rand(vec2 co);
 
-}
-
-// Updates particle position and velocity
-void update(inout pos vec3, inout vel vec3) {
-
-//			pos.x += 0.01;
-//			pos.y += 0.01;
-//			pos.z += 0.01;
-//
-//			vel.x += 0.01;
-//			vel.y += 0.01;
-//			vel.z += 0.01;
-
-
-}
 
 void main() {
 
@@ -269,9 +260,9 @@ void main() {
 		// this particle is active. Updates its position and velocity
 		if (PLife > life) {
 			if (vel == vec3(0)) {
-				launch();
+				launch(pos, vel);
 			} else {
-				update();
+				update(pos, vel);
 			}
 		// Particle is not active any more. Prepare for recycle
 		} else {
@@ -284,16 +275,46 @@ void main() {
 	OutPosition = pos;
 	OutVelocity = vel;
 	
-    gl_PointSize = 5;
+    gl_PointSize = 2;
 	gl_Position = MVP * vec4(pos, 1);
 	vSmoothColor = vec4(1,1,1,1);
 }
 
+// Lauch particle
+void launch(inout vec3 pos, inout vec3 vel) {
 
-// pseudorandom number generator
-float rand(vec2 co){
+	// Generates initial random velocity
+	vec2 xy = vec2(gl_VertexID, STime);
+	vec3 dir = randomDir(xy, PI/8); 
+ 	vel = 0.05 * dir;
 
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+	// Updates particle position
+	//update(pos, vel);
+}
+
+// Updates particle position and velocity
+void update(inout vec3 pos, inout vec3 vel) {
+
+	pos = pos + vel;
+}
+
+// Generates pseudorandom direction on a sphere
+// vec2 v: to generate random values
+vec3 randomDir(vec2 v, float angle) {
+
+	vec2 r;
+	r.x = rand(v.xy);
+	r.y = rand(v.yx);
+	float theta = mix(0.0, angle, r.x);
+	float phi = mix(0.0, TWO_PI, r.y);
+	return vec3(sin(theta) * cos(phi), cos(theta), sin(theta) * sin(phi));
+}
+
+// Generates pseudorandom number
+// vec2 v: to generate random values
+float rand(vec2 v){
+
+	return fract(sin(dot(v.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 `
 
