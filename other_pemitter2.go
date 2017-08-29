@@ -271,6 +271,13 @@ void main() {
 	vSmoothColor = vec4(1,1,1,1);
 }
 
+
+void launch() {
+
+
+}
+
+
 // pseudorandom number generator
 float rand(vec2 co){
 
