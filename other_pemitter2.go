@@ -43,7 +43,7 @@ func (t *OtherPemitter2) Initialize(ctx *Context) {
 		panic(err)
 	}
 	err = ctx.Renderer.SetProgramFeedbacks("shaderPE2",
-		[]string{"OutPosition", "OutVelocity", "OutSTime"}, gls.INTERLEAVED_ATTRIBS)
+		[]string{"OutPosition", "OutVelocity", "OutPTime"}, gls.INTERLEAVED_ATTRIBS)
 	if err != nil {
 		panic(err)
 	}
@@ -56,6 +56,7 @@ func (t *OtherPemitter2) Initialize(ctx *Context) {
 
 func (t *OtherPemitter2) Render(ctx *Context) {
 
+	//t.pe1.SetPositionX(t.pe1.Position().X + 0.001)
 	t.pe1.Update()
 }
 
@@ -65,16 +66,16 @@ func (t *OtherPemitter2) Render(ctx *Context) {
 //
 //
 type ParticleEmitter2 struct {
-	graphic.Graphic                     // Embedded graphic
-	mvpm            gls.UniformMatrix4f // Model view projection matrix uniform
-	npoints         int
-	start           time.Time
-	mat             *ParticleEmitter2Material
-	gs              *gls.GLS        // gls state when initialized
-	vboData         *gls.VBO        // VBO with points data
-	data            math32.ArrayF32 // points data array
-	feedbackHandle  uint32          // transform feedback buffer handle
-	feedback        math32.ArrayF32 // transform feedback buffer
+	graphic.Graphic                           // Embedded graphic
+	mvpm            gls.UniformMatrix4f       // Model view projection matrix uniform
+	npoints         int                       // number of particles
+	start           time.Time                 // start simulation time
+	mat             *ParticleEmitter2Material // particles material
+	gs              *gls.GLS                  // gls state when initialized
+	vboData         *gls.VBO                  // VBO with points data
+	data            math32.ArrayF32           // points data array
+	feedbackHandle  uint32                    // transform feedback buffer handle
+	feedback        math32.ArrayF32           // transform feedback buffer
 }
 
 // NewParticleEmitter creates and returns a particle emitter object with the specified
@@ -85,12 +86,12 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	e.npoints = npoints
 	e.start = time.Now()
 
-	// Creates particle data buffer: position(3) + velocity(3) + stime(1)
+	// Creates particle data buffer: position(3) + velocity(3) + ptime(1)
 	nfloats := npoints*3*2 + 1
 	e.data = math32.NewArrayF32(nfloats, nfloats)
 	e.data.Set(0, 0.1, 0.2, 0.3)
 	e.data.Set(3, 0.4, 0.5, 0.6)
-	e.data.Set(6, 0.7)
+	e.data.Set(6, 1.0)
 
 	// Creates feedback buffer with the same sizes as the particle data buffer
 	e.feedback = math32.NewArrayF32(nfloats, nfloats)
@@ -100,7 +101,7 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	e.vboData = gls.NewVBO()
 	e.vboData.AddAttrib("Position", 3)
 	e.vboData.AddAttrib("Velocity", 3)
-	e.vboData.AddAttrib("STime", 1)
+	e.vboData.AddAttrib("PTime", 1)
 	e.vboData.SetBuffer(e.data)
 	geom.AddVBO(e.vboData)
 
@@ -123,9 +124,9 @@ func (e *ParticleEmitter2) Update() {
 		return
 	}
 
-	// Updates particles time
+	// Updates particles simulation time uniform
 	d := time.Now().Sub(e.start).Seconds()
-	e.mat.PTime.Set(float32(d))
+	e.mat.STime.Set(float32(d))
 
 	// Reads transform feedback buffer written by shader
 	e.gs.BindBufferBase(gls.TRANSFORM_FEEDBACK_BUFFER, 0, e.feedbackHandle)
@@ -134,7 +135,7 @@ func (e *ParticleEmitter2) Update() {
 
 	// Sends the feedback buffer as new data to the shader
 	e.vboData.SetBuffer(e.feedback)
-	log.Debug("feedback: %v/%v/%v", e.feedbackHandle, len(e.feedback), e.feedback)
+	log.Debug("stime:%v feedback: %v/%v/%v", e.mat.STime.Get(), e.feedbackHandle, len(e.feedback), e.feedback)
 
 }
 
@@ -148,7 +149,7 @@ func (e *ParticleEmitter2) RenderSetup(gs *gls.GLS, rinfo *core.RenderInfo) {
 		gs.BufferData(gls.ARRAY_BUFFER, len(e.feedback)*int(unsafe.Sizeof(float32(0))), nil, gls.STATIC_READ)
 		//gs.BufferData(gls.ARRAY_BUFFER, len(e.feedback)*int(unsafe.Sizeof(float32(0))), nil, gls.STREAM_DRAW)
 		e.gs = gs
-		log.Debug("Create tfb:%v", e.feedbackHandle)
+		//log.Debug("Create tfb:%v", e.feedbackHandle)
 	}
 
 	// Calculates model view projection matrix and updates uniform
@@ -177,7 +178,8 @@ func (e *ParticleEmitter2) RenderEnd(gs *gls.GLS) {
 //
 type ParticleEmitter2Material struct {
 	material.Material
-	PTime gls.Uniform1f
+	STime gls.Uniform1f // simulation time
+	PLife gls.Uniform1f // particles life time
 }
 
 func NewParticleEmitter2Material() *ParticleEmitter2Material {
@@ -186,16 +188,21 @@ func NewParticleEmitter2Material() *ParticleEmitter2Material {
 	m.Material.Init()
 	m.SetShader("shaderPE2")
 
-	// Creates uniforms
-	m.PTime.Init("PTime")
-	m.PTime.Set(0)
+	// Simulation time uniform
+	m.STime.Init("STime")
+	m.STime.Set(0)
+
+	// Particles life uniform
+	m.PLife.Init("PLife")
+	m.PLife.Set(2)
 	return m
 }
 
 func (m *ParticleEmitter2Material) RenderSetup(gs *gls.GLS) {
 
 	m.Material.RenderSetup(gs)
-	m.PTime.Transfer(gs)
+	m.STime.Transfer(gs)
+	m.PLife.Transfer(gs)
 }
 
 func (m *ParticleEmitter2Material) Dispose() {
@@ -211,16 +218,17 @@ const shaderPE2Vertex = `
 // Points attribute inputs
 in vec3  Position;		// particle position
 in vec3  Velocity;		// particle velocity
-in float STime;			// particle start time
+in float PTime;			// particle start time
 
-// Points feedback outputs
+// Points transform feedback outputs
 out vec3  OutPosition;	// updated particle position
 out vec3  OutVelocity;	// updated particle velocity
-out float OutSTime;		// copy of particle start time
+out float OutPTime;		// copy of particle start time
 
 // Uniform inputs
 uniform mat4 MVP;		// model view projection matrix
-uniform float PTime;	// particles current time
+uniform float STime;	// simulation time
+uniform float PLife;	// particles life time in seconds
 
 // Output to fragment shader
 smooth out vec4 vSmoothColor;
@@ -230,23 +238,43 @@ void main() {
 	vec3 pos = Position;
 	vec3 vel = Velocity;
 
-	if (PTime >= STime) {
-		pos.x += 0.01;
-		pos.y += 0.01;
-		pos.z += 0.01;
+	// Copy current particle start time to feedback buffer
+	OutPTime = PTime;
 
-		vel.x += 0.01;
-		vel.y += 0.01;
-		vel.z += 0.01;
+	// If simulation time greater than current particle start time, particle may be active
+	if (STime >= PTime) {
+		// Calculates current particle life time
+		float life = STime - PTime;
+		// If current particle life time is less the particle life time,
+		// this particle is active. Updates its position and velocity
+		if (PLife > life) {
+			pos.x += 0.01;
+			pos.y += 0.01;
+			pos.z += 0.01;
+
+			vel.x += 0.01;
+			vel.y += 0.01;
+			vel.z += 0.01;
+		// Particle is not active any more. Prepare for recycle
+		} else {
+			pos = vec3(0);
+			vel = vec3(0);
+			OutPTime = STime;
+		}
 	}
 
 	OutPosition = pos;
 	OutVelocity = vel;
-	OutSTime = STime;
 	
     gl_PointSize = 5;
 	gl_Position = MVP * vec4(pos, 1);
 	vSmoothColor = vec4(1,1,1,1);
+}
+
+// pseudorandom number generator
+float rand(vec2 co){
+
+	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 `
 
