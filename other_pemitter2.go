@@ -49,14 +49,14 @@ func (t *OtherPemitter2) Initialize(ctx *Context) {
 	}
 
 	// Adds point particle emitter
-	t.pe1 = NewParticleEmitter2(10)
+	t.pe1 = NewParticleEmitter2(100)
 	t.pe1.SetPosition(0, 0, 0)
 	ctx.Scene.Add(t.pe1)
 }
 
 func (t *OtherPemitter2) Render(ctx *Context) {
 
-	//t.pe1.SetPositionX(t.pe1.Position().X + 0.002)
+	//t.pe1.SetPositionX(math32.Sin(0.5 * float32(ctx.Win.GetTime())))
 	t.pe1.Update()
 }
 
@@ -69,7 +69,6 @@ type ParticleEmitter2 struct {
 	graphic.Graphic                           // Embedded graphic
 	mw              gls.UniformMatrix4f       // Model world matrix uniform
 	vp              gls.UniformMatrix4f       // View projection matrix uniform
-	mvpm            gls.UniformMatrix4f       // Model view projection matrix uniform
 	npoints         int                       // number of particles
 	start           time.Time                 // start simulation time
 	mat             *ParticleEmitter2Material // particles material
@@ -91,9 +90,6 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	// Creates particle data buffer: position(3) + velocity(3) + ptime(1)
 	nfloats := npoints*3*2 + 1
 	e.data = math32.NewArrayF32(nfloats, nfloats)
-	//e.data.Set(0, 0.1, 0.2, 0.3)
-	//e.data.Set(3, 0, 0, 0)
-	//e.data.Set(6, 1.0)
 
 	// Creates feedback buffer with the same sizes as the particle data buffer
 	e.feedback = math32.NewArrayF32(nfloats, nfloats)
@@ -117,7 +113,6 @@ func NewParticleEmitter2(npoints int) *ParticleEmitter2 {
 	// Initialize uniforms
 	e.mw.Init("MW")
 	e.vp.Init("VP")
-	e.mvpm.Init("MVP")
 
 	return e
 }
@@ -162,16 +157,9 @@ func (e *ParticleEmitter2) RenderSetup(gs *gls.GLS, rinfo *core.RenderInfo) {
 
 	// Calculates view projection matrix and updates uniform
 	var vp math32.Matrix4
-	vp.MultiplyMatrices(&rinfo.ViewMatrix, &rinfo.ProjMatrix)
+	vp.MultiplyMatrices(&rinfo.ProjMatrix, &rinfo.ViewMatrix)
 	e.vp.SetMatrix4(&vp)
 	e.vp.Transfer(gs)
-
-	// Calculates model view projection matrix and updates uniform
-	var mvpm math32.Matrix4
-	mvpm.MultiplyMatrices(&rinfo.ViewMatrix, &mw)
-	mvpm.MultiplyMatrices(&rinfo.ProjMatrix, &mvpm)
-	e.mvpm.SetMatrix4(&mvpm)
-	e.mvpm.Transfer(gs)
 
 	// Begin transform feeback
 	gs.BindBufferBase(gls.TRANSFORM_FEEDBACK_BUFFER, 0, e.feedbackHandle)
@@ -229,7 +217,7 @@ const shaderPE2Vertex = `
 #version {{.Version}}
 
 // Points attribute inputs
-in vec3  Position;		// particle position
+in vec3  Position;		// particle position in world coordinates
 in vec3  Velocity;		// particle velocity
 in float PTime;			// particle start time
 
@@ -241,86 +229,101 @@ out float OutPTime;		// copy of particle start time
 // Uniform inputs
 uniform mat4 MW;		// model world matrix
 uniform mat4 VP;		// view projection matrix
-uniform mat4 MVP;		// model view projection matrix
 uniform float STime;	// simulation time
 uniform float PLife;	// particles life time in seconds
 
 // Output to fragment shader
-smooth out vec4 vSmoothColor;
+out vec4 vColor;
 
 // Global constants
 const float PI = 3.14159;
 const float TWO_PI = 2*PI;
+const vec3 colorFirst = vec3(1, 0, 0);
+const vec3 colorLast = vec3(1, 1, 0);
+
+// Global variables
+vec3 pos;
+vec3 vel;
+vec4 color;
 
 // Forward functions declarations
-void initialize(inout vec3 pos, inout vec3 vel);
-void update(inout vec3 pos, inout vec3 vel);
+void initialize();
+void update();
 vec3 randomDir(vec2 v, float angle);
 float rand(vec2 co);
 
 
 void main() {
 
-	vec3 pos = Position;
-	vec3 vel = Velocity;
+	pos = Position;	
+	vel = Velocity;
+	color = vec4(1,1,1,0);
 
 	// Copy current particle start time to feedback buffer
 	OutPTime = PTime;
 
 	// Initialize particle (only once)
 	if (PTime == 0) {
-		initialize(pos, vel);
+		initialize();
 	}
-
+	else
 	// If simulation time greater than current particle start time, particle may be active
 	if (STime >= PTime) {
 		// Calculates current particle life time adding some random effect
 		vec2 xy = vec2(STime, gl_VertexID);
 		float life = STime - PTime + rand(xy) * 0.1;
 		// If current particle life time is less the particle life time,
-		// this particle is active. Updates its position and velocity
+		// this particle is active. Updates its position, velocity and color
 		if (PLife > life) {
-			update(pos, vel);
+			update();
 		// Particle is not active any more. Prepare for recycle
 		} else {
-			initialize(pos, vel);
+			initialize();
 		}
 	}
 
 	// Copy current particle position and velocity to feedback buffer
 	OutPosition = pos;
 	OutVelocity = vel;
-	
-    gl_PointSize = 5;
-	gl_Position = MVP * vec4(pos, 1);
-	vSmoothColor = vec4(1,1,1,1);
+
+	// Sets point size and position for rasterization
+    gl_PointSize = 4;
+	gl_Position = VP * vec4(pos, 1);
+
+	// Sets color for fragment shader
+	vColor = color;
 }
 
 // Initialize particle
 // Sets the initial position in world coordinates
 // Sets random start velocity and random start time
-void initialize(inout vec3 pos, inout vec3 vel) {
+void initialize() {
 
-	// Resets start position
-	pos = vec3(0);
+	// Resets start position in world coordinates
+	pos = vec3(MW * vec4(0,0,0,1));
 
 	// Generates initial random velocity
-	vec2 xy = vec2(STime, gl_VertexID);
-	vec3 dir = randomDir(xy, PI/8); 
+	vec2 xy = vec2(gl_VertexID, STime);
+	vec3 dir = randomDir(xy, PI/16); 
  	vel = 0.03 * dir;
 
 	// Generates initial random start time
-	OutPTime = STime + rand(xy) * 1;
+	OutPTime = STime + rand(xy) * 0.5;
+
+	// Particle is transparent
+	color = vec4(1, 1, 1, 0);
 }
 
 // Updates particle position and velocity
-void update(inout vec3 pos, inout vec3 vel) {
+void update() {
 
 	pos = pos + vel;
+	color = vec4(1, 1, 1, 1);
 }
 
 // Generates pseudorandom direction on a sphere
-// vec2 v: to generate random values
+// v    : to generate random values
+// angle: cone angle in radians
 vec3 randomDir(vec2 v, float angle) {
 
 	vec2 r;
@@ -345,10 +348,14 @@ float rand(vec2 v){
 const shaderPE2Frag = `
 #version {{.Version}}
 
-smooth in vec4 vSmoothColor;
+// Input from vertex shader
+in vec4 vColor;
+
+// Fragment shader output
 layout(location=0) out vec4 vFragColor;
 
 void main() {
-	vFragColor = vSmoothColor;
+
+	vFragColor = vColor;
 }
 `
