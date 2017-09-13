@@ -738,7 +738,11 @@ func checkDirData() string {
 
 	// Checks first if data directory is in the current directory
 	if _, err := os.Stat(dirDataName); err == nil {
-		return dirDataName
+		dirData, err := filepath.Abs(dirDataName)
+		if err != nil {
+			panic(err)
+		}
+		return dirData
 	}
 
 	// Get the executable path
