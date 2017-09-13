@@ -16,9 +16,9 @@ func init() {
 }
 
 type LoaderCollada struct {
-	normals    *graphic.NormalsHelper
-	prevLoaded core.INode
-	selFile    *FileSelectButton
+	prevLoaded  core.INode
+	selFile     *FileSelectButton
+	animTargets map[string]*collada.AnimationTarget
 }
 
 func (t *LoaderCollada) Initialize(ctx *Context) {
@@ -75,6 +75,7 @@ func (t *LoaderCollada) load(ctx *Context, path string) error {
 		t.prevLoaded = nil
 	}
 
+	// Decodes collada file
 	dec, err := collada.Decode(path)
 	if err != nil && err != io.EOF {
 		t.selFile.SetError(err.Error())
@@ -91,9 +92,25 @@ func (t *LoaderCollada) load(ctx *Context, path string) error {
 	ctx.Scene.Add(s)
 	t.prevLoaded = s
 
+	// Checks for animations
+	ats, err := dec.NewAnimationTargets(s)
+	if err == nil {
+		t.animTargets = ats
+		for _, at := range ats {
+			at.SetStart(-1.0)
+			at.Reset()
+			at.SetLoop(true)
+		}
+	}
 	return nil
 }
 
 func (t *LoaderCollada) Render(ctx *Context) {
 
+	if t.animTargets != nil {
+		dt := float32(ctx.TimeDelta.Seconds())
+		for _, at := range t.animTargets {
+			at.Update(dt)
+		}
+	}
 }
