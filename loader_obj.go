@@ -56,7 +56,7 @@ func (t *LoaderObj) Initialize(ctx *Context) {
 	axis := graphic.NewAxisHelper(2)
 	ctx.Scene.Add(axis)
 
-	fpath := "obj/group.obj"
+	fpath := "obj/cubemultitex.obj"
 	t.load(ctx, filepath.Join(ctx.DirData, fpath))
 	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 }
