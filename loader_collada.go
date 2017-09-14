@@ -64,6 +64,7 @@ func (t *LoaderCollada) Initialize(ctx *Context) {
 	// Loads default model
 	fpath := filepath.Join(ctx.DirData, "collada/scene.dae")
 	t.load(ctx, fpath)
+	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 }
 
 func (t *LoaderCollada) load(ctx *Context, path string) error {
