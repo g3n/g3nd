@@ -32,7 +32,7 @@ const (
 	ProgName = "G3N Demo"
 	ExecName = "g3nd"
 	Vmajor   = 0
-	Vminor   = 2
+	Vminor   = 3
 )
 
 // Package logger
@@ -90,7 +90,7 @@ var (
 	oHideFPS    = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
 	oUpdateFPS  = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
 	oFPS        = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
-	oInterval   = flag.Int("interval", -1, "If >= 0, sets the swap interval to this value")
+	oInterval   = flag.Int("interval", 0, "Sets the swap buffers interval to this value")
 	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
 	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
@@ -165,6 +165,7 @@ func main() {
 	gs.SetCheckErrors(!*oNoGlErrors)
 
 	// Set swap buffers interval
+	// If users passes -1, the system swap interval is unchanged
 	if *oInterval >= 0 {
 		win.SwapInterval(*oInterval)
 	}
@@ -175,7 +176,7 @@ func main() {
 	ctx.Win = win
 	ctx.Time = time.Now()
 	ctx.DirData = dirData
-	ctx.frameRater = NewFrameRater(win, *oFPS)
+	ctx.frameRater = NewFrameRater(*oFPS)
 	ctx.stats = stats.NewStats(gs)
 
 	// Try to load audio libraries and sets its availability in the context
@@ -237,6 +238,8 @@ func main() {
 
 	// Render loop
 	for !win.ShouldClose() {
+		// Starts measuring this frame
+		ctx.frameRater.Start()
 
 		// Clear buffers
 		gs.Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
@@ -273,9 +276,11 @@ func main() {
 			}
 		}
 
-		// Swap window framebuffers and poll input events
-		win.SwapBuffers()
+		// Poll input events and process them
 		win.PollEvents()
+
+		// Swap window framebuffers
+		win.SwapBuffers()
 
 		// Controls the frame rate and updates the FPS for the user
 		ctx.frameRater.Wait()
@@ -431,48 +436,51 @@ func buildGui(ctx *Context) {
 
 // FrameRater implements a frame rate controller
 type FrameRater struct {
-	win        window.IWindow // reference to the window
-	targetFPS  float64        // desired number of frames per second
-	targetTime float64        // desired duration of a frame in seconds (1/targetFPS)
-	frames     uint           // frame counter used to calculate the real FPS
-	start      float64        // start time of the last frame
-	frameTimes float64        // accumulated frame times for potential FPS calculation
-	updateTime float64        // last update time for FPS calculation
-	timer      *time.Timer    // timer for sleeping during frame
+	targetFPS      uint          // desired number of frames per second
+	targetDuration time.Duration // calculated desired duration of frame
+	frameStart     time.Time     // start time of last frame
+	frameTimes     time.Duration // accumulated frame times for potential FPS calculation
+	frameCount     uint          // accumulated number of frames for FPS calculation
+	lastUpdate     time.Time     // time of last FPS calculation update
+	timer          *time.Timer   // timer for sleeping during frame
 }
 
 // NewFrameRater returns a frame rate controller object for the specified
-// window and target frames per second
-func NewFrameRater(win window.IWindow, targetFPS uint) *FrameRater {
+// number of target frames per second
+func NewFrameRater(targetFPS uint) *FrameRater {
 
 	f := new(FrameRater)
-	f.win = win
-	f.targetFPS = float64(targetFPS)
-	f.targetTime = 1.0 / f.targetFPS
-	f.updateTime = f.win.GetTime()
-	f.start = f.win.GetTime()
+	f.targetDuration = time.Second / time.Duration(targetFPS)
+	f.frameTimes = 0
+	f.frameCount = 0
+	f.lastUpdate = time.Now()
 	f.timer = time.NewTimer(0)
 	<-f.timer.C
 	return f
 }
 
-// Wait should be called after the frame was rendered and will
-// sleep, if necessary, to implement the desired frame rate.
+// Start should be called at the start of the frame
+func (f *FrameRater) Start() {
+
+	f.frameStart = time.Now()
+}
+
+// Wait should be called at the end of the frame
+// If necessary it will sleep to achieve the desired frame rate
 func (f *FrameRater) Wait() {
 
 	// Calculates the time duration of this frame
-	elapsed := f.win.GetTime() - f.start
-	f.frames++
+	elapsed := time.Now().Sub(f.frameStart)
 	// Accumulates this frame time for potential FPS calculation
+	f.frameCount++
 	f.frameTimes += elapsed
-	// If this frame time is less than the target time, sleeps
-	diff := f.targetTime - elapsed
+	// If this frame duration is less than the target duration, sleeps
+	// during the difference
+	diff := f.targetDuration - elapsed
 	if diff > 0 {
-		t := time.Duration(diff * float64(time.Second))
-		f.timer.Reset(t)
+		f.timer.Reset(diff)
 		<-f.timer.C
 	}
-	f.start = f.win.GetTime()
 }
 
 // FPS calculates and returns the current measured FPS and the maximum
@@ -481,20 +489,20 @@ func (f *FrameRater) Wait() {
 func (f *FrameRater) FPS(t time.Duration) (float64, float64, bool) {
 
 	// If the time from the last update has not passed, nothing to do
-	elapsed := f.win.GetTime() - f.updateTime
-	if elapsed < t.Seconds() {
+	elapsed := time.Now().Sub(f.lastUpdate)
+	if elapsed < t {
 		return 0, 0, false
 	}
 
-	// Calculates the measured frame rate
-	fps := float64(f.frames) / elapsed
+	// Calculates the measured average frame rate
+	fps := float64(f.frameCount) / elapsed.Seconds()
 	// Calculates the average duration of a frame and the potential FPS
-	frameDur := f.frameTimes / float64(f.frames)
+	frameDur := f.frameTimes.Seconds() / float64(f.frameCount)
 	pfps := 1.0 / frameDur
 	// Resets the frame counter and times
-	f.frames = 0
+	f.frameCount = 0
 	f.frameTimes = 0
-	f.updateTime = f.win.GetTime()
+	f.lastUpdate = time.Now()
 	return fps, pfps, true
 }
 
