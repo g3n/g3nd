@@ -32,7 +32,7 @@ const (
 	ProgName = "G3N Demo"
 	ExecName = "g3nd"
 	Vmajor   = 0
-	Vminor   = 3
+	Vminor   = 4
 )
 
 // Package logger
