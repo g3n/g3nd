@@ -77,18 +77,9 @@ func (t *Earth) Initialize(ctx *Context) {
 	texBump.SetFlipY(false)
 
 	// Create custom shader
-	err = t.ctx.Renderer.AddShader("shaderEarthVertex", shaderEarthVertex)
-	if err != nil {
-		panic(err)
-	}
-	err = t.ctx.Renderer.AddShader("shaderEarthFrag", shaderEarthFrag)
-	if err != nil {
-		panic(err)
-	}
-	err = t.ctx.Renderer.AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
-	if err != nil {
-		panic(err)
-	}
+	t.ctx.Renderer.AddShader("shaderEarthVertex", shaderEarthVertex)
+	t.ctx.Renderer.AddShader("shaderEarthFrag", shaderEarthFrag)
+	t.ctx.Renderer.AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
 
 	// Create custom material using the custom shader
 	matEarth := NewEarthMaterial(math32.NewColor(1, 1, 1))

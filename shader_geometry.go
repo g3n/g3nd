@@ -44,26 +44,10 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Registers shaders and program
-	err := ctx.Renderer.AddShader("shaderGSDemoVertex", sourceGSDemoVertex)
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.AddShader("shaderGSDemoGeometry", sourceGSDemoGeometry)
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.AddShader("shaderGSDemoFrag", sourceGSDemoFrag)
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.AddProgram("progGSDemo", "shaderGSDemoVertex", "shaderGSDemoFrag")
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.SetProgramShader("progGSDemo", gls.GEOMETRY_SHADER, "shaderGSDemoGeometry")
-	if err != nil {
-		panic(err)
-	}
+	ctx.Renderer.AddShader("shaderGSDemoVertex", sourceGSDemoVertex)
+	ctx.Renderer.AddShader("shaderGSDemoGeometry", sourceGSDemoGeometry)
+	ctx.Renderer.AddShader("shaderGSDemoFrag", sourceGSDemoFrag)
+	ctx.Renderer.AddProgram("progGSDemo", "shaderGSDemoVertex", "shaderGSDemoFrag", "shaderGSDemoGeometry")
 
 	// Creates shared custom material to show normals
 	mat := newNormalsMaterial()

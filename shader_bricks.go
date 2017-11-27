@@ -32,18 +32,9 @@ func (t *ShaderBricks) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Create custom shader
-	err := ctx.Renderer.AddShader("shaderBricksVertex", shaderBricksVertex)
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.AddShader("shaderBricksFrag", shaderBricksFrag)
-	if err != nil {
-		panic(err)
-	}
-	err = ctx.Renderer.AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
-	if err != nil {
-		panic(err)
-	}
+	ctx.Renderer.AddShader("shaderBricksVertex", shaderBricksVertex)
+	ctx.Renderer.AddShader("shaderBricksFrag", shaderBricksFrag)
+	ctx.Renderer.AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
 
 	// Creates plane 1
 	geom1 := geometry.NewPlane(2, 2, 4, 4)
