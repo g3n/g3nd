@@ -112,16 +112,13 @@ func (m *BricksMaterial) RenderSetup(gl *gls.GLS) {
 // Vertex Shader
 //
 const shaderBricksVertex = `
-#version {{.Version}}
-
-{{template "attributes" .}}
+#include <attributes>
+#include <material>
 
 // Model uniforms
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
-
-{{template "material" .}}
 
 // Output variables for Fragment shader
 out vec4 Position;
@@ -145,11 +142,11 @@ void main() {
 
     // Flips texture coordinate Y if requested.
     vec2 texcoord = VertexTexcoord;
-    {{ if .MatTexturesMax }}
+	#if MAT_TEXTURES>0
     if (MatTexFlipY[0] > 0) {
         texcoord.y = 1 - texcoord.y;
     }
-    {{ end }}
+	#endif
     FragTexcoord = texcoord;
 
     gl_Position = MVP * vec4(VertexPosition, 1.0);
@@ -160,8 +157,6 @@ void main() {
 // Fragment Shader
 //
 const shaderBricksFrag = `
-#version {{.Version}}
-
 // Inputs from vertex shader
 in vec4 Position;       // Vertex position in camera coordinates.
 in vec3 Normal;         // Vertex normal in camera coordinates.
@@ -169,9 +164,9 @@ in vec3 CamDir;         // Direction from vertex to camera
 in vec2 FragTexcoord;
 in vec2 VPosition;      // Vertex position in model coordinates (xy)
 
-{{template "lights" .}}
-{{template "material" .}}
-{{template "phong_model" .}}
+#include <lights>
+#include <material>
+#include <phong_model>
 
 // Uniforms for configure brick pattern
 uniform vec3 BrickColor;

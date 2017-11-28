@@ -167,9 +167,7 @@ func (m *NormalsMaterial) RenderSetup(gs *gls.GLS) {
 // without any processing.
 //
 const sourceGSDemoVertex = `
-#version {{.Version}}
-
-{{template "attributes" .}}
+#include <attributes>
 
 // Outputs for geometry shader
 out vec3 vnormal;
@@ -189,8 +187,6 @@ void main() {
 // wireframe and/or vertex normals and/or face normals.
 //
 const sourceGSDemoGeometry = `
-#version {{.Version}}
-
 layout (triangles) in;
 layout (line_strip, max_vertices = 12) out;
 
@@ -279,8 +275,6 @@ void main() {
 // Fragment Shader template
 //
 const sourceGSDemoFrag = `
-#version {{.Version}}
-
 in vec4 vertex_color;
 out vec4 Out_Color;
 
