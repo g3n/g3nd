@@ -15,9 +15,9 @@ type ShaderGeometry struct {
 	plane         *graphic.Mesh
 	box           *graphic.Mesh
 	sphere        *graphic.Mesh
-	showWireframe int32
-	showVnormal   int32
-	showFnormal   int32
+	showWireframe int
+	showVnormal   int
+	showFnormal   int
 	rotate        bool
 }
 
@@ -93,7 +93,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 		} else {
 			t.showWireframe = 0
 		}
-		mat.ShowWireframe.Set(t.showWireframe)
+		mat.ShowWireframe = t.showWireframe
 	})
 	cb2 := g1.AddCheckBox("Vertex normals").SetValue(true)
 	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
@@ -102,7 +102,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 		} else {
 			t.showVnormal = 0
 		}
-		mat.ShowVnormal.Set(t.showVnormal)
+		mat.ShowVnormal = t.showVnormal
 	})
 	cb3 := g1.AddCheckBox("Face normals").SetValue(true)
 	cb3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
@@ -111,7 +111,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 		} else {
 			t.showFnormal = 0
 		}
-		mat.ShowFnormal.Set(t.showFnormal)
+		mat.ShowFnormal = t.showFnormal
 	})
 }
 
@@ -129,9 +129,12 @@ func (t *ShaderGeometry) Render(ctx *Context) {
 //
 type NormalsMaterial struct {
 	material.Material // Embedded material
-	ShowWireframe     gls.Uniform1i
-	ShowVnormal       gls.Uniform1i
-	ShowFnormal       gls.Uniform1i
+	ShowWireframe     int
+	ShowVnormal       int
+	ShowFnormal       int
+	uniShowWireframe  gls.Uniform
+	uniShowVnormal    gls.Uniform
+	uniShowFnormal    gls.Uniform
 }
 
 func newNormalsMaterial() *NormalsMaterial {
@@ -141,23 +144,23 @@ func newNormalsMaterial() *NormalsMaterial {
 	m.SetShader("progGSDemo")
 
 	// Creates uniforms
-	m.ShowWireframe.Init("ShowWireframe")
-	m.ShowVnormal.Init("ShowVnormal")
-	m.ShowFnormal.Init("ShowFnormal")
+	m.uniShowWireframe.Init("ShowWireframe")
+	m.uniShowVnormal.Init("ShowVnormal")
+	m.uniShowFnormal.Init("ShowFnormal")
 
 	// Set uniform's initial values
-	m.ShowWireframe.Set(1)
-	m.ShowVnormal.Set(1)
-	m.ShowFnormal.Set(1)
+	m.ShowWireframe = 1
+	m.ShowVnormal = 1
+	m.ShowFnormal = 1
 	return m
 }
 
 func (m *NormalsMaterial) RenderSetup(gs *gls.GLS) {
 
 	m.Material.RenderSetup(gs)
-	m.ShowWireframe.Transfer(gs)
-	m.ShowVnormal.Transfer(gs)
-	m.ShowFnormal.Transfer(gs)
+	gs.Uniform1i(m.uniShowWireframe.Location(gs), int32(m.ShowWireframe))
+	gs.Uniform1i(m.uniShowVnormal.Location(gs), int32(m.ShowVnormal))
+	gs.Uniform1i(m.uniShowFnormal.Location(gs), int32(m.ShowFnormal))
 }
 
 //

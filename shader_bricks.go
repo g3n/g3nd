@@ -74,10 +74,14 @@ func (t *ShaderBricks) Render(ctx *Context) {
 
 type BricksMaterial struct {
 	material.Standard // Embedded standard material
-	brickColor        gls.Uniform3f
-	mortarColor       gls.Uniform3f
-	brickSize         gls.Uniform2f
-	brickPercent      gls.Uniform2f
+	brickColor        math32.Color
+	mortarColor       math32.Color
+	brickSize         math32.Vector2
+	brickPercent      math32.Vector2
+	uniBrickColor     gls.Uniform
+	uniMortarColor    gls.Uniform
+	uniBrickSize      gls.Uniform
+	uniBrickPercent   gls.Uniform
 }
 
 func NewBricksMaterial(color *math32.Color) *BricksMaterial {
@@ -86,13 +90,13 @@ func NewBricksMaterial(color *math32.Color) *BricksMaterial {
 	m.Standard.Init("shaderBricks", color)
 
 	// Creates uniforms
-	m.brickColor.Init("BrickColor")
-	m.mortarColor.Init("MortarColor")
-	m.brickSize.Init("BrickSize")
-	m.brickPercent.Init("BrickPercent")
+	m.uniBrickColor.Init("BrickColor")
+	m.uniMortarColor.Init("MortarColor")
+	m.uniBrickSize.Init("BrickSize")
+	m.uniBrickPercent.Init("BrickPercent")
 
 	// Set initial values
-	m.brickColor.SetColor(color)
+	m.brickColor = *color
 	m.mortarColor.Set(0.2, 0.3, 0.2)
 	m.brickSize.Set(0.5, 0.2)
 	m.brickPercent.Set(0.8, 0.8)
@@ -102,10 +106,10 @@ func NewBricksMaterial(color *math32.Color) *BricksMaterial {
 func (m *BricksMaterial) RenderSetup(gl *gls.GLS) {
 
 	m.Standard.RenderSetup(gl)
-	m.brickColor.Transfer(gl)
-	m.mortarColor.Transfer(gl)
-	m.brickSize.Transfer(gl)
-	m.brickPercent.Transfer(gl)
+	gl.Uniform3fv(m.uniBrickColor.Location(gl), 1, &m.brickColor.R)
+	gl.Uniform3fv(m.uniMortarColor.Location(gl), 1, &m.mortarColor.R)
+	gl.Uniform2fv(m.uniBrickSize.Location(gl), 1, &m.brickSize.X)
+	gl.Uniform2fv(m.uniBrickPercent.Location(gl), 1, &m.brickPercent.X)
 }
 
 //
