@@ -10,12 +10,11 @@ func init() {
 }
 
 type GuiBuilder struct {
-	selFile *FileSelectButton
+	selFile   *FileSelectButton
+	container *gui.Panel
 }
 
 func (t *GuiBuilder) Initialize(ctx *Context) {
-
-	b := gui.NewBuilder()
 
 	// Creates file selection button
 	t.selFile = NewFileSelectButton(ctx.DirData+"/gui", "Select File", 400, 300)
@@ -24,27 +23,51 @@ func (t *GuiBuilder) Initialize(ctx *Context) {
 	ctx.Gui.Add(t.selFile)
 	t.selFile.Subscribe("OnSelect", func(evname string, ev interface{}) {
 		fpath := ev.(string)
-		err := b.BuildFromFile(fpath)
-		if err == nil {
-			t.selFile.Label.SetText("File: " + filepath.Base(fpath))
-			t.selFile.SetError("")
-			panels := b.Panels()
-			posx := float32(0)
-			posy := float32(48)
-			for _, p := range panels {
-				ctx.Gui.Add(p)
-				p.GetPanel().SetPosition(posx, posy)
-				posx += p.GetPanel().Width() + 2
-			}
-
-		} else {
-			t.selFile.Label.SetText("Select File")
-			t.selFile.SetError(err.Error())
-		}
+		t.build(ctx, fpath)
 	})
+	t.selFile.SetMargins(2, 2, 2, 2)
 
+	// Creates container
+	t.container = gui.NewPanel(0, 0)
+	t.container.SetBorders(1, 1, 1, 1)
+	t.container.SetMargins(2, 2, 2, 2)
+	onResize := func() {
+		t.container.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-t.selFile.Height())
+		t.container.SetPosition(0, t.selFile.Height())
+	}
+	ctx.Gui.Subscribe(gui.OnResize, func(evname string, ev interface{}) { onResize() })
+	ctx.Gui.Add(t.container)
+	onResize()
 }
 
 func (t *GuiBuilder) Render(ctx *Context) {
 
+}
+
+func (t *GuiBuilder) build(ctx *Context, fpath string) {
+
+	// Parses description file
+	b := gui.NewBuilder()
+	err := b.ParseFile(fpath)
+	if err != nil {
+		t.selFile.Label.SetText("Select File")
+		t.selFile.SetError(err.Error())
+		return
+	}
+
+	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
+	t.selFile.SetError("")
+	t.container.DisposeChildren(true)
+
+	// Get object names
+	names := b.Names()
+	for _, name := range names {
+		p, err := b.Build(name)
+		if err != nil {
+			t.selFile.Label.SetText("Select File")
+			t.selFile.SetError(err.Error())
+			return
+		}
+		t.container.Add(p)
+	}
 }
