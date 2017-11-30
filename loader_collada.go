@@ -36,6 +36,7 @@ func (t *LoaderCollada) Initialize(ctx *Context) {
 			t.selFile.SetError("")
 		} else {
 			t.selFile.Label.SetText("Select File")
+			t.selFile.SetError(err.Error())
 		}
 	})
 
