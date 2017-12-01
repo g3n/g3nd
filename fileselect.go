@@ -27,8 +27,13 @@ func NewFileSelectButton(path, text string, width, height float32) *FileSelectBu
 	// Creates error label
 	fsb.errLabel = gui.NewLabel("")
 	fsb.errLabel.SetBounded(false)
-	fsb.errLabel.SetPosition(0, 30)
+	fsb.errLabel.SetBgColor(&math32.Color{1, 1, 1})
+	fsb.errLabel.SetColor(&math32.Color{1, 0, 0})
+	fsb.errLabel.SetPosition(4, 40)
+	fsb.errLabel.SetBorders(1, 1, 1, 1)
+	fsb.errLabel.SetPaddings(2, 6, 2, 6)
 	fsb.errLabel.SetFontSize(18)
+	fsb.errLabel.SetVisible(false)
 	fsb.Button.Add(fsb.errLabel)
 
 	// Creates file select panel and add it to the button
@@ -67,7 +72,12 @@ func NewFileSelectButton(path, text string, width, height float32) *FileSelectBu
 
 func (fsb *FileSelectButton) SetError(text string) {
 
+	if text == "" {
+		fsb.errLabel.SetVisible(false)
+		return
+	}
 	fsb.errLabel.SetText(text)
+	fsb.errLabel.SetVisible(true)
 }
 
 type FileSelect struct {
@@ -84,7 +94,7 @@ func NewFileSelect(width, height float32) *FileSelect {
 
 	fs := new(FileSelect)
 	fs.Panel.Initialize(width, height)
-	fs.SetBorders(2, 2, 2, 2)
+	fs.SetBorders(1, 1, 1, 1)
 	fs.SetPaddings(4, 4, 4, 4)
 	fs.SetColor(&math32.White)
 	fs.SetVisible(false)

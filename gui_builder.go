@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/g3n/engine/gui"
+	"github.com/g3n/engine/math32"
 	"path/filepath"
 )
 
@@ -31,9 +32,10 @@ func (t *GuiBuilder) Initialize(ctx *Context) {
 	t.container = gui.NewPanel(0, 0)
 	t.container.SetBorders(1, 1, 1, 1)
 	t.container.SetMargins(2, 2, 2, 2)
+	t.container.SetColor4(&math32.Color4{1, 1, 1, 0})
 	onResize := func() {
 		t.container.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-t.selFile.Height())
-		t.container.SetPosition(0, t.selFile.Height())
+		t.container.SetPosition(0, t.selFile.Position().Y+t.selFile.Height())
 	}
 	ctx.Gui.Subscribe(gui.OnResize, func(evname string, ev interface{}) { onResize() })
 	ctx.Gui.Add(t.container)

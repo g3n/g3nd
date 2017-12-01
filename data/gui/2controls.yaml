@@ -1,0 +1,13 @@
+#
+# Controls
+#
+label1:
+    type: Label
+    text: label1
+
+label2:
+    type: Label
+    text: label2
+    posx: 40
+    borders: 2
+

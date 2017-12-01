@@ -39,6 +39,8 @@ panel3:
     color: blue
     children:
         - type: Panel
-
-
+          width: 10
+          height: 10
+          color: red
+        - *panel1
 
