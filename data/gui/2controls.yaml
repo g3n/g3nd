@@ -1,13 +1,46 @@
 #
 # Controls
 #
-label1:
+#label1:
+#    type: Label
+#    text: label1
+#
+#label2:
+#    type: Label
+#    text: label2
+#    position: 50 0
+#    margins: 2
+#    borders: 3
+#    bordercolor: red
+#    paddings: 4
+#
+#label3:
+#    type: Label
+#    text: label3
+#    position: 120 0
+#    margins: 2
+#    borders: 4
+#    bordercolor: green
+#    paddings: 4
+#    bgcolor: white
+#    fontcolor: blue
+#    fontsize: 20
+#
+label4:
     type: Label
-    text: label1
+    text: |-
+        label4: first line
+        label4: second line
+        label4: last line
+    position: 200 0
+    margins: 2
+    borders: 1 4 1 4
+    bordercolor: yellow
+    paddings: 0 10 0 10
+    bgcolor: black
+    fontcolor: blue
+    fontsize: 18
+    fontdpi: 64
+    linespacing: 1.2
 
-label2:
-    type: Label
-    text: label2
-    posx: 40
-    borders: 2
 

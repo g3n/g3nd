@@ -48,8 +48,11 @@ func (t *GuiBuilder) Render(ctx *Context) {
 
 func (t *GuiBuilder) build(ctx *Context, fpath string) {
 
-	// Parses description file
+	// Creates gui builder
 	b := gui.NewBuilder()
+	b.SetImagepath(ctx.DirData + "/images/")
+
+	// Parses description file
 	err := b.ParseFile(fpath)
 	if err != nil {
 		t.selFile.Label.SetText("Select File")

@@ -1,11 +1,9 @@
 #
-# Application main window GUI
+# Panels
 #
-
 panel1: &panel1
     type: Panel
-    posx: 0
-    posy: 0 
+    position: 0 0
     width:  100
     height: 50
     margins: 2 2 2 2
@@ -16,8 +14,7 @@ panel1: &panel1
 
 panel2: &panel2
     type: Panel
-    posx: 120
-    posy: 0
+    position: 120 0
     width:  48
     height: 50
     margins: 2
@@ -28,19 +25,64 @@ panel2: &panel2
 
 panel3:
     type: Panel
-    posx: 200
-    posy: 0
-    width:  100
-    height: 80
+    position: 200,0
+    width:  200
+    height: 100
     margins: 2
     borders: 4
     bordercolor: purple
     paddings: 0,0,0,0
     color: blue
     children:
-        - type: Panel
-          width: 10
-          height: 10
-          color: red
-        - *panel1
+    - type: Panel
+      width: 10
+      height: 10
+      color: red
+    - *panel1
+
+panel4:
+    type: ImagePanel
+    position: 0 120
+    imagefile: "tiger1.jpg"
+    borders: 2
+    bordercolor: yellow
+    paddings: 2,2,2,2
+
+panel5:
+    type: ImagePanel
+    position: 240 120
+    imagefile: "uvgrid.jpg"
+    aspectwidth: 256
+    borders: 4
+    bordercolor: white
+    children:
+    - type: ImagePanel
+      position: 30, 30
+      imagefile: "tiger1.jpg"
+      aspectwidth: 64
+    - type: ImagePanel
+      position: 100, 30
+      imagefile: "tiger1.jpg"
+      aspectwidth: 64
+    - type: Panel
+      position: 30, 100
+      width: 200
+      height: 140
+      borders: 4
+      bordercolor: red
+      color: green
+      children:
+      - type: ImagePanel
+        position: 30, 30
+        imagefile: "tiger1.jpg"
+        aspectwidth: 64
+      - type: Panel
+        width: 64
+        height: 64
+        position: 100, 30
+        borders: 8
+        bordercolor: blue
+        color: white
+
+
 
