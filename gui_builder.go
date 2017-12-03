@@ -30,7 +30,7 @@ func (t *GuiBuilder) Initialize(ctx *Context) {
 
 	// Creates container
 	t.container = gui.NewPanel(0, 0)
-	t.container.SetBorders(1, 1, 1, 1)
+	t.container.SetBorders(0, 0, 0, 0)
 	t.container.SetMargins(2, 2, 2, 2)
 	t.container.SetColor4(&math32.Color4{1, 1, 1, 0})
 	onResize := func() {

@@ -3,6 +3,7 @@
 #
 panel1: &panel1
     type: Panel
+    name: panel1
     position: 0 0
     width:  100
     height: 50
@@ -14,6 +15,7 @@ panel1: &panel1
 
 panel2: &panel2
     type: Panel
+    name: panel2
     position: 120 0
     width:  48
     height: 50
@@ -25,6 +27,7 @@ panel2: &panel2
 
 panel3:
     type: Panel
+    name: panel3
     position: 200,0
     width:  200
     height: 100
@@ -42,6 +45,7 @@ panel3:
 
 panel4:
     type: ImagePanel
+    name: panel4
     position: 0 120
     imagefile: "tiger1.jpg"
     borders: 2
@@ -50,6 +54,7 @@ panel4:
 
 panel5:
     type: ImagePanel
+    name: panel5
     position: 240 120
     imagefile: "uvgrid.jpg"
     aspectwidth: 256
@@ -57,14 +62,17 @@ panel5:
     bordercolor: white
     children:
     - type: ImagePanel
+      name: imagepanel1
       position: 30, 30
       imagefile: "tiger1.jpg"
       aspectwidth: 64
     - type: ImagePanel
+      name: imagepanel2
       position: 100, 30
       imagefile: "tiger1.jpg"
       aspectwidth: 64
     - type: Panel
+      name: panel6
       position: 30, 100
       width: 200
       height: 140
@@ -73,10 +81,12 @@ panel5:
       color: green
       children:
       - type: ImagePanel
-        position: 30, 30
+        name: imagepanel3
+        position: 30, 30x
         imagefile: "tiger1.jpg"
         aspectwidth: 64
       - type: Panel
+        name: panel7
         width: 64
         height: 64
         position: 100, 30
