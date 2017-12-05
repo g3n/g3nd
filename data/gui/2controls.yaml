@@ -256,11 +256,38 @@ slider1:
     type: HSlider
     position: 0, 430
     width: 100
+    visible: true
+    enabled: false
     height: 22
     text: slider1
     value: 0.5
     scalefactor: 2
 
+slider2:
+    type: VSlider
+    text: slider2
+    position: 0, 460
+    width: 100
+    height: 100
+    value: 0.5
+    scalefactor: 1
+#
+# Splitter
+#
+splitter1:
+    type: HSplitter
+    name: splitter1
+    borders: 1
+    position: 110, 460
+    width: 200
+    height: 100
 
+splitter2:
+    type: VSplitter
+    name: splitter2
+    borders: 1
+    position: 340, 460
+    width: 200
+    height: 100
 
 
