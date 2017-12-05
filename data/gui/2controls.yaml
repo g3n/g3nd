@@ -1,5 +1,5 @@
 #
-# Labels
+# Label
 #
 label1:
     type: Label
@@ -50,7 +50,7 @@ label5:
     borders: 1
     fontsize: 22
 #
-# Buttons
+# Button
 #
 button1:
     type: Button
@@ -69,41 +69,104 @@ button3:
     position: 160 80
     imagefile: ok.png
 
-button_styles: &button_styles
-    normal:
-        borders: 1
-        paddings: 2
-        bordercolor: bc
-        bgcolor: bg
-        fgcolor: fg
-    over:
-        borders: 1
-        paddings: 2
-        bordercolor: bc
-        bgcolor: bg
-        fgcolor: fg
-    focus:
-        borders: 1
-        paddings: 2
-        bordercolor: bc
-        bgcolor: bg
-        fgcolor: fg
-    pressed:
-        borders: 1
-        paddings: 2
-        bordercolor: bc
-        bgcolor: bg
-        fgcolor: fg
-    disabled:
-        borders: 1
-        paddings: 2
-        bordercolor: bc
-        bgcolor: bg
-        fgcolor: fg
-
 button4:
     type: Button
     text: button4
     position: 240 80
-    styles: *button_styles
+#
+# Edit
+#
+edit1:
+    type: Edit
+    width: 100
+    position: 0 120
+
+edit2:
+    type: Edit
+    width: 120
+    position: 120 120
+    placeholder: place holder
+
+edit3:
+    type: Edit
+    width: 140
+    position: 260 120
+    placeholder: place holder
+    text: initial text
+#
+# CheckBox / RadioButton
+#
+checkbox1:
+    type: CheckBox
+    text: checkbox1
+    position: 0 160
+        
+checkbox2:
+    type: CheckBox
+    text: checkbox2
+    position: 100 160
+
+radiobutton1:
+    type: RadioButton
+    text: radiobutton1
+    position: 200 160
+
+radiobutton2:
+    type: RadioButton
+    text: radiobutton2
+    position: 310 160
+
+radiobuttong1:
+    type: RadioButton
+    text: radiobuttong1
+    position: 420 160
+    group: group1
+
+radiobuttong2:
+    type: RadioButton
+    text: radiobuttong2
+    position: 530 160
+    group: group1
+
+radiobuttong3:
+    type: RadioButton
+    text: radiobuttong2
+    position: 640 160
+    group: group1
+#
+# List
+#
+vlist1:
+    type: VList
+    width: 100
+    height: 80
+    position: 0 200
+    children:
+    - type: Label
+      text: item1
+    - type: Label
+      text: item2
+    - type: Label
+      text: item3
+    - type: Label
+      text: item4
+
+hlist1:
+    type: HList
+    width: 200
+    height: 40
+    position: 120 200
+    children:
+    - type: Label
+      text: item1
+    - type: Label
+      text: item2
+    - type: Label
+      text: item3
+    - type: Label
+      text: item4
+    - type: Label
+      text: item5
+    - type: Label
+      text: item6
 
