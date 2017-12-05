@@ -39,7 +39,7 @@ func (t *CheckRadio) Initialize(ctx *Context) {
 	cb3.SetPosition(10, 70)
 	cb3.Label.SetFontSize(16)
 	// Copy and change the default style
-	styles := gui.StyleDefault.CheckRadio
+	styles := gui.StyleDefault().CheckRadio
 	styles.Over.BgColor = math32.Red4
 	styles.Over.FgColor = math32.Blue
 	cb3.SetStyles(&styles)

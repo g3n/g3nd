@@ -348,7 +348,7 @@ func buildGui(ctx *Context) {
 	}
 
 	// New styles for control folder
-	styles := gui.StyleDefault.ControlFolder
+	styles := gui.StyleDefault().ControlFolder
 	styles.Folder.Normal.BgColor = headerColor
 	styles.Folder.Over.BgColor = headerColor
 	styles.Folder.Normal.FgColor = lightTextColor

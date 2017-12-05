@@ -61,7 +61,7 @@ button2:
     type: Button
     text: button2
     position: 70 80
-    icon: e5c4
+    icon: ArrowDownward
 
 button3:
     type: Button

@@ -143,7 +143,7 @@ func NewPlayerSphere(ctx *Context, filename string, color *math32.Color) *Player
 	ps.SetVisible(true)
 
 	// Adds plane with file name
-	font := gui.StyleDefault.Font
+	font := gui.StyleDefault().Font
 	font.SetSize(32)
 	width, height := font.MeasureText(filename)
 	canvas := text.NewCanvas(width, height, &math32.Color4{0, 0, 0, 0})

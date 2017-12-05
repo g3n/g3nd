@@ -62,7 +62,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b5.Label.SetFontSize(18)
 	b5.SetIcon(icon.ViewHeadline)
 	// Copy and change the default style
-	styles := gui.StyleDefault.Button
+	styles := gui.StyleDefault().Button
 	styles.Over.BorderColor = math32.Red4
 	styles.Pressed.BorderColor = math32.Red4
 	styles.Normal.FgColor = math32.Blue

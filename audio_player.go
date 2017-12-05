@@ -125,7 +125,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 	pc.sliderTime = gui.NewHSlider(0, 24)
 	pc.sliderTime.SetLayoutParams(&gui.VBoxLayoutParams{AlignH: gui.AlignWidth, Expand: 0})
 	pc.sliderTime.SetEnabled(false)
-	sliderTimeStyles := gui.StyleDefault.Slider
+	sliderTimeStyles := gui.StyleDefault().Slider
 	sliderTimeStyles.Disabled.FgColor.SetName("dodgerblue")
 	pc.sliderTime.SetStyles(&sliderTimeStyles)
 	panLeft.Add(pc.sliderTime)
@@ -179,7 +179,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 	pc.sliderGain.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		pc.player.SetGain(pc.sliderGain.Value())
 	})
-	sliderGainStyles := gui.StyleDefault.Slider
+	sliderGainStyles := gui.StyleDefault().Slider
 	sliderGainStyles.Normal.FgColor.SetName("darkseagreen")
 	sliderGainStyles.Over.FgColor.SetName("darkseagreen").MultiplyScalar(1.1)
 	pc.sliderGain.SetStyles(&sliderGainStyles)
@@ -194,7 +194,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 	pc.sliderPitch.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		pc.player.SetPitch(pc.sliderPitch.Value() * 2)
 	})
-	sliderPitchStyles := gui.StyleDefault.Slider
+	sliderPitchStyles := gui.StyleDefault().Slider
 	sliderPitchStyles.Normal.FgColor.SetName("darkseagreen")
 	sliderPitchStyles.Over.FgColor.SetName("darkseagreen").MultiplyScalar(1.1)
 	pc.sliderPitch.SetStyles(&sliderPitchStyles)
