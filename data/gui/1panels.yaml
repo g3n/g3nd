@@ -82,7 +82,7 @@ panel5:
       children:
       - type: ImagePanel
         name: imagepanel3
-        position: 30, 30x
+        position: 30, 30
         imagefile: "tiger1.jpg"
         aspectwidth: 64
       - type: Panel

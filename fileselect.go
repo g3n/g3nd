@@ -6,7 +6,7 @@ import (
 	"sort"
 
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 )
 
@@ -173,7 +173,7 @@ func (fs *FileSelect) SetPath(path string) error {
 	fs.list.Clear()
 	// Adds previous directory
 	prev := gui.NewImageLabel("..")
-	prev.SetIcon(assets.FolderOpen)
+	prev.SetIcon(icon.FolderOpen)
 	fs.list.Add(prev)
 	// Adds directory files
 	for i := 0; i < len(files); i++ {
@@ -181,7 +181,7 @@ func (fs *FileSelect) SetPath(path string) error {
 		fname := files[i].Name()
 		if files[i].IsDir() {
 			item := gui.NewImageLabel(fname)
-			item.SetIcon(assets.FolderOpen)
+			item.SetIcon(icon.FolderOpen)
 			fs.list.Add(item)
 			continue
 		}
@@ -203,7 +203,7 @@ func (fs *FileSelect) SetPath(path string) error {
 		}
 		// Adds file item to the list
 		item := gui.NewImageLabel(fname)
-		item.SetIcon(assets.InsertPhoto)
+		item.SetIcon(icon.InsertPhoto)
 		fs.list.Add(item)
 	}
 	fs.path = path

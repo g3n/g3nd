@@ -5,7 +5,7 @@ import (
 	"github.com/g3n/engine/audio"
 	"github.com/g3n/engine/audio/al"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 	"time"
 )
@@ -140,7 +140,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 
 	// Play button
 	bPlay := gui.NewButton("Play")
-	bPlay.SetIcon(assets.PlayArrow)
+	bPlay.SetIcon(icon.PlayArrow)
 	bPlay.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	bPlay.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		pc.player.Play()
@@ -149,7 +149,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 
 	// Pause button
 	bPause := gui.NewButton("Pause")
-	bPause.SetIcon(assets.Pause)
+	bPause.SetIcon(icon.Pause)
 	bPause.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	bPause.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		pc.player.Pause()
@@ -158,7 +158,7 @@ func NewPlayerControl(ctx *Context, filename string) (*PlayerControl, error) {
 
 	// Stop button
 	bStop := gui.NewButton("Stop")
-	bStop.SetIcon(assets.Stop)
+	bStop.SetIcon(icon.Stop)
 	bStop.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	bStop.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		pc.player.Stop()

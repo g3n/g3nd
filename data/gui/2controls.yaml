@@ -45,7 +45,7 @@ label4:
 
 label5:
     type: IconLabel
-    text: e146 e5c4 e5c5 e5c6 e5c7 e5c8 e5d8
+    text: ArrowBack ArrowDownward ArrowDropDown e5d8
     position: 370 0
     borders: 1
     fontsize: 22

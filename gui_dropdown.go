@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 )
 
 func init() {
@@ -32,13 +32,13 @@ func (t *GuiDropdown) Initialize(ctx *Context) {
 
 	// DropDown with icons
 	icons := []int{
-		assets.ArrowBack,
-		assets.ArrowDownward,
-		assets.ArrowDropDown,
-		assets.ArrowDropDownCircle,
-		assets.ArrowDropUp,
-		assets.ArrowForward,
-		assets.ArrowUpward,
+		icon.ArrowBack,
+		icon.ArrowDownward,
+		icon.ArrowDropDown,
+		icon.ArrowDropDownCircle,
+		icon.ArrowDropUp,
+		icon.ArrowForward,
+		icon.ArrowUpward,
 	}
 	model := gui.NewImageLabel("")
 	dd2 := gui.NewDropDown(150, model)

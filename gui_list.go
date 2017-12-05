@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 )
 
 func init() {
@@ -19,13 +19,13 @@ func (t *GuiList) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	icons := []int{
-		assets.ArrowBack,
-		assets.ArrowDownward,
-		assets.ArrowDropDown,
-		assets.ArrowDropDownCircle,
-		assets.ArrowDropUp,
-		assets.ArrowForward,
-		assets.ArrowUpward,
+		icon.ArrowBack,
+		icon.ArrowDownward,
+		icon.ArrowDropDown,
+		icon.ArrowDropDownCircle,
+		icon.ArrowDropUp,
+		icon.ArrowForward,
+		icon.ArrowUpward,
 	}
 
 	// List 1 vertical/single selection

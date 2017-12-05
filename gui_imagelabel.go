@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 	"strings"
 )
@@ -85,11 +85,11 @@ func (t *GuiImageLabel) Initialize(ctx *Context) {
 
 	l8 := gui.NewImageLabel("label8")
 	l8.SetPosition(10, l7.Position().Y+l7.Height()+30)
-	l8.SetIcon(assets.ArrowBack)
+	l8.SetIcon(icon.ArrowBack)
 	ctx.Gui.Add(l8)
 
 	l9 := gui.NewImageLabel("label9")
-	l9.SetIcon(assets.ArrowDownward)
+	l9.SetIcon(icon.ArrowDownward)
 	l9.SetPosition(100, l8.Position().Y)
 	l9.SetBorders(1, 1, 1, 1)
 	l9.SetBordersColor(&math32.Black)
@@ -97,7 +97,7 @@ func (t *GuiImageLabel) Initialize(ctx *Context) {
 	ctx.Gui.Add(l9)
 
 	l10 := gui.NewImageLabel("label10")
-	l10.SetIcon(assets.ArrowDropDown)
+	l10.SetIcon(icon.ArrowDropDown)
 	l10.SetPosition(200, l8.Position().Y)
 	l10.SetBgColor(&math32.Green)
 	l10.SetBorders(1, 1, 1, 1)

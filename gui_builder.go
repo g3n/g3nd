@@ -40,6 +40,9 @@ func (t *GuiBuilder) Initialize(ctx *Context) {
 	ctx.Gui.Subscribe(gui.OnResize, func(evname string, ev interface{}) { onResize() })
 	ctx.Gui.Add(t.container)
 	onResize()
+
+	// Loads default gui builder file
+	t.build(ctx, ctx.DirData+"/gui/1panels.yaml")
 }
 
 func (t *GuiBuilder) Render(ctx *Context) {
@@ -64,7 +67,7 @@ func (t *GuiBuilder) build(ctx *Context, fpath string) {
 	t.selFile.SetError("")
 	t.container.DisposeChildren(true)
 
-	// Get object names
+	// Build gui objects and adds them to the container panel
 	names := b.Names()
 	for _, name := range names {
 		p, err := b.Build(name)

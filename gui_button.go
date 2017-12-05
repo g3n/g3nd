@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 )
 
@@ -39,7 +39,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b3 := gui.NewButton("button 3")
 	b3.SetPosition(200, 10)
 	b3.Label.SetFontSize(22)
-	b3.SetIcon(assets.Check)
+	b3.SetIcon(icon.Check)
 	b3.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		log.Info("button 3 OnClick")
 	})
@@ -60,7 +60,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b5 := gui.NewButton("Button 5 (style changed)")
 	b5.SetPosition(10, 200)
 	b5.Label.SetFontSize(18)
-	b5.SetIcon(assets.ViewHeadline)
+	b5.SetIcon(icon.ViewHeadline)
 	// Copy and change the default style
 	styles := gui.StyleDefault.Button
 	styles.Over.BorderColor = math32.Red4
@@ -79,7 +79,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b6.SetEnabled(false)
 	b6.SetPosition(300, 200)
 	//b6.Label.SetFontSize(16)
-	b6.SetIcon(assets.TrendingFlat)
+	b6.SetIcon(icon.TrendingFlat)
 	b6.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		log.Info("button 6 OnClick")
 	})
@@ -97,7 +97,7 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b7 := gui.NewButton("Button 7 (control)")
 	b7.SetPosition(480, 200)
 	b7.Label.SetFontSize(16)
-	b7.SetIcon(assets.TrendingFlat)
+	b7.SetIcon(icon.TrendingFlat)
 	b7.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		log.Info("button 7 OnClick")
 		b6.SetEnabled(!b6.Enabled())

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/gui/assets"
+	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
 	"strings"
@@ -57,24 +57,24 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	m2 := gui.NewMenu()
 	m2.AddOption("Menu2/Option1").
 		SetId("option1").
-		SetIcon(assets.Build).
+		SetIcon(icon.Build).
 		SetShortcut(window.ModControl, window.KeyA)
 	m2.AddOption("Menu2/Option two").
 		SetId("option2").
-		SetIcon(assets.Cached).
+		SetIcon(icon.Cached).
 		SetShortcut(window.ModShift, window.KeyB)
 	m2.AddSeparator()
 	m2.AddOption("Menu2/Option three").
 		SetId("option3").
-		SetIcon(assets.Print).
+		SetIcon(icon.Print).
 		SetShortcut(window.ModAlt, window.KeyC)
 	m2.AddOption("Menu2/Option four").
 		SetId("option4").
-		SetIcon(assets.Settings).
+		SetIcon(icon.Settings).
 		SetShortcut(window.ModAlt|window.ModShift, window.KeyD)
 	m2.AddOption("Menu2/Option five").
 		SetId("option5").
-		SetIcon(assets.Search).
+		SetIcon(icon.Search).
 		SetShortcut(window.ModAlt|window.ModShift|window.ModControl, window.KeyE)
 	mb.AddMenu("Menu2", m2).
 		SetId("menu2").
@@ -84,39 +84,39 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	m3 := gui.NewMenu()
 	m3.AddOption("Menu3 Option1").
 		SetId("option1").
-		SetIcon(assets.Star).
+		SetIcon(icon.Star).
 		SetShortcut(0, window.KeyF1)
 	m3.AddOption("Menu3 Option2").
 		SetId("option2").
-		SetIcon(assets.StarBorder).
+		SetIcon(icon.StarBorder).
 		SetShortcut(window.ModControl, window.KeyF2)
 	// Creates Menu3/Menu1
 	m3m1 := gui.NewMenu()
 	m3m1.AddOption("Menu3/Menu1/Option1").
 		SetId("option1").
-		SetIcon(assets.StarHalf).
+		SetIcon(icon.StarHalf).
 		SetShortcut(window.ModAlt, window.KeyF3)
 	m3m1.AddOption("Menu3/Menu1/Option2").
 		SetId("option2").
-		SetIcon(assets.Opacity).
+		SetIcon(icon.Opacity).
 		SetShortcut(window.ModAlt|window.ModControl, window.KeyF4)
 	m3m1.AddSeparator()
 	// Creates Menu3/Menu1/Menu2
 	m3m1m2 := gui.NewMenu()
 	m3m1m2.AddOption("Menu3/Menu1/Menu2/Option1").
 		SetId("option1").
-		SetIcon(assets.HourglassFull).
+		SetIcon(icon.HourglassFull).
 		SetShortcut(window.ModAlt|window.ModControl|window.ModShift, window.KeyF5)
 	m3m1m2.AddOption("Menu3/Menu1/Menu2/Option2").
 		SetId("option2").
-		SetIcon(assets.HourglassEmpty).
+		SetIcon(icon.HourglassEmpty).
 		SetShortcut(0, window.KeyF6)
 	m3m1.AddMenu("Menu3/Menu1/Menu2", m3m1m2).
 		SetId("menu2")
 	m3.AddSeparator()
 	m3.AddMenu("Menu3/Menu1", m3m1).
 		SetId("menu1").
-		SetIcon(assets.Home)
+		SetIcon(icon.Home)
 	m3.AddOption("Menu3/Option3").
 		SetId("option3")
 	mb.AddMenu("Menu3", m3).
