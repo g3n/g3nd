@@ -173,7 +173,7 @@ func (fs *FileSelect) SetPath(path string) error {
 	fs.list.Clear()
 	// Adds previous directory
 	prev := gui.NewImageLabel("..")
-	prev.SetIcon(icon.FolderOpen)
+	prev.SetIcon(string(icon.FolderOpen))
 	fs.list.Add(prev)
 	// Adds directory files
 	for i := 0; i < len(files); i++ {
@@ -181,7 +181,7 @@ func (fs *FileSelect) SetPath(path string) error {
 		fname := files[i].Name()
 		if files[i].IsDir() {
 			item := gui.NewImageLabel(fname)
-			item.SetIcon(icon.FolderOpen)
+			item.SetIcon(string(icon.FolderOpen))
 			fs.list.Add(item)
 			continue
 		}
@@ -203,7 +203,7 @@ func (fs *FileSelect) SetPath(path string) error {
 		}
 		// Adds file item to the list
 		item := gui.NewImageLabel(fname)
-		item.SetIcon(icon.InsertPhoto)
+		item.SetIcon(string(icon.InsertPhoto))
 		fs.list.Add(item)
 	}
 	fs.path = path

@@ -38,7 +38,7 @@ func (t *GuiList) Initialize(ctx *Context) {
 	b1.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		pos := li1.Len()
 		item := gui.NewImageLabel(fmt.Sprintf("label %d", pos))
-		item.SetIcon(icons[pos%len(icons)])
+		item.SetIcon(string(icons[pos%len(icons)]))
 		li1.Add(item)
 	})
 	ctx.Gui.Add(b1)
@@ -99,7 +99,7 @@ func (t *GuiList) Initialize(ctx *Context) {
 	b7.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		pos := li3.Len()
 		item := gui.NewImageLabel(fmt.Sprintf("label %d", pos))
-		item.SetIcon(icons[pos%len(icons)])
+		item.SetIcon(string(icons[pos%len(icons)]))
 		li3.Add(item)
 	})
 	ctx.Gui.Add(b7)

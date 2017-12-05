@@ -44,11 +44,22 @@ label4:
     linespacing: 1.2
 
 label5:
-    type: IconLabel
-    text: ArrowBack ArrowDownward ArrowDropDown e5d8
+    type: Label
+    icons: ArrowBack ArrowDownward ArrowDropDown e5d8
     position: 370 0
     borders: 1
     fontsize: 22
+ 
+imglabel1:
+    type: ImageLabel
+    text: imagelabel1
+    height: 200
+    position: 480 0
+    borders: 2
+    bordercolor: white
+    paddings: 0 10 0 10
+    icons: ArrowDownward ArrowDropDown
+
 #
 # Button
 #

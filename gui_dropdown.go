@@ -46,7 +46,7 @@ func (t *GuiDropdown) Initialize(ctx *Context) {
 	ctx.Gui.Add(dd2)
 	for i := 1; i <= 10; i++ {
 		item := gui.NewImageLabel(fmt.Sprintf("item %2d", i))
-		item.SetIcon(icons[i%len(icons)])
+		item.SetIcon(string(icons[i%len(icons)]))
 		dd2.Add(item)
 	}
 	dd2.SetSelected(dd2.ItemAt(1))
