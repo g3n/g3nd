@@ -180,4 +180,87 @@ hlist1:
       text: item5
     - type: Label
       text: item6
+#
+# DropDown
+#
+dropdown1:
+    type: DropDown
+    width: 100
+    position: 350 200
+    imagelabel:
+        text: dropdown1
+    children:
+        - type: ImageLabel
+          text: item1
+          icons: Call
+        - type: ImageLabel
+          text: item2
+          icons: Computer
+        - type: ImageLabel
+          text: item3
+          icons: Contacts
+#
+# Menu
+#
+menu1: &menu1
+    type: Menu
+    text: menu1
+    position: 0 290
+    items:
+    - text: item1
+    - text: item2
+    - text: item3
+    - text: item4
+          
+menu2: &menu2
+    type: Menu
+    text: menu2
+    position: 70 290
+    items:
+    - text: option1
+      icon: ArrowDownward
+      shortcut: Ctrl+A
+    - text: option2
+      icon: CheckBox
+      shortcut: Alt+B
+    - type: Separator
+    - text: option3
+      icon: Computer
+      shortcut: Ctrl+Alt+B
+    - text: option4
+      icon: Contacts
+      shortcut: Shift+Ctrl+Alt+B
+    - type: Menu
+      text: sub menu
+      items:
+      - text: sub menu option1
+      - text: sub menu option2
+      - separator: true
+      - text: sub menu option3
+
+menubar1:
+    type: MenuBar
+    position: 310, 290
+    items:
+    - *menu1
+    - *menu2
+    - type: Separator
+    - text: option1
+    - type: Separator
+    - text: option2
+    - *menu1
+#
+# Slider
+#
+slider1:
+    type: HSlider
+    position: 0, 430
+    width: 100
+    height: 22
+    text: slider1
+    value: 0.5
+    scalefactor: 2
+
+
+
 

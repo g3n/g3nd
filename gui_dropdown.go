@@ -31,7 +31,7 @@ func (t *GuiDropdown) Initialize(ctx *Context) {
 	dd1.SetSelected(dd1.ItemAt(0))
 
 	// DropDown with icons
-	icons := []int{
+	icons := []string{
 		icon.ArrowBack,
 		icon.ArrowDownward,
 		icon.ArrowDropDown,
