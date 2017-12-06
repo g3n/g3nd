@@ -36,7 +36,7 @@ panel3:
     bordercolor: purple
     paddings: 0,0,0,0
     color: blue
-    children:
+    items:
     - type: Panel
       width: 10
       height: 10
@@ -60,7 +60,7 @@ panel5:
     aspectwidth: 256
     borders: 4
     bordercolor: white
-    children:
+    items:
     - type: ImagePanel
       name: imagepanel1
       position: 30, 30
@@ -79,7 +79,7 @@ panel5:
       borders: 4
       bordercolor: red
       color: green
-      children:
+      items:
       - type: ImagePanel
         name: imagepanel3
         position: 30, 30

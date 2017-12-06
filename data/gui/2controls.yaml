@@ -152,7 +152,7 @@ vlist1:
     width: 100
     height: 80
     position: 0 200
-    children:
+    items:
     - type: Label
       text: item1
     - type: Label
@@ -167,7 +167,7 @@ hlist1:
     width: 200
     height: 40
     position: 120 200
-    children:
+    items:
     - type: Label
       text: item1
     - type: Label
@@ -189,7 +189,7 @@ dropdown1:
     position: 350 200
     imagelabel:
         text: dropdown1
-    children:
+    items:
         - type: ImageLabel
           text: item1
           icons: Call
@@ -289,5 +289,41 @@ splitter2:
     position: 340, 460
     width: 200
     height: 100
+
+#
+# Tree
+#
+tree1:
+    type: Tree
+    name: tree1
+    position: 0 590
+    width: 200
+    height: 180
+    items:
+    - type: Label
+      text: label1
+    - type: Node
+      text: node1
+      items:
+      - type: Label
+        text: label2
+      - type: Label
+        text: label3
+      - type: Node
+        text: node1/2
+      - type: CheckBox
+        text: checkbox1
+      - type: Node
+        text: node1/3
+        items:
+        - type: Label
+          text: label4
+    - type: Node
+      text: node2
+      items:
+      - type: Label
+        text: label4
+      - type: RadioButton
+        text: radiobutton1
 
 

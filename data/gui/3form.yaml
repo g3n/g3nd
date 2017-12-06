@@ -1,8 +1,0 @@
-#
-# Application form GUI
-#
-type: Panel
-width: 100
-height: 200
-color: blue
-

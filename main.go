@@ -83,8 +83,8 @@ var TestMap = map[string]ITest{}
 // Command line options
 var (
 	oVersion    = flag.Bool("version", false, "Show version and exits")
-	oWidth      = flag.Int("width", 800, "Initial window width in pixels")
-	oHeight     = flag.Int("height", 600, "Initial window height in pixels")
+	oWidth      = flag.Int("width", 1000, "Initial window width in pixels")
+	oHeight     = flag.Int("height", 800, "Initial window height in pixels")
 	oFull       = flag.Bool("full", false, "Full screen on primary monitor")
 	oNogui      = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
 	oHideFPS    = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
