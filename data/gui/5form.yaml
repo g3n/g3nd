@@ -1,0 +1,91 @@
+#
+#
+#
+form1:
+    type: panel
+    borders: 1
+    paddings: 2
+    width: 400
+    height: 300
+    layout:
+        type: vbox
+    items:
+    # Form title
+    - type: panel
+      borders: 1
+      height: 40        # SHOULD HAVE THE HEIGHT OF THE CHILD
+      layoutparams:
+          align: width
+      layout:
+          type: hbox
+          align: center
+      items:
+      - type: label
+        text: Form Title
+        layoutparams:
+            align: center
+    # Row 1 
+    - type: panel
+      name: row1
+      borders: 0
+      paddings: 2
+      height: 24
+      layout:
+          type: hbox
+          align: right
+      layoutparams:
+          align: width
+      items:
+      - type: label
+        text: "label1:"
+        margins: 0 4 0 0 
+      - type: edit
+        width: 300
+    # Row 2
+    - type: panel
+      name: row2
+      borders: 0
+      paddings: 2
+      height: 24
+      layout:
+          type: hbox
+          align: right
+      layoutparams:
+          align: width
+      items:
+      - type: label
+        text: "other label:"
+        margins: 0 4 0 0 
+      - type: edit
+        width: 300
+    # Row 3
+    - type: panel
+      name: row3
+      height: 24
+      layout:
+          type: hbox
+          align: width
+          spacing: 4
+      layoutparams:
+          align: width
+      items:
+      - type: checkbox
+        text: checkbox1
+      - type: checkbox
+        text: checkbox2
+    # Row 4
+    - type: panel
+      name: row4
+      height: 24
+      layout:
+          type: hbox
+          align: width
+          spacing: 4
+      layoutparams:
+          align: width
+      items:
+      - type: radiobutton
+        text: radiobutton1
+      - type: radiobutton
+        text: radiobutton2
+
