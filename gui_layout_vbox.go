@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
@@ -18,24 +20,38 @@ func (t *GuiLayoutVBox) Initialize(ctx *Context) {
 	axis := graphic.NewAxisHelper(1)
 	ctx.Scene.Add(axis)
 
+	// Adds reset size button
+	var p1 *gui.Panel
+	const pwidth = 32
+	const pheight = 32
+	rb := gui.NewButton("Reset size")
+	rb.SetPosition(10, 10)
+	rb.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		p1.SetSize(pwidth, pheight)
+	})
+	ctx.Gui.Add(rb)
+
 	// Vertical panel
 	params := gui.VBoxLayoutParams{Expand: 0, AlignH: gui.AlignLeft}
-	p1 := gui.NewPanel(100, 500)
-	p1.SetPosition(10, 10)
+	p1 = gui.NewPanel(pwidth, pheight)
+	p1.SetPosition(rb.Position().X, rb.Position().Y+rb.Height()+4)
 	p1.SetBorders(1, 1, 1, 1)
 	p1.SetBordersColor(&math32.Black)
 	p1.SetPaddings(2, 2, 2, 2)
 	ctx.Gui.Add(p1)
-
 	// Horizontal box layout
 	bl1 := gui.NewVBoxLayout()
 	bl1.SetSpacing(4)
 	p1.SetLayout(bl1)
+
+	const bposx = 140
 	// Add button
 	p1b1 := gui.NewButton("Add")
-	p1b1.SetPosition(p1.Position().X+p1.Width()+10, p1.Position().Y)
+	p1b1.SetPosition(bposx, p1.Position().Y)
 	p1b1.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		child := gui.NewButton(fmt.Sprintf("child %d", len(p1.Children())))
+		offs := rand.Int31n(30)
+		child.SetWidth(child.Width() + float32(offs))
 		itemParams := params
 		child.SetLayoutParams(&itemParams)
 		p1.Add(child)
@@ -51,9 +67,23 @@ func (t *GuiLayoutVBox) Initialize(ctx *Context) {
 		}
 	})
 	ctx.Gui.Add(p1b2)
+	// Minimum height checkbox
+	cb1 := gui.NewCheckBox("Minimum height")
+	cb1.SetPosition(p1b2.Position().X+p1b2.Width()+10, p1b2.Position().Y)
+	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		bl1.SetMinHeight(cb1.Value())
+	})
+	cb1.SetValue(true)
+	ctx.Gui.Add(cb1)
+	// Minimum width checkbox
+	cb2 := gui.NewCheckBox("Minimum width")
+	cb2.SetPosition(cb1.Position().X+cb1.Width()+10, cb1.Position().Y)
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) { bl1.SetMinWidth(cb2.Value()) })
+	cb2.SetValue(true)
+	ctx.Gui.Add(cb2)
 	// Top
 	p1c1 := gui.NewRadioButton("Top")
-	p1c1.SetPosition(p1b1.Position().X, p1b1.Position().Y+p1b1.Height()+10)
+	p1c1.SetPosition(cb1.Position().X, cb1.Position().Y+cb1.Height()+10)
 	p1c1.SetGroup("alignH")
 	p1c1.Subscribe(gui.OnClick, func(evname string, ev interface{}) { bl1.SetAlignV(gui.AlignTop) })
 	ctx.Gui.Add(p1c1)
