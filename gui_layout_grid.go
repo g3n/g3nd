@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+	"strconv"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -11,79 +12,128 @@ func init() {
 	TestMap["gui.layout_grid"] = &GuiLayoutGrid{}
 }
 
-type GuiLayoutGrid struct{}
+type GuiLayoutGrid struct {
+	bwidth  float32
+	bheight float32
+	layout  *gui.GridLayout
+	colspan *int
+}
 
 func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
-
-	p1 := gui.NewPanel(300, 200)
-	p1.SetPosition(10, 10)
-	p1.SetColor(&math32.White)
-	l1 := gui.NewGridLayout()
-	p1.SetLayout(l1)
-	ctx.Gui.Add(p1)
-	for row := 0; row < 4; row++ {
-		for col := 0; col < 5; col++ {
-			text := fmt.Sprintf("item %d.%d", row, col)
-			l := gui.NewLabel(text)
-			l.SetPaddings(4, 4, 4, 4)
-			l.SetLayoutParams(&gui.GridLayoutParams{Row: row, Col: col})
-			p1.Add(l)
+	var p *gui.Panel
+	// Add button
+	b1 := gui.NewButton("Add")
+	b1.SetPosition(10, 10)
+	b1.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		button := gui.NewButton(fmt.Sprintf("child %d", len(p.Children())))
+		button.SetWidth(button.Width() + t.bwidth)
+		button.SetHeight(button.Height() + t.bheight)
+		var params gui.GridLayoutParams
+		if t.colspan != nil {
+			params.ColSpan = *t.colspan
+			button.SetLayoutParams(&params)
+			log.Info("LayoutParams: %v", params)
 		}
-	}
+		p.Add(button)
+	})
+	ctx.Gui.Add(b1)
 
-	p2 := gui.NewPanel(300, 300)
-	p2.SetPosition(10, 250)
-	p2.SetColor(&math32.White)
-	l2 := gui.NewGridLayout()
-	p2.SetLayout(l2)
-	ctx.Gui.Add(p2)
-	type gridItem struct {
-		w       float32
-		h       float32
-		color   *math32.Color
-		row     int
-		col     int
-		colSpan int
-		valign  gui.Align
-		halign  gui.Align
-	}
-	grid := []gridItem{
-		{20, 20, &math32.Black, 0, 0, 0, gui.AlignNone, gui.AlignNone},
-		{30, 30, &math32.Red, 0, 1, 0, gui.AlignNone, gui.AlignNone},
-		{40, 40, &math32.Green, 0, 2, 0, gui.AlignNone, gui.AlignNone},
-		{50, 50, &math32.Blue, 0, 3, 0, gui.AlignNone, gui.AlignNone},
-		{60, 60, &math32.Gray, 0, 4, 0, gui.AlignNone, gui.AlignCenter},
+	// Clear button
+	b2 := gui.NewButton("Clear")
+	b2.SetPosition(b1.Position().X+b1.Width()+10, 10)
+	b2.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		p.DisposeChildren(true)
+		t.colspan = nil
+	})
+	ctx.Gui.Add(b2)
 
-		{60, 60, &math32.Gray, 1, 0, 0, gui.AlignBottom, gui.AlignRight},
-		{50, 50, &math32.Blue, 1, 1, 0, gui.AlignBottom, gui.AlignRight},
-		{40, 40, &math32.Green, 1, 2, 0, gui.AlignBottom, gui.AlignRight},
-		{30, 30, &math32.Red, 1, 3, 0, gui.AlignBottom, gui.AlignRight},
-		{20, 20, &math32.Black, 1, 4, 0, gui.AlignBottom, gui.AlignRight},
+	// Child button width slider
+	s1 := gui.NewHSlider(42, 22)
+	s1.SetPosition(b2.Position().X+b2.Width()+10, 10)
+	s1.SetText("width")
+	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.bwidth = s1.Value() * 20
+	})
+	ctx.Gui.Add(s1)
 
-		{20, 20, &math32.Black, 2, 0, 0, gui.AlignCenter, gui.AlignCenter},
-		{30, 30, &math32.Red, 2, 1, 0, gui.AlignCenter, gui.AlignCenter},
-		{40, 40, &math32.Green, 2, 2, 0, gui.AlignCenter, gui.AlignCenter},
-		{50, 50, &math32.Blue, 2, 3, 0, gui.AlignCenter, gui.AlignCenter},
-		{60, 60, &math32.Gray, 2, 4, 0, gui.AlignCenter, gui.AlignCenter},
+	// Slider to set the child width
+	s2 := gui.NewHSlider(42, 22)
+	s2.SetPosition(s1.Position().X+s1.Width()+10, 10)
+	s2.SetText("height")
+	s2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.bheight = s2.Value() * 20
+	})
+	ctx.Gui.Add(s2)
 
-		{60, 60, &math32.Gray, 3, 0, 0, gui.AlignTop, gui.AlignRight},
-		{50, 50, &math32.Blue, 3, 1, 0, gui.AlignTop, gui.AlignRight},
-		{40, 40, &math32.Green, 3, 2, 0, gui.AlignTop, gui.AlignRight},
-		{30, 30, &math32.Red, 3, 3, 0, gui.AlignTop, gui.AlignRight},
-		{20, 20, &math32.Black, 3, 4, 0, gui.AlignTop, gui.AlignRight},
+	// Edit field for child colspan
+	e1 := gui.NewEdit(60, "Colspan")
+	e1.SetPosition(s2.Position().X+s2.Width()+10, 10)
+	e1.MaxLength = 2
+	e1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		text := e1.Text()
+		v, err := strconv.Atoi(text)
+		if err == nil {
+			if t.colspan == nil {
+				t.colspan = new(int)
+				*t.colspan = v
+			}
+		} else {
+			t.colspan = nil
+		}
+	})
+	ctx.Gui.Add(e1)
 
-		{20, 20, &math32.Black, 4, 0, 0, gui.AlignCenter, gui.AlignCenter},
-		{40, 20, &math32.Red, 4, 1, 3, gui.AlignCenter, gui.AlignCenter},
-	}
-	for _, item := range grid {
-		p := gui.NewPanel(item.w, item.h)
-		p.SetColor(item.color)
-		p.SetLayoutParams(&gui.GridLayoutParams{Row: item.row, Col: item.col, ColSpan: item.colSpan, AlignV: item.valign, AlignH: item.halign})
-		p2.Add(p)
-	}
+	// Grid Layout horizontal alignment
+	dd1 := gui.NewDropDown(100, gui.NewImageLabel("horizontal"))
+	dd1.SetPosition(10, b1.Position().Y+b1.Width()+6)
+	dd1o1 := gui.NewImageLabel("None")
+	dd1o1.SetUserData(gui.AlignNone)
+	dd1.Add(dd1o1)
+	dd1o2 := gui.NewImageLabel("Left")
+	dd1o2.SetUserData(gui.AlignLeft)
+	dd1.Add(dd1o2)
+	dd1o3 := gui.NewImageLabel("Center")
+	dd1o3.SetUserData(gui.AlignCenter)
+	dd1.Add(dd1o3)
+	dd1o4 := gui.NewImageLabel("Right")
+	dd1o4.SetUserData(gui.AlignRight)
+	dd1.Add(dd1o4)
+	dd1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		sel := dd1.Selected()
+		t.layout.SetAlignH(sel.UserData().(gui.Align))
+	})
+	ctx.Gui.Add(dd1)
+
+	// Grid Layout vertical alignment
+	dd2 := gui.NewDropDown(100, gui.NewImageLabel("vertical"))
+	dd2.SetPosition(dd1.Position().X+dd1.Width()+10, dd1.Position().Y)
+	dd2o1 := gui.NewImageLabel("None")
+	dd2o1.SetUserData(gui.AlignNone)
+	dd2.Add(dd2o1)
+	dd2o2 := gui.NewImageLabel("Top")
+	dd2o2.SetUserData(gui.AlignTop)
+	dd2.Add(dd2o2)
+	dd2o3 := gui.NewImageLabel("Center")
+	dd2o3.SetUserData(gui.AlignCenter)
+	dd2.Add(dd2o3)
+	dd2o4 := gui.NewImageLabel("Bottom")
+	dd2o4.SetUserData(gui.AlignBottom)
+	dd2.Add(dd2o4)
+	dd2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		sel := dd2.Selected()
+		t.layout.SetAlignV(sel.UserData().(gui.Align))
+	})
+	ctx.Gui.Add(dd2)
+
+	// Creates panel with grid layout
+	p = gui.NewPanel(600, 400)
+	p.SetPosition(10, dd1.Position().Y+dd1.Height()+10)
+	p.SetColor(&math32.White)
+	p.SetBorders(1, 1, 1, 1)
+	t.layout = gui.NewGridLayout(6)
+	p.SetLayout(t.layout)
+	ctx.Gui.Add(p)
 }
 
 func (t *GuiLayoutGrid) Render(ctx *Context) {
