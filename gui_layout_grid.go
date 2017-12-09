@@ -84,7 +84,6 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 		}
 		// Force layout recalculation
 		t.layout.Recalc(t.pan)
-		log.Error("child params:%+v", child.LayoutParams())
 	})
 
 	// Button to add child to panel
@@ -103,7 +102,6 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 			child.Add(t.menu)
 			t.menu.SetUserData(child)
 			t.menu.SetVisible(true)
-			log.Error("show menu: %v / %v", child.Width()/2, child.Height()/2)
 		})
 		var params gui.GridLayoutParams
 		if t.colspan != nil {
