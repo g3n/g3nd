@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
@@ -13,29 +12,109 @@ func init() {
 }
 
 type GuiLayoutGrid struct {
-	bwidth  float32
-	bheight float32
-	layout  *gui.GridLayout
-	colspan *int
+	pan     *gui.Panel      // main panel
+	layout  *gui.GridLayout // panel layout
+	bwidth  float32         // next child width
+	bheight float32         // next child height
+	sw      *gui.Slider     // slider for child width
+	sh      *gui.Slider     // slider for child height
+	colspan *int            // next child colspan
+	ddcs    *gui.DropDown   // drop down for colspan
+	menu    *gui.Menu       // child menu
 }
 
 func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 
-	var p *gui.Panel
-	// Add button
+	// Creates menu with child options
+	t.menu = gui.NewMenu()
+	t.menu.SetBounded(false)
+	t.menu.SetVisible(false)
+	options := []string{
+		"Hide", "",
+		"Align left", "Align center", "Align right", "",
+		"Align top", "Align middle", "Align bottom", "",
+		"Colspan 0", "Colspan 1", "Colspan 2",
+	}
+	for _, op := range options {
+		if op != "" {
+			t.menu.AddOption(op).SetId(op)
+		} else {
+			t.menu.AddSeparator()
+		}
+	}
+	t.menu.Subscribe(gui.OnMouseOut, func(evname string, ev interface{}) {
+		t.menu.SetVisible(false)
+	})
+	t.menu.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+		child := t.menu.UserData().(*gui.ImageLabel)
+		child.Remove(t.menu)
+		t.menu.SetVisible(false)
+		opid := ev.(*gui.MenuItem).Id()
+		// Get child layout parameters
+		iparam := child.LayoutParams()
+		var params *gui.GridLayoutParams
+		if iparam == nil {
+			params = &gui.GridLayoutParams{}
+			child.SetLayoutParams(params)
+		} else {
+			params = iparam.(*gui.GridLayoutParams)
+		}
+		// Process menu options
+		switch opid {
+		case "Hide":
+			child.SetVisible(false)
+		case "Align left":
+			params.AlignH = gui.AlignLeft
+		case "Align center":
+			params.AlignH = gui.AlignCenter
+		case "Align right":
+			params.AlignH = gui.AlignRight
+		case "Align top":
+			params.AlignV = gui.AlignTop
+		case "Align middle":
+			params.AlignV = gui.AlignCenter
+		case "Align bottom":
+			params.AlignV = gui.AlignBottom
+		case "Colspan 0":
+			params.ColSpan = 0
+		case "Colspan 1":
+			params.ColSpan = 1
+		case "Colspan 2":
+			params.ColSpan = 2
+		}
+		// Force layout recalculation
+		t.layout.Recalc(t.pan)
+		log.Error("child params:%+v", child.LayoutParams())
+	})
+
+	// Button to add child to panel
 	b1 := gui.NewButton("Add")
 	b1.SetPosition(10, 10)
 	b1.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-		button := gui.NewButton(fmt.Sprintf("child %d", len(p.Children())))
-		button.SetWidth(button.Width() + t.bwidth)
-		button.SetHeight(button.Height() + t.bheight)
+		child := gui.NewImageLabel(fmt.Sprintf("child %d", len(t.pan.Children())))
+		child.SetBorders(1, 1, 1, 1)
+		child.SetPaddings(2, 2, 2, 2)
+		child.SetBgColor(&math32.Color{1, 1, 0})
+		child.SetWidth(child.Width() + t.bwidth)
+		child.SetHeight(child.Height() + t.bheight)
+		child.Subscribe(gui.OnMouseDown, func(evname string, ev interface{}) {
+			t.menu.SetPosition(child.Width()/2, child.Height()/2)
+			child.Remove(t.menu)
+			child.Add(t.menu)
+			t.menu.SetUserData(child)
+			t.menu.SetVisible(true)
+			log.Error("show menu: %v / %v", child.Width()/2, child.Height()/2)
+		})
 		var params gui.GridLayoutParams
 		if t.colspan != nil {
 			params.ColSpan = *t.colspan
-			button.SetLayoutParams(&params)
+			child.SetLayoutParams(&params)
 			log.Info("LayoutParams: %v", params)
 		}
-		p.Add(button)
+		t.pan.Add(child)
+		// Reset next child parameters
+		t.colspan = nil
+		t.ddcs.SelectPos(0)
 	})
 	ctx.Gui.Add(b1)
 
@@ -43,37 +122,43 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 	b2 := gui.NewButton("Clear")
 	b2.SetPosition(b1.Position().X+b1.Width()+10, 10)
 	b2.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-		p.DisposeChildren(true)
+		t.pan.DisposeChildren(true)
 		t.colspan = nil
+		t.sw.SetValue(0)
+		t.sh.SetValue(0)
 	})
 	ctx.Gui.Add(b2)
 
-	// Child button width slider
-	s1 := gui.NewHSlider(42, 22)
-	s1.SetPosition(b2.Position().X+b2.Width()+10, 10)
-	s1.SetText("width")
-	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		t.bwidth = s1.Value() * 20
+	// Slider for child width
+	t.sw = gui.NewHSlider(42, 22)
+	t.sw.SetPosition(b2.Position().X+b2.Width()+10, 10)
+	t.sw.SetText("width")
+	t.sw.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.bwidth = t.sw.Value() * 100
 	})
-	ctx.Gui.Add(s1)
+	ctx.Gui.Add(t.sw)
 
-	// Slider to set the child width
-	s2 := gui.NewHSlider(42, 22)
-	s2.SetPosition(s1.Position().X+s1.Width()+10, 10)
-	s2.SetText("height")
-	s2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		t.bheight = s2.Value() * 20
+	// Slider for child height
+	t.sh = gui.NewHSlider(42, 22)
+	t.sh.SetPosition(t.sw.Position().X+t.sw.Width()+10, 10)
+	t.sh.SetText("height")
+	t.sh.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.bheight = t.sh.Value() * 100
 	})
-	ctx.Gui.Add(s2)
+	ctx.Gui.Add(t.sh)
 
-	// Edit field for child colspan
-	e1 := gui.NewEdit(60, "Colspan")
-	e1.SetPosition(s2.Position().X+s2.Width()+10, 10)
-	e1.MaxLength = 2
-	e1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		text := e1.Text()
-		v, err := strconv.Atoi(text)
-		if err == nil {
+	// Colspan dropdown
+	t.ddcs = gui.NewDropDown(100, gui.NewImageLabel("colspan"))
+	t.ddcs.SetPosition(t.sh.Position().X+t.sh.Width()+10, 10)
+	for i := 0; i <= 6; i++ {
+		iml := gui.NewImageLabel(fmt.Sprintf("%d columns", i))
+		iml.SetUserData(i)
+		t.ddcs.Add(iml)
+	}
+	t.ddcs.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		sel := t.ddcs.Selected()
+		v := sel.UserData().(int)
+		if v != 0 {
 			if t.colspan == nil {
 				t.colspan = new(int)
 				*t.colspan = v
@@ -82,7 +167,7 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 			t.colspan = nil
 		}
 	})
-	ctx.Gui.Add(e1)
+	ctx.Gui.Add(t.ddcs)
 
 	// Grid Layout horizontal alignment
 	dd1 := gui.NewDropDown(100, gui.NewImageLabel("horizontal"))
@@ -126,14 +211,30 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 	})
 	ctx.Gui.Add(dd2)
 
+	// CheckBox for horizontal expansion
+	cb1 := gui.NewCheckBox("ExpandH")
+	cb1.SetPosition(dd2.Position().X+dd2.Width()+10, dd2.Position().Y)
+	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.layout.SetExpandH(cb1.Value())
+	})
+	ctx.Gui.Add(cb1)
+
+	// CheckBox for vertical expansion
+	cb2 := gui.NewCheckBox("ExpandV")
+	cb2.SetPosition(cb1.Position().X+cb1.Width()+10, cb1.Position().Y)
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.layout.SetExpandV(cb2.Value())
+	})
+	ctx.Gui.Add(cb2)
+
 	// Creates panel with grid layout
-	p = gui.NewPanel(600, 400)
-	p.SetPosition(10, dd1.Position().Y+dd1.Height()+10)
-	p.SetColor(&math32.White)
-	p.SetBorders(1, 1, 1, 1)
+	t.pan = gui.NewPanel(600, 400)
+	t.pan.SetPosition(10, dd1.Position().Y+dd1.Height()+10)
+	t.pan.SetColor(&math32.White)
+	t.pan.SetBorders(1, 1, 1, 1)
 	t.layout = gui.NewGridLayout(6)
-	p.SetLayout(t.layout)
-	ctx.Gui.Add(p)
+	t.pan.SetLayout(t.layout)
+	ctx.Gui.Add(t.pan)
 }
 
 func (t *GuiLayoutGrid) Render(ctx *Context) {
