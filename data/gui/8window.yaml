@@ -1,0 +1,16 @@
+#
+# Window
+#
+type: window
+width: 600
+height: 400
+title: Window Title
+resizable: top right bottom
+layout:
+  type: vbox
+items:
+- type: imagelabel
+  text: label1
+- type: imageLabel
+  text: label2
+
