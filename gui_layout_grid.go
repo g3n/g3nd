@@ -33,7 +33,7 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 		"Hide", "",
 		"Align left", "Align center", "Align right", "",
 		"Align top", "Align middle", "Align bottom", "",
-		"Colspan 0", "Colspan 1", "Colspan 2",
+		"Colspan 0", "Colspan 1", "Colspan 2", "Colspan 3", "Colspan 4", "Colspan 5",
 	}
 	for _, op := range options {
 		if op != "" {
@@ -69,18 +69,26 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 			params.AlignH = gui.AlignCenter
 		case "Align right":
 			params.AlignH = gui.AlignRight
+
 		case "Align top":
 			params.AlignV = gui.AlignTop
 		case "Align middle":
 			params.AlignV = gui.AlignCenter
 		case "Align bottom":
 			params.AlignV = gui.AlignBottom
+
 		case "Colspan 0":
 			params.ColSpan = 0
 		case "Colspan 1":
 			params.ColSpan = 1
 		case "Colspan 2":
 			params.ColSpan = 2
+		case "Colspan 3":
+			params.ColSpan = 3
+		case "Colspan 4":
+			params.ColSpan = 4
+		case "Colspan 5":
+			params.ColSpan = 5
 		}
 		// Force layout recalculation
 		t.layout.Recalc(t.pan)
