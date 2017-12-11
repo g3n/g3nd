@@ -7,10 +7,177 @@ height: 400
 title: Window Title
 resizable: top right bottom
 layout:
-  type: vbox
+  type: dock
 items:
-- type: imagelabel
-  text: label1
-- type: imageLabel
-  text: label2
+
+# Application header
+- type: panel
+  borders: 0
+  paddings: 6
+  color: white
+  layoutparams:
+    edge: top
+  layout:
+    type: hbox
+    spacing: 2
+    minheight: true
+  items:
+  # app icon
+  - type: imagelabel
+    icons: Settings
+  # app name
+  - type: imagelabel
+    text: App name
+  # spacer
+  - type: panel
+    layoutparams:
+      expand: 1
+  # app version label
+  - type: imagelabel
+    text: "Version:"
+  # app version label value
+  - type: imagelabel
+    text: "0.0.1"
+
+# Menubar top panel
+- type: MenuBar
+  layoutparams:
+    edge: top
+  items:
+  - type: Menu
+    text: menu1
+    items:
+    - text: item1
+    - text: item2
+    - text: item3
+    - text: item4
+  - type: Menu
+    text: menu2
+    items:
+    - text: option1
+      icon: ArrowDownward
+      shortcut: Ctrl+A
+    - text: option2
+      icon: CheckBox
+      shortcut: Alt+B
+    - type: Separator
+    - text: option3
+      icon: Computer
+      shortcut: Ctrl+Alt+B
+    - text: option4
+      icon: Contacts
+      shortcut: Shift+Ctrl+Alt+B
+    - type: Menu
+      text: sub menu
+      items:
+      - text: sub menu option1
+      - text: sub menu option2
+      - separator: true
+      - text: sub menu option3
+
+# Toolbar
+- type: panel
+  borders: 0 0 1 0
+  paddings: 4
+  color: gray
+  layoutparams:
+    edge: top
+  layout:
+    type: hbox
+    spacing: 8
+    alignv: center
+    minheight: true
+  items:
+  - type: button
+    text: b1 
+  - type: button
+    text: b2 
+  - type: dropdown
+    layoutparams:
+      alignv: center
+    width: 100
+    items:
+    - type: ImageLabel
+      text: item1
+    - type: ImageLabel
+      text: item2
+    - type: ImageLabel
+      text: item3
+    - type: ImageLabel
+      text: item4
+  - type: checkbox
+    text: check1
+    layoutparams:
+      alignv: center
+  - type: checkbox
+    text: check2
+    layoutparams:
+      alignv: center
+  - type: hslider
+    width: 60
+    text: level1
+    layoutparams:
+      alignv: center
+
+# Center panel
+- type: hsplitter
+  split: 0.3
+  layoutparams:
+    edge: center
+  # Left panel
+  p0:
+    layout:
+      type: vbox
+    items:
+    - type: tree
+      layoutparams:
+        alignh: width
+        expand: 1
+      items:
+      - type: Node
+        text: node1
+        items:
+        - type:
+          text: node1/node1
+        - type:
+          text: node1/node2
+        - type:
+          text: node1/node3
+      - type: Node
+        text: node2
+        items:
+        - type:
+          text: node2/node1
+        - type:
+          text: node2/node2
+        - type:
+          text: node2/node3
+      - type: Node
+        text: node3
+      - type: Node
+        text: node4
+      - type: Node
+        text: node5
+      - type: Node
+        text: node6
+  p1:
+    items:
+    - type: imagelabel
+      text: "----------------------"
+
+# Status bar
+- type: panel
+  color: yellow
+  paddings: 2
+  borders: 1 0 0 0
+  layoutparams:
+    edge: bottom
+  layout:
+    type: hbox
+    spacing: 2
+    alignv: center
+    minheight: true
+  items:
+  - type: imagelabel
+    text: status bar
 
