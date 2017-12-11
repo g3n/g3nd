@@ -23,15 +23,15 @@ func (t *Blending) Initialize(ctx *Context) {
 	ctx.AmbLight.SetIntensity(2)
 
 	// Creates checker board textures for background
-	c1 := math32.NewColor(0.7, 0.7, 0.7)
-	c2 := math32.NewColor(0.3, 0.3, 0.3)
+	c1 := &math32.Color{0.7, 0.7, 0.7}
+	c2 := &math32.Color{0.3, 0.3, 0.3}
 	t.texbg = texture.NewBoard(16, 16, c1, c2, c2, c1, 1)
 	t.texbg.SetWrapS(gls.REPEAT)
 	t.texbg.SetWrapT(gls.REPEAT)
 	t.texbg.SetRepeat(64, 64)
 
 	// Creates background plane
-	matbg := material.NewStandard(math32.NewColor(1, 1, 1))
+	matbg := material.NewStandard(&math32.Color{1, 1, 1})
 	matbg.SetPolygonOffset(1, 1)
 	matbg.AddTexture(t.texbg)
 	geombg := geometry.NewPlane(4000, 3000, 1, 1)
@@ -73,7 +73,7 @@ func (t *Blending) Initialize(ctx *Context) {
 	// Internal function go generate a row of images
 	var addImageRow = func(tex *texture.Texture2D, y int) {
 		for i := 0; i < len(blendings); i++ {
-			material := material.NewPhong(math32.NewColor(1, 1, 1))
+			material := material.NewPhong(&math32.Color{1, 1, 1})
 			material.SetOpacity(1)
 			material.AddTexture(tex)
 			material.SetBlending(blendings[i].value)

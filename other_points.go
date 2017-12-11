@@ -61,7 +61,7 @@ func (t *Points2) Initialize(ctx *Context) {
 	start := 0
 	count := numPoints / len(sprites)
 	for _, tex := range sprites {
-		mat := material.NewPoint(math32.NewColor(1, 1, 1))
+		mat := material.NewPoint(&math32.Color{1, 1, 1})
 		mat.AddTexture(tex)
 		mat.SetSize(1000)
 		mat.SetBlending(material.BlendingAdditive)

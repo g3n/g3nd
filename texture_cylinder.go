@@ -43,7 +43,7 @@ func (t *TextureCylinder) Initialize(ctx *Context) {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	geom1 := geometry.NewCylinder(0.8, 0.8, 2, 16, 2, 0, 2*math.Pi, true, true)
-	mat1 := material.NewPhong(math32.NewColor(1, 1, 1))
+	mat1 := material.NewPhong(&math32.Color{1, 1, 1})
 	mat1.SetSide(material.SideDouble)
 	mat1.AddTexture(tex)
 	t.mesh1 = graphic.NewMesh(geom1, mat1)
@@ -56,7 +56,7 @@ func (t *TextureCylinder) Initialize(ctx *Context) {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	geom2 := geometry.NewCylinder(0.8, 0.8, 2, 32, 16, 0, 2*math.Pi, false, true)
-	mat2 := material.NewPhong(math32.NewColor(1, 1, 1))
+	mat2 := material.NewPhong(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideDouble)
 	mat2.AddTexture(tex)
 	t.mesh2 = graphic.NewMesh(geom2, mat2)
@@ -69,7 +69,7 @@ func (t *TextureCylinder) Initialize(ctx *Context) {
 		log.Fatal("Error loading texture: %s", err)
 	}
 	geom3 := geometry.NewCylinder(0.4, 0.8, 2, 32, 1, 0, 2*math.Pi, false, true)
-	mat3 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.SetSide(material.SideDouble)
 	mat3.AddTexture(tex)
 	t.mesh3 = graphic.NewMesh(geom3, mat3)

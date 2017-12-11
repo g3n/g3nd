@@ -63,9 +63,9 @@ func (t *GuiButton) Initialize(ctx *Context) {
 	b5.SetIcon(icon.ViewHeadline)
 	// Copy and change the default style
 	styles := gui.StyleDefault().Button
-	styles.Over.BorderColor = math32.Red4
-	styles.Pressed.BorderColor = math32.Red4
-	styles.Normal.FgColor = math32.Blue
+	styles.Over.BorderColor = math32.Color4Name("red", 1)
+	styles.Pressed.BorderColor = math32.Color4Name("red", 1)
+	styles.Normal.FgColor = math32.ColorName("blue")
 	b5.SetStyles(&styles)
 	b5.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		log.Info("button 5 OnClick")

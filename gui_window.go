@@ -26,7 +26,7 @@ func (t *GuiWindow) Initialize(ctx *Context) {
 			"This window does not have a title\n" +
 			"It is resizable on all borders\n",
 	)
-	c1.SetBgColor(&math32.White)
+	c1.SetBgColor(math32.NewColor("white"))
 	w1.Add(c1)
 	ctx.Gui.Add(w1)
 

@@ -22,7 +22,7 @@ func (t *GuiMenu) Initialize(ctx *Context) {
 	mbOption := gui.NewLabel(mbText)
 	mbOption.SetPosition(300, 10)
 	mbOption.SetPaddings(2, 2, 2, 2)
-	mbOption.SetBgColor(&math32.White)
+	mbOption.SetBgColor(math32.NewColor("white"))
 	mbOption.SetBorders(1, 1, 1, 1)
 	ctx.Gui.Add(mbOption)
 

@@ -23,7 +23,7 @@ func init() {
 func (t *ShaderBricks) Initialize(ctx *Context) {
 
 	// Adds directional front light
-	dir1 := light.NewDirectional(math32.NewColor(1, 1, 1), 0.6)
+	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.6)
 	dir1.SetPosition(0, 0, 100)
 	ctx.Scene.Add(dir1)
 
@@ -38,24 +38,24 @@ func (t *ShaderBricks) Initialize(ctx *Context) {
 
 	// Creates plane 1
 	geom1 := geometry.NewPlane(2, 2, 4, 4)
-	mat1 := NewBricksMaterial(math32.NewColor(0.8, 0.2, 0.1))
+	mat1 := NewBricksMaterial(&math32.Color{0.8, 0.2, 0.1})
 	mat1.SetSide(material.SideDouble)
 	mat1.SetShininess(10)
-	mat1.SetSpecularColor(math32.NewColor(0, 0, 0))
+	mat1.SetSpecularColor(&math32.Color{0, 0, 0})
 	t.plane1 = graphic.NewMesh(geom1, mat1)
 	t.plane1.SetPosition(-1.2, 1, 0)
 	ctx.Scene.Add(t.plane1)
 
 	// Creates box1
 	geom2 := geometry.NewBox(2, 2, 1, 2, 2, 2)
-	mat2 := NewBricksMaterial(math32.NewColor(0.2, 0.4, 0.8))
+	mat2 := NewBricksMaterial(&math32.Color{0.2, 0.4, 0.8})
 	t.box1 = graphic.NewMesh(geom2, mat2)
 	t.box1.SetPosition(1.2, 1, 0)
 	ctx.Scene.Add(t.box1)
 
 	// Creates sphere 1
 	geom3 := geometry.NewSphere(1, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
-	mat3 := NewBricksMaterial(math32.NewColor(0.5, 0.6, 0.7))
+	mat3 := NewBricksMaterial(&math32.Color{0.5, 0.6, 0.7})
 	t.sphere1 = graphic.NewMesh(geom3, mat3)
 	t.sphere1.SetPosition(0, -1.2, 0)
 	ctx.Scene.Add(t.sphere1)

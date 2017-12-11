@@ -38,17 +38,17 @@ func (t *LoaderObj) Initialize(ctx *Context) {
 	})
 
 	// Adds white directional front light
-	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 0, 10)
 	ctx.Scene.Add(l1)
 
 	// Adds white directional top light
-	l2 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l2.SetPosition(0, 10, 0)
 	ctx.Scene.Add(l2)
 
 	// Adds white directional right light
-	l3 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l3 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l3.SetPosition(10, 0, 0)
 	ctx.Scene.Add(l3)
 

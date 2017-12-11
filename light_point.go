@@ -23,21 +23,21 @@ func (t *PointLight) Initialize(ctx *Context) {
 
 	// Creates right sphere
 	geom1 := geometry.NewSphere(0.5, 32, 32, 0, math.Pi*2, 0, math.Pi)
-	mat1 := material.NewStandard(math32.NewColor(0, 0, 0.6))
+	mat1 := material.NewStandard(&math32.Color{0, 0, 0.6})
 	sphere1 := graphic.NewMesh(geom1, mat1)
 	sphere1.SetPositionX(1)
 	ctx.Scene.Add(sphere1)
 
 	// Creates left sphere
 	geom2 := geometry.NewSphere(0.5, 32, 32, 0, math.Pi*2, 0, math.Pi)
-	mat2 := material.NewPhong(math32.NewColor(0, 0.5, 0.0))
+	mat2 := material.NewPhong(&math32.Color{0, 0.5, 0.0})
 	sphere2 := graphic.NewMesh(geom2, mat2)
 	sphere2.SetPositionX(-1)
 	ctx.Scene.Add(sphere2)
 
 	// Creates left plane
 	geom3 := geometry.NewPlane(4, 4, 8, 8)
-	mat3 := material.NewPhong(math32.NewColor(1, 1, 1))
+	mat3 := material.NewPhong(&math32.Color{1, 1, 1})
 	pleft := graphic.NewMesh(geom3, mat3)
 	pleft.SetPosition(-2, 0, 0)
 	pleft.SetRotationY(math.Pi / 2)
@@ -45,7 +45,7 @@ func (t *PointLight) Initialize(ctx *Context) {
 
 	// Creates right plane
 	geom4 := geometry.NewPlane(4, 4, 8, 8)
-	mat4 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat4 := material.NewStandard(&math32.Color{1, 1, 1})
 	pright := graphic.NewMesh(geom4, mat4)
 	pright.SetPosition(2, 0, 0)
 	pright.SetRotationY(-math.Pi / 2)
@@ -53,7 +53,7 @@ func (t *PointLight) Initialize(ctx *Context) {
 
 	// Creates top plane
 	geom5 := geometry.NewPlane(4, 4, 8, 8)
-	mat5 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat5 := material.NewStandard(&math32.Color{1, 1, 1})
 	ptop := graphic.NewMesh(geom5, mat5)
 	ptop.SetPosition(0, 2, 0)
 	ptop.SetRotationX(math.Pi / 2)
@@ -61,7 +61,7 @@ func (t *PointLight) Initialize(ctx *Context) {
 
 	// Creates bottom plane
 	geom6 := geometry.NewPlane(4, 4, 8, 8)
-	mat6 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat6 := material.NewStandard(&math32.Color{1, 1, 1})
 	pbot := graphic.NewMesh(geom6, mat6)
 	pbot.SetPosition(0, -2, 0)
 	pbot.SetRotationX(-math.Pi / 2)
@@ -69,7 +69,7 @@ func (t *PointLight) Initialize(ctx *Context) {
 
 	// Creates back plane
 	geom7 := geometry.NewPlane(4, 4, 8, 8)
-	mat7 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat7 := material.NewStandard(&math32.Color{1, 1, 1})
 	pback := graphic.NewMesh(geom7, mat7)
 	pback.SetPosition(0, 0, -2)
 	ctx.Scene.Add(pback)
@@ -78,11 +78,11 @@ func (t *PointLight) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Creates vertical point light
-	t.vl = NewLightMesh(math32.NewColor(1, 1, 1))
+	t.vl = NewLightMesh(&math32.Color{1, 1, 1})
 	t.vl.AddScene(ctx)
 
 	// Creates horizontal point light
-	t.hl = NewLightMesh(math32.NewColor(1, 1, 1))
+	t.hl = NewLightMesh(&math32.Color{1, 1, 1})
 	t.hl.AddScene(ctx)
 
 	// Subscribe to key events

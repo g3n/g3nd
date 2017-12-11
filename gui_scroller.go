@@ -69,7 +69,7 @@ func (t *GuiScroller) Initialize(ctx *Context) {
 		//        if s2.Len() % 2 == 0 {
 		l := gui.NewLabel(" ")
 		l.SetPaddings(2, 4, 2, 4)
-		l.SetBordersColor(&math32.Black)
+		l.SetBordersColor(math32.NewColor("black"))
 		l.SetText(fmt.Sprintf("label %d", s2.Len()))
 		s2.Add(l)
 		return

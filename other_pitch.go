@@ -40,13 +40,13 @@ func (t *Pitch) Initialize(ctx *Context) {
 	ctx.Gui.Add(label1)
 
 	// Top directional light
-	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 0.5)
+	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.5)
 	l1.SetPosition(0, 1, 0)
 	ctx.Scene.Add(l1)
 
 	// Creates plane base mesh
 	base_geom := geometry.NewCircle(1, 3, 0, 2*math.Pi)
-	base_mat := material.NewStandard(math32.NewColor(0, 1, 0))
+	base_mat := material.NewStandard(&math32.Color{0, 1, 0})
 	base_mat.SetWireframe(false)
 	base_mat.SetSide(material.SideDouble)
 	t.base = graphic.NewMesh(base_geom, base_mat)
@@ -63,7 +63,7 @@ func (t *Pitch) Initialize(ctx *Context) {
 	vert_geom.AddVBO(gls.NewVBO().AddAttrib("VertexNormal", 3).SetBuffer(normals))
 	vert_geom.SetIndices(indices)
 
-	vert_mat := material.NewStandard(math32.NewColor(0, 0, 1))
+	vert_mat := material.NewStandard(&math32.Color{0, 0, 1})
 	vert_mat.SetSide(material.SideDouble)
 	vert := graphic.NewMesh(vert_geom, vert_mat)
 	vert.SetScale(1.5, 1, 1)

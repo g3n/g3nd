@@ -44,7 +44,7 @@ func (t *Earth) Initialize(ctx *Context) {
 	ctx.Scene.Add(skybox)
 
 	// Adds directional front light
-	dir1 := light.NewDirectional(math32.NewColor(1, 1, 1), 0.9)
+	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.9)
 	dir1.SetPosition(0, 0, 100)
 	ctx.Scene.Add(dir1)
 
@@ -82,7 +82,7 @@ func (t *Earth) Initialize(ctx *Context) {
 	t.ctx.Renderer.AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
 
 	// Create custom material using the custom shader
-	matEarth := NewEarthMaterial(math32.NewColor(1, 1, 1))
+	matEarth := NewEarthMaterial(&math32.Color{1, 1, 1})
 	matEarth.SetShininess(20)
 	//matEarth.SetSpecularColor(&math32.Color{0., 1, 1})
 	//matEarth.SetColor(&math32.Color{0.8, 0.8, 0.8})

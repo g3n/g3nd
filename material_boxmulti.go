@@ -19,7 +19,7 @@ func init() {
 func (t *Boxmulti) Initialize(ctx *Context) {
 
 	// Front directional light
-	l1 := light.NewDirectional(math32.NewColor(0.4, 0.4, 0.4), 1.0)
+	l1 := light.NewDirectional(&math32.Color{0.4, 0.4, 0.4}, 1.0)
 	l1.SetPosition(0, 0, 1)
 	ctx.Scene.Add(l1)
 
@@ -31,12 +31,12 @@ func (t *Boxmulti) Initialize(ctx *Context) {
 	geom := geometry.NewBox(1, 1, 1, 1, 1, 1)
 
 	// Creates box materials
-	mat0 := material.NewStandard(math32.NewColor(1, 0, 0))
-	mat1 := material.NewStandard(math32.NewColor(0, 1, 0))
-	mat2 := material.NewStandard(math32.NewColor(0, 0, 1))
-	mat3 := material.NewStandard(math32.NewColor(1, 1, 0))
-	mat4 := material.NewStandard(math32.NewColor(0, 1, 1))
-	mat5 := material.NewStandard(math32.NewColor(1, 0, 1))
+	mat0 := material.NewStandard(&math32.Color{1, 0, 0})
+	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
+	mat2 := material.NewStandard(&math32.Color{0, 0, 1})
+	mat3 := material.NewStandard(&math32.Color{1, 1, 0})
+	mat4 := material.NewStandard(&math32.Color{0, 1, 1})
+	mat5 := material.NewStandard(&math32.Color{1, 0, 1})
 
 	// Creates box mesh and add materials for the groups
 	t.box = graphic.NewMesh(geom, nil)

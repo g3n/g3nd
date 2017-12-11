@@ -23,21 +23,21 @@ func (t *Children) Initialize(ctx *Context) {
 
 	t.circ1 = graphic.NewMesh(
 		geometry.NewCircle(0.5, 3, 0, 2*math.Pi),
-		material.NewStandard(math32.NewColor(0, 1, 0)),
+		material.NewStandard(&math32.Color{0, 1, 0}),
 	)
 	t.circ1.SetPositionX(0)
 	ctx.Scene.Add(t.circ1)
 
 	t.circ2 = graphic.NewMesh(
 		geometry.NewCircle(0.3, 5, 0, 2*math.Pi),
-		material.NewStandard(math32.NewColor(0, 0, 1)),
+		material.NewStandard(&math32.Color{0, 0, 1}),
 	)
 	t.circ2.SetPositionX(1.4)
 	t.circ1.Add(t.circ2)
 
 	t.circ3 = graphic.NewMesh(
 		geometry.NewCircle(0.2, 6, 0, 2*math.Pi),
-		material.NewStandard(math32.NewColor(1, 0, 0)),
+		material.NewStandard(&math32.Color{1, 0, 0}),
 	)
 	t.circ3.SetPositionX(0.6)
 	t.circ2.Add(t.circ3)

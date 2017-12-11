@@ -35,7 +35,7 @@ func (t *ShaderGeometry) Initialize(ctx *Context) {
 	ctx.Gui.Add(label1)
 
 	// Adds directional front light
-	dir1 := light.NewDirectional(math32.NewColor(1, 1, 1), 0.6)
+	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.6)
 	dir1.SetPosition(0, 0, 100)
 	ctx.Scene.Add(dir1)
 

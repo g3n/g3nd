@@ -37,7 +37,7 @@ func (t *Cylinder) Initialize(ctx *Context) {
 
 	// Left cylinder
 	geom1 := geometry.NewCylinder(0.8, 0.8, 2, 16, 2, 0, 2*math.Pi, true, true)
-	mat1 := material.NewPhong(math32.NewColor(0, 1, 0))
+	mat1 := material.NewPhong(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
 	t.mesh = graphic.NewMesh(geom1, mat1)
@@ -46,7 +46,7 @@ func (t *Cylinder) Initialize(ctx *Context) {
 
 	// Middle cylinder
 	geom2 := geometry.NewCylinder(0.8, 0.8, 2, 32, 16, 0, 2*math.Pi, false, true)
-	mat2 := material.NewPhong(math32.NewColor(1, 1, 1))
+	mat2 := material.NewPhong(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom2, mat2)
 	mesh.SetPosition(0, 0, 0)
@@ -54,7 +54,7 @@ func (t *Cylinder) Initialize(ctx *Context) {
 
 	// Right cylinder
 	geom3 := geometry.NewCylinder(0.4, 0.8, 2, 32, 1, 0, 2*math.Pi, false, true)
-	mat3 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.SetSide(material.SideDouble)
 	mesh3 := graphic.NewMesh(geom3, mat3)
 	mesh3.SetPosition(2, 0, 0)
@@ -65,7 +65,7 @@ func (t *Cylinder) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.mesh, 0.5, math32.NewColor(0, 1, 0), 1)
+	t.normals = graphic.NewNormalsHelper(t.mesh, 0.5, &math32.Color{0, 1, 0}, 1)
 	ctx.Scene.Add(t.normals)
 }
 

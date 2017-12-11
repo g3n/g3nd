@@ -38,7 +38,7 @@ func (t *Sphere) Initialize(ctx *Context) {
 
 	// Creates sphere 1
 	geom1 := geometry.NewSphere(1, 16, 16, 0, math.Pi*2, 0, math.Pi)
-	mat1 := material.NewStandard(math32.NewColor(0, 0, 0.6))
+	mat1 := material.NewStandard(&math32.Color{0, 0, 0.6})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
 	t.sphere1 = graphic.NewMesh(geom1, mat1)
@@ -47,7 +47,7 @@ func (t *Sphere) Initialize(ctx *Context) {
 
 	// Creates sphere 2
 	geom2 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
-	mat2 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetWireframe(false)
 	mat2.SetSide(material.SideDouble)
 	t.sphere2 = graphic.NewMesh(geom2, mat2)
@@ -59,7 +59,7 @@ func (t *Sphere) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.sphere1, 0.5, math32.NewColor(0, 1, 0), 1)
+	t.normals = graphic.NewNormalsHelper(t.sphere1, 0.5, &math32.Color{0, 1, 0}, 1)
 	ctx.Scene.Add(t.normals)
 }
 

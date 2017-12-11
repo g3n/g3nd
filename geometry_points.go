@@ -44,7 +44,7 @@ func (t *Points) Initialize(ctx *Context) {
 	positions = nil // Positions cannot be used after transfering to VBO
 
 	// Creates point material
-	mat := material.NewPoint(math32.NewColor(0, 0, 0))
+	mat := material.NewPoint(&math32.Color{0, 0, 0})
 	mat.SetSize(2000)
 
 	// Creates points mesh

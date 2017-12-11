@@ -192,7 +192,7 @@ func NewPlayerCone(ctx *Context, filename string, color *math32.Color) *PlayerCo
 	canvas.DrawText(0, 0, filename, font)
 	tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
 	plane_geom := geometry.NewPlane(2.0, 2.0/aspect, 1, 1)
-	plane_mat := material.NewStandard(math32.NewColor(1, 1, 1))
+	plane_mat := material.NewStandard(math32.NewColor("white"))
 	plane_mat.AddTexture(tex)
 	pc.label = graphic.NewMesh(plane_geom, plane_mat)
 	pc.label.SetPosition(0, 0, 0.51)

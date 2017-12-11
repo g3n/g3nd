@@ -21,7 +21,7 @@ func (t *Box) Initialize(ctx *Context) {
 
 	// Add box
 	geom := geometry.NewBox(1, 1, 1, 2, 2, 2)
-	mat := material.NewStandard(math32.NewColor(0.5, 0, 0))
+	mat := material.NewStandard(&math32.Color{0.5, 0, 0})
 	mat.SetWireframe(false)
 	t.box = graphic.NewMesh(geom, mat)
 	ctx.Scene.Add(t.box)
@@ -31,7 +31,7 @@ func (t *Box) Initialize(ctx *Context) {
 	ctx.Scene.Add(t.normals)
 
 	// Adds directional light
-	l1 := light.NewDirectional(math32.NewColor(0.4, 0.4, 0.4), 1.0)
+	l1 := light.NewDirectional(&math32.Color{0.4, 0.4, 0.4}, 1.0)
 	l1.SetPosition(0, 0, 1)
 	ctx.Scene.Add(l1)
 }

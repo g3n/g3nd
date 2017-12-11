@@ -96,7 +96,7 @@ func NewFileSelect(width, height float32) *FileSelect {
 	fs.Panel.Initialize(width, height)
 	fs.SetBorders(1, 1, 1, 1)
 	fs.SetPaddings(4, 4, 4, 4)
-	fs.SetColor(&math32.White)
+	fs.SetColor(math32.NewColor("white"))
 	fs.SetVisible(false)
 
 	// Set vertical box layout for the whole panel

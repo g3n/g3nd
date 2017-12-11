@@ -34,17 +34,17 @@ func (t *Texbox) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Adds white directional front light
-	dir1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir1.SetPosition(0, 0, 10)
 	ctx.Scene.Add(dir1)
 
 	// Adds blue directional right light
-	dir2 := light.NewDirectional(math32.NewColor(0, 0, 1), 1.0)
+	dir2 := light.NewDirectional(&math32.Color{0, 0, 1}, 1.0)
 	dir2.SetPosition(10, 0, 0)
 	ctx.Scene.Add(dir2)
 
 	// Adds red directional left light
-	dir3 := light.NewDirectional(math32.NewColor(1, 0, 0), 1.0)
+	dir3 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
 	dir3.SetPosition(-10, 0, 0)
 	ctx.Scene.Add(dir3)
 
@@ -57,7 +57,7 @@ func (t *Texbox) Initialize(ctx *Context) {
 	t.tex1 = tex1
 	// Creates box 1
 	geom1 := geometry.NewBox(1.5, 1.5, 1.5, 16, 16, 16)
-	t.mat1 = material.NewStandard(math32.NewColor(1, 1, 1))
+	t.mat1 = material.NewStandard(&math32.Color{1, 1, 1})
 	t.mat1.AddTexture(t.tex1)
 	t.box1 = graphic.NewMesh(geom1, t.mat1)
 	t.box1.SetPosition(-1.5, 1, 0)
@@ -72,7 +72,7 @@ func (t *Texbox) Initialize(ctx *Context) {
 	t.tex2 = tex2
 	// Creates box 2
 	geom2 := geometry.NewBox(1.5, 1.5, 1.5, 16, 16, 16)
-	t.mat2 = material.NewPhong(math32.NewColor(1, 1, 1))
+	t.mat2 = material.NewPhong(&math32.Color{1, 1, 1})
 	t.mat2.AddTexture(t.tex2)
 	t.box2 = graphic.NewMesh(geom2, t.mat2)
 	t.box2.SetPosition(1.5, 1, 0)
@@ -87,7 +87,7 @@ func (t *Texbox) Initialize(ctx *Context) {
 	t.tex3 = tex3
 	// Creates box 3
 	geom3 := geometry.NewBox(1.5, 1.5, 1.5, 16, 16, 16)
-	t.mat3 = material.NewStandard(math32.NewColor(1, 1, 1))
+	t.mat3 = material.NewStandard(&math32.Color{1, 1, 1})
 	t.mat3.AddTexture(t.tex1.Incref())
 	t.mat3.AddTexture(t.tex3)
 	t.box3 = graphic.NewMesh(geom3, t.mat3)
@@ -96,7 +96,7 @@ func (t *Texbox) Initialize(ctx *Context) {
 
 	// Creates box 4
 	geom4 := geometry.NewBox(1.5, 1.5, 1.5, 16, 16, 16)
-	t.mat4 = material.NewPhong(math32.NewColor(1, 1, 1))
+	t.mat4 = material.NewPhong(&math32.Color{1, 1, 1})
 	t.mat4.AddTexture(t.tex2.Incref())
 	t.mat4.AddTexture(t.tex3.Incref())
 	t.box4 = graphic.NewMesh(geom4, t.mat4)

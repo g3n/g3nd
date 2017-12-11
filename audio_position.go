@@ -150,7 +150,7 @@ func NewPlayerSphere(ctx *Context, filename string, color *math32.Color) *Player
 	aspect := float32(width) / float32(height)
 	canvas.DrawText(0, 0, filename, font)
 	tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
-	plane_mat := material.NewStandard(math32.NewColor(1, 1, 1))
+	plane_mat := material.NewStandard(math32.NewColor("black"))
 	plane_mat.AddTexture(tex)
 	ps.label = graphic.NewSprite(0.5*aspect, 0.5, plane_mat)
 	ps.label.SetPosition(0, 0.4, 0)

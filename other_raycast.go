@@ -25,13 +25,13 @@ func (t *Raycast) Initialize(ctx *Context) {
 	axis := graphic.NewAxisHelper(1)
 	ctx.Scene.Add(axis)
 
-	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 0, 5)
 	ctx.Scene.Add(l1)
 
 	// Plane
 	geom1 := geometry.NewPlane(1.5, 1, 1, 1)
-	mat1 := material.NewStandard(math32.NewColor(0, 1, 0))
+	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetSide(material.SideFront)
 	mesh1 := graphic.NewMesh(geom1, mat1)
 	mesh1.SetPosition(-1.2, 0, 0)
@@ -39,7 +39,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 
 	// Box
 	geom2 := geometry.NewBox(1, 1, 1, 1, 1, 1)
-	mat2 := material.NewPhong(math32.NewColor(1, 0, 0))
+	mat2 := material.NewPhong(&math32.Color{1, 0, 0})
 	mat2.SetSide(material.SideFront)
 	mesh2 := graphic.NewMesh(geom2, mat2)
 	mesh2.SetPosition(1.2, 0, 0)
@@ -47,14 +47,14 @@ func (t *Raycast) Initialize(ctx *Context) {
 
 	// Sphere
 	geom3 := geometry.NewSphere(0.5, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
-	mat3 := material.NewStandard(math32.NewColor(0, 1, 1))
+	mat3 := material.NewStandard(&math32.Color{0, 1, 1})
 	mesh3 := graphic.NewMesh(geom3, mat3)
 	mesh3.SetPosition(0, 1, -1)
 	ctx.Scene.Add(mesh3)
 
 	// Open ended cylinder
 	geom4 := geometry.NewCylinder(0.5, 0.5, 1, 16, 1, 0, 2*math32.Pi, false, false)
-	mat4 := material.NewPhong(math32.NewColor(1, 1, 0))
+	mat4 := material.NewPhong(&math32.Color{1, 1, 0})
 	mat4.SetSide(material.SideDouble)
 	mesh4 := graphic.NewMesh(geom4, mat4)
 	mesh4.SetPosition(0, -1.2, -0.5)
@@ -62,7 +62,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 
 	// Circle
 	geom5 := geometry.NewCircle(0.6, 5, 0, 2*math32.Pi)
-	mat5 := material.NewStandard(math32.NewColor(0.5, 0.5, 0.9))
+	mat5 := material.NewStandard(&math32.Color{0.5, 0.5, 0.9})
 	mat5.SetSide(material.SideDouble)
 	mesh5 := graphic.NewMesh(geom5, mat5)
 	mesh5.SetPosition(-1.2, -1.2, -0.5)
@@ -71,7 +71,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 
 	// Torus
 	geom6 := geometry.NewTorus(0.5, 0.2, 16, 16, math32.Pi)
-	mat6 := material.NewStandard(math32.NewColor(0, 0, 0.5))
+	mat6 := material.NewStandard(&math32.Color{0, 0, 0.5})
 	mat6.SetSide(material.SideDouble)
 	mesh6 := graphic.NewMesh(geom6, mat6)
 	mesh6.SetPosition(1.5, -1.2, -1)
@@ -79,7 +79,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 
 	// Cone (Cylinder)
 	geom7 := geometry.NewCylinder(0, 0.5, 1, 16, 16, 0, 2*math32.Pi, true, true)
-	mat7 := material.NewPhong(math32.NewColor(0.8, 0.7, 0.3))
+	mat7 := material.NewPhong(&math32.Color{0.8, 0.7, 0.3})
 	mat7.SetSide(material.SideFront)
 	mat7.SetOpacity(0.6)
 	mesh7 := graphic.NewMesh(geom7, mat7)
@@ -103,7 +103,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 		-1, 2, -1, 1, 2, -1,
 	)
 	geom9.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
-	mat9 := material.NewStandard(math32.NewColor(1, 0, 0))
+	mat9 := material.NewStandard(&math32.Color{1, 0, 0})
 	mesh9 := graphic.NewLineStrip(geom9, mat9)
 	mesh9.SetPosition(-1.5, 0.5, -0.4)
 	ctx.Scene.Add(mesh9)
@@ -122,7 +122,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 		0.1, 0.1, 0.1, 0.5, 0.5, 0.5,
 	)
 	geom10.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
-	mat10 := material.NewStandard(math32.NewColor(0, 0, 1))
+	mat10 := material.NewStandard(&math32.Color{0, 0, 1})
 	mesh10 := graphic.NewLines(geom10, mat10)
 	mesh10.SetScale(0.8, 0.8, 0.8)
 	mesh10.SetPosition(1, 1.5, 0)
@@ -138,7 +138,7 @@ func (t *Raycast) Initialize(ctx *Context) {
 		positions.Append(x, y, z)
 	}
 	geom11.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
-	mat11 := material.NewPoint(math32.NewColor(0, 0, 0))
+	mat11 := material.NewPoint(&math32.Color{0, 0, 0})
 	mat11.SetSize(1000)
 	mesh11 := graphic.NewPoints(geom11, mat11)
 	mesh11.SetPosition(-2, -1, 0)

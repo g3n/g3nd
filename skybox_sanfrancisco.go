@@ -37,7 +37,7 @@ func (t *Skybox) Initialize(ctx *Context) {
 		if err != nil {
 			log.Fatal("Error loading texture: %s", err)
 		}
-		matFace := material.NewStandard(math32.NewColor(1, 1, 1))
+		matFace := material.NewStandard(&math32.Color{1, 1, 1})
 		matFace.AddTexture(tex)
 		matFace.SetSide(material.SideBack)
 		skybox.AddGroupMaterial(matFace, i)

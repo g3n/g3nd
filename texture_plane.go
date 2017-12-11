@@ -24,17 +24,17 @@ func (t *Texplane) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Adds red directional right light
-	dir1 := light.NewDirectional(math32.NewColor(1, 0, 0), 1.0)
+	dir1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
 	dir1.SetPosition(1, 0, 0)
 	ctx.Scene.Add(dir1)
 
 	// Adds green directional top light
-	dir2 := light.NewDirectional(math32.NewColor(1, 0, 0), 1.0)
+	dir2 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
 	dir2.SetPosition(0, 1, 0)
 	ctx.Scene.Add(dir2)
 
 	// Adds white directional front light
-	dir3 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	dir3 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir3.SetPosition(0, 0, 1)
 	ctx.Scene.Add(dir3)
 
@@ -46,7 +46,7 @@ func (t *Texplane) Initialize(ctx *Context) {
 	}
 	// Creates plane 1
 	plane1_geom := geometry.NewPlane(2, 2, 1, 1)
-	plane1_mat := material.NewStandard(math32.NewColor(1, 1, 1))
+	plane1_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane1_mat.SetSide(material.SideDouble)
 	plane1_mat.AddTexture(tex1)
 	t.plane1 = graphic.NewMesh(plane1_geom, plane1_mat)
@@ -61,7 +61,7 @@ func (t *Texplane) Initialize(ctx *Context) {
 	}
 	// Creates plane2
 	plane2_geom := geometry.NewPlane(2, 2, 1, 1)
-	plane2_mat := material.NewPhong(math32.NewColor(1, 1, 1))
+	plane2_mat := material.NewPhong(&math32.Color{1, 1, 1})
 	plane2_mat.SetSide(material.SideDouble)
 	plane2_mat.AddTexture(tex2)
 	t.plane2 = graphic.NewMesh(plane2_geom, plane2_mat)

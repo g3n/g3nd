@@ -236,7 +236,7 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 	// Creates panel with grid layout
 	t.pan = gui.NewPanel(600, 400)
 	t.pan.SetPosition(10, dd1.Position().Y+dd1.Height()+10)
-	t.pan.SetColor(&math32.White)
+	t.pan.SetColor(math32.NewColor("white"))
 	t.pan.SetBorders(1, 1, 1, 1)
 	t.layout = gui.NewGridLayout(6)
 	t.pan.SetLayout(t.layout)

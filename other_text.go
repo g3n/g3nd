@@ -33,7 +33,7 @@ Isaac Newton.
 
 func (t *Text1) Initialize(ctx *Context) {
 
-	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 0, 10)
 	ctx.Scene.Add(l1)
 
@@ -61,17 +61,17 @@ func (t *Text1) Initialize(ctx *Context) {
 		nwidth, nheight := font.MeasureText(name)
 		fx := (width - nwidth) / 2
 		fy := (height - nheight) / 2
-		canvas := text.NewCanvas(width, height, math32.NewColor4(1, 1, 1, 0.8))
+		canvas := text.NewCanvas(width, height, &math32.Color4{1, 1, 1, 0.8})
 		canvas.DrawText(fx, fy, name, font)
 		tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
-		mat := material.NewStandard(math32.NewColor(1, 1, 1))
+		mat := material.NewStandard(&math32.Color{1, 1, 1})
 		mat.AddTexture(tex)
 		mesh1.AddGroupMaterial(mat, idx)
 	}
 	ctx.Scene.Add(mesh1)
 
 	// Plane texture
-	canvas := text.NewCanvas(300, 200, math32.NewColor4(0, 1, 0, 0.8))
+	canvas := text.NewCanvas(300, 200, &math32.Color4{0, 1, 0, 0.8})
 	canvas.DrawText(0, 20, "Message1", font)
 	canvas.DrawText(100, 50, "Other text", font)
 	font.SetFgColor4(&math32.Color4{1, 0, 0, 1})
@@ -82,7 +82,7 @@ func (t *Text1) Initialize(ctx *Context) {
 	// Plane
 	tex1 := texture.NewTexture2DFromRGBA(canvas.RGBA)
 	geom2 := geometry.NewPlane(3, 2, 1, 1)
-	mat2 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.AddTexture(tex1)
 	mesh2 := graphic.NewMesh(geom2, mat2)
 	mesh2.SetPosition(2, 2, -0.8)
@@ -91,10 +91,10 @@ func (t *Text1) Initialize(ctx *Context) {
 	// Sprite1
 	stext := "Sprite1\nSprite1\nSprite1"
 	swidth, sheight := font.MeasureText(stext)
-	canvas = text.NewCanvas(swidth, sheight, math32.NewColor4(0, 1, 1, 1))
+	canvas = text.NewCanvas(swidth, sheight, &math32.Color4{0, 1, 1, 1})
 	canvas.DrawText(0, 0, stext, font)
 	tex3 := texture.NewTexture2DFromRGBA(canvas.RGBA)
-	mat3 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.AddTexture(tex3)
 	aspect := float32(swidth) / float32(sheight)
 	mesh3 := graphic.NewSprite(aspect, 1, mat3)
@@ -106,10 +106,10 @@ func (t *Text1) Initialize(ctx *Context) {
 	swidth, sheight = font.MeasureText(newtonMsg)
 	mx := 10
 	swidth += 2 * mx
-	canvas = text.NewCanvas(swidth, sheight, math32.NewColor4(1, 1, 1, 1))
+	canvas = text.NewCanvas(swidth, sheight, &math32.Color4{1, 1, 1, 1})
 	canvas.DrawText(mx, 0, newtonMsg, font)
 	tex4 := texture.NewTexture2DFromRGBA(canvas.RGBA)
-	mat4 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat4 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat4.AddTexture(tex4)
 	aspect = float32(swidth) / float32(sheight)
 	mesh4 := graphic.NewSprite(aspect, 1, mat4)
@@ -117,11 +117,11 @@ func (t *Text1) Initialize(ctx *Context) {
 	ctx.Scene.Add(mesh4)
 
 	// Plane2
-	canvas = text.NewCanvas(256, 64, math32.NewColor4(1, 1, 1, 1))
+	canvas = text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
 	canvas.DrawText(0, 0, "", font)
 	t.planeTex = texture.NewTexture2DFromRGBA(canvas.RGBA)
 	geom5 := geometry.NewPlane(2, 0.5, 1, 1)
-	mat5 := material.NewStandard(math32.NewColor(0.5, 0.8, 1))
+	mat5 := material.NewStandard(&math32.Color{0.5, 0.8, 1})
 	mat5.SetSide(material.SideDouble)
 	mat5.AddTexture(t.planeTex)
 	mesh5 := graphic.NewMesh(geom5, mat5)
@@ -137,7 +137,7 @@ func (t *Text1) Render(ctx *Context) {
 
 	l1 := fmt.Sprintf("Time: %4.4f", ctx.Win.GetTime())
 	// Creates updated canvas
-	canvas := text.NewCanvas(256, 64, math32.NewColor4(1, 1, 1, 1))
+	canvas := text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
 	t.font.SetSize(30)
 	canvas.DrawText(0, 0, l1, t.font)
 	// Update material texture

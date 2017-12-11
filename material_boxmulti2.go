@@ -20,7 +20,7 @@ func init() {
 func (t *Boxmulti2) Initialize(ctx *Context) {
 
 	// Front directional light
-	l1 := light.NewDirectional(math32.NewColor(0.4, 0.4, 0.4), 1.0)
+	l1 := light.NewDirectional(&math32.Color{0.4, 0.4, 0.4}, 1.0)
 	l1.SetPosition(0, 0, 1)
 	ctx.Scene.Add(l1)
 
@@ -54,17 +54,17 @@ func (t *Boxmulti2) Initialize(ctx *Context) {
 		log.Fatal("Error loading texture: %s", err)
 	}
 
-	mat0 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat0 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat0.AddTexture(tex0)
-	mat1 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat1 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat1.AddTexture(tex1)
-	mat2 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.AddTexture(tex2)
-	mat3 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.AddTexture(tex3)
-	mat4 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat4 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat4.AddTexture(tex4)
-	mat5 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat5 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat5.AddTexture(tex5)
 
 	geom := geometry.NewBox(1, 1, 1, 2, 2, 2)

@@ -37,7 +37,7 @@ func (t *Torus) Initialize(ctx *Context) {
 
 	// Add torus at upper-left
 	geom1 := geometry.NewTorus(1, 0.25, 8, 8, 2*math.Pi)
-	mat1 := material.NewStandard(math32.NewColor(0, 0, 0.5))
+	mat1 := material.NewStandard(&math32.Color{0, 0, 0.5})
 	t.torus1 = graphic.NewMesh(geom1, mat1)
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
@@ -46,21 +46,21 @@ func (t *Torus) Initialize(ctx *Context) {
 
 	// Add torus at upper-right
 	geom2 := geometry.NewTorus(1, 0.25, 32, 32, 2*math.Pi)
-	mat2 := material.NewStandard(math32.NewColor(1, 1, 1))
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	torus2 := graphic.NewMesh(geom2, mat2)
 	torus2.SetPosition(2, 1.5, 0)
 	ctx.Scene.Add(torus2)
 
 	// Add torus at bottom-left
 	geom3 := geometry.NewTorus(1, 0.25, 32, 32, 2*math.Pi)
-	mat3 := material.NewStandard(math32.NewColor(0.5, 0.5, 0.5))
+	mat3 := material.NewStandard(&math32.Color{0.5, 0.5, 0.5})
 	torus3 := graphic.NewMesh(geom3, mat3)
 	torus3.SetPosition(-2, -1.5, 0)
 	ctx.Scene.Add(torus3)
 
 	// Add torus at bottom-right
 	geom4 := geometry.NewTorus(1, 0.25, 64, 64, 3*math.Pi/2)
-	mat4 := material.NewStandard(math32.NewColor(0.5, 0.5, 0.5))
+	mat4 := material.NewStandard(&math32.Color{0.5, 0.5, 0.5})
 	mat4.SetSide(material.SideDouble)
 	torus4 := graphic.NewMesh(geom4, mat4)
 	torus4.SetPosition(2, -1.5, 0)
@@ -71,7 +71,7 @@ func (t *Torus) Initialize(ctx *Context) {
 	ctx.Scene.Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.torus1, 0.5, math32.NewColor(0, 1, 0), 1)
+	t.normals = graphic.NewNormalsHelper(t.torus1, 0.5, &math32.Color{0, 1, 0}, 1)
 	ctx.Scene.Add(t.normals)
 }
 

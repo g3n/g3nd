@@ -36,7 +36,7 @@ func (t *GuiLayoutVBox) Initialize(ctx *Context) {
 	p1 = gui.NewPanel(pwidth, pheight)
 	p1.SetPosition(rb.Position().X, rb.Position().Y+rb.Height()+4)
 	p1.SetBorders(1, 1, 1, 1)
-	p1.SetBordersColor(&math32.Black)
+	p1.SetBordersColor(math32.NewColor("black"))
 	p1.SetPaddings(2, 2, 2, 2)
 	ctx.Gui.Add(p1)
 	// Horizontal box layout
