@@ -1,7 +1,7 @@
 #
 # Form test
 #
-consts:
+consts_:
     expleft: &expleft 34
     expright: &expright 50 
 
