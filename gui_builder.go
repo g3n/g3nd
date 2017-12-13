@@ -69,6 +69,7 @@ func (t *GuiBuilder) build(ctx *Context, fpath string) {
 
 	// Build gui objects and adds them to the container panel
 	names := b.Names()
+	log.Error("NAMES:%v\n", names)
 	for _, name := range names {
 		p, err := b.Build(name)
 		if err != nil {

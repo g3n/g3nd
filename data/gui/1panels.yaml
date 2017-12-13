@@ -1,7 +1,7 @@
 #
 # Panels
 #
-panel1: &panel1
+Panel1: &panel1
     type: Panel
     name: panel1
     position: 0 0
@@ -13,7 +13,7 @@ panel1: &panel1
     paddings:  2 2 2 2
     color:  red
 
-panel2: &panel2
+Panel2: &panel2
     type: Panel
     name: panel2
     position: 120 0
@@ -22,7 +22,7 @@ panel2: &panel2
     margins: 2
     borders: 4
     bordercolor: purple
-    paddings: 0,0,0,0
+    paddings: 0 0 0 0
     color: green
 
 panel3:
@@ -37,11 +37,13 @@ panel3:
     paddings: 0,0,0,0
     color: blue
     items:
-    - type: Panel
+    - *panel1
+    - type: panel
+      name: panel3.1
       width: 10
       height: 10
-      color: red
-    - *panel1
+      borders: 4
+      color: yellow
 
 panel4:
     type: ImagePanel
