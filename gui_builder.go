@@ -33,6 +33,7 @@ func (t *GuiBuilder) Initialize(ctx *Context) {
 	t.container.SetBorders(0, 0, 0, 0)
 	t.container.SetMargins(2, 2, 2, 2)
 	t.container.SetColor4(&math32.Color4{1, 1, 1, 0})
+	// Internal function to resize container when gui resizes
 	onResize := func() {
 		t.container.SetSize(ctx.Gui.ContentWidth(), ctx.Gui.ContentHeight()-t.selFile.Height())
 		t.container.SetPosition(0, t.selFile.Position().Y+t.selFile.Height())
