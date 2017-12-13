@@ -72,7 +72,7 @@ items:
       items:
       - text: sub menu option1
       - text: sub menu option2
-      - separator: true
+      - type: separator
       - text: sub menu option3
 
 # Toolbar
@@ -125,7 +125,7 @@ items:
   layoutparams:
     edge: center
   # Left panel
-  p0:
+  panel0:
     layout:
       type: vbox
     items:
@@ -160,7 +160,7 @@ items:
         text: node5
       - type: Node
         text: node6
-  p1:
+  panel1:
     items:
     - type: imagelabel
       text: "----------------------"
