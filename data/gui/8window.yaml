@@ -24,7 +24,7 @@ items:
   items:
   # app icon
   - type: imagelabel
-    icons: Settings
+    icon: Settings
   # app name
   - type: imagelabel
     text: App name
