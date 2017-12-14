@@ -5,7 +5,7 @@ type: window
 width: 600
 height: 400
 title: Window Title
-resizable: top right bottom
+resizeborders: top right bottom
 layout:
   type: dock
 items:
@@ -20,7 +20,7 @@ items:
   layout:
     type: hbox
     spacing: 2
-    minheight: true
+    autoheight: true
   items:
   # app icon
   - type: imagelabel
@@ -96,7 +96,7 @@ items:
     type: hbox
     spacing: 8
     alignv: center
-    minheight: true
+    autoheight: true
   items:
   - type: button
     icon: Done 
@@ -176,12 +176,40 @@ items:
     layout:
       type: vbox
     items:
+    - type: table
+      layoutparams:
+        alignh: width
+        expand: 1
+      showheader: true
+      columns:
+      - id: "1"
+        header: col1
+        width: 100
+        minwidth: 32
+        resize: true
+      - id: "2"
+        header: col2
+        width: 100
+        minwidth: 32
+        resize: true
+      - id: "3"
+        header: col3
+        width: 100
+        minwidth: 32
+        resize: true
+        hidden: true
+      - id: "4"
+        header: col4
+        width: 100
+        minwidth: 32
+        resize: true
+        expand: 1
     - type: chart
       color: lightblue
       paddings: 8
       layoutparams:
         alignh: width
-        expand: 1
+        expand: 3
       title: Chart Title
       scalex:
         fontsize: 12
@@ -209,7 +237,7 @@ items:
     type: hbox
     spacing: 2
     alignv: center
-    minheight: true
+    autoheight: true
   items:
   - type: imagelabel
     text: status bar

@@ -14,7 +14,7 @@ form1:
     layout:
         type: vbox
         spacing: 10
-        minheight: true
+        autoheight: true
     items:
     # Form title row
     - type: panel
@@ -27,7 +27,7 @@ form1:
       layout:
           type: hbox
           alignh: center
-          minheight: true
+          autoheight: true
       items:
       - type: label
         color: white
@@ -43,7 +43,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -53,7 +53,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Enter first name:"
@@ -66,7 +66,7 @@ form1:
         layout:
             type: hbox
             alignh: left
-            minheight: true
+            autoheight: true
         items:
         - type: edit
           width: 200
@@ -82,7 +82,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -92,7 +92,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Enter second name:"
@@ -105,7 +105,7 @@ form1:
         layout:
             type: hbox
             alignh: left
-            minheight: true
+            autoheight: true
         items:
         - type: edit
           width: 200
@@ -121,7 +121,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -131,7 +131,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Check any checkbox:"
@@ -145,7 +145,7 @@ form1:
             type: hbox
             alignh: left
             spacing: 10
-            minheight: true
+            autoheight: true
         items:
         - type: checkbox
           text: check1
@@ -163,7 +163,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -173,7 +173,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Select one radio button:"
@@ -187,7 +187,7 @@ form1:
             type: hbox
             spacing: 10
             alignh: left
-            minheight: true
+            autoheight: true
         items:
         - type: radiobutton
           text: radio1
@@ -210,7 +210,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -220,7 +220,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Select from list:"
@@ -233,7 +233,7 @@ form1:
         layout:
             type: hbox
             alignh: left
-            minheight: true
+            autoheight: true
         items:
         - type: dropdown
           width: 100
@@ -257,7 +257,7 @@ form1:
           type: hbox
           alignh: width
           spacing: 0
-          minheight: true
+          autoheight: true
       items:
       # Left field container
       - type: panel
@@ -267,7 +267,7 @@ form1:
         layout:
             type: hbox
             alignh: right
-            minheight: true
+            autoheight: true
         items:
         - type: imagelabel
           text: "Sets the level:"
@@ -280,7 +280,7 @@ form1:
         layout:
             type: hbox
             alignh: left
-            minheight: true
+            autoheight: true
         items:
         - type: hslider
           text: level
@@ -303,7 +303,7 @@ form1:
           type: hbox
           alignh: right
           spacing: 20
-          minheight: true
+          autoheight: true
       items:
       - type: button
         text: OK

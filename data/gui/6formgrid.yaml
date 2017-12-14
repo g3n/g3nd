@@ -12,7 +12,7 @@ panel1:
   layout:
     type: vbox
     spacing: 10
-    minheight: true
+    autoheight: true
   items:
   # Form title row
   - type: panel
@@ -25,7 +25,7 @@ panel1:
     layout:
       type: hbox
       alignh: center
-      minheight: true
+      autoheight: true
     items:
     - type: label
       color: white
@@ -169,7 +169,7 @@ panel1:
       type: hbox
       alignh: right
       spacing: 20
-      minheight: true
+      autoheight: true
     items:
     - type: button
       text: OK

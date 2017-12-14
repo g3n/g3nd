@@ -71,14 +71,14 @@ func (t *GuiLayoutVBox) Initialize(ctx *Context) {
 	cb1 := gui.NewCheckBox("Minimum height")
 	cb1.SetPosition(p1b2.Position().X+p1b2.Width()+10, p1b2.Position().Y)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		bl1.SetMinHeight(cb1.Value())
+		bl1.SetAutoHeight(cb1.Value())
 	})
 	cb1.SetValue(true)
 	ctx.Gui.Add(cb1)
 	// Minimum width checkbox
 	cb2 := gui.NewCheckBox("Minimum width")
 	cb2.SetPosition(cb1.Position().X+cb1.Width()+10, cb1.Position().Y)
-	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) { bl1.SetMinWidth(cb2.Value()) })
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) { bl1.SetAutoWidth(cb2.Value()) })
 	cb2.SetValue(true)
 	ctx.Gui.Add(cb2)
 	// Top
