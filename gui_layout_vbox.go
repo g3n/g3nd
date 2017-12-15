@@ -67,16 +67,16 @@ func (t *GuiLayoutVBox) Initialize(ctx *Context) {
 		}
 	})
 	ctx.Gui.Add(p1b2)
-	// Minimum height checkbox
-	cb1 := gui.NewCheckBox("Minimum height")
+	// Auto height checkbox
+	cb1 := gui.NewCheckBox("Auto height")
 	cb1.SetPosition(p1b2.Position().X+p1b2.Width()+10, p1b2.Position().Y)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		bl1.SetAutoHeight(cb1.Value())
 	})
 	cb1.SetValue(true)
 	ctx.Gui.Add(cb1)
-	// Minimum width checkbox
-	cb2 := gui.NewCheckBox("Minimum width")
+	// Auto width checkbox
+	cb2 := gui.NewCheckBox("Auto width")
 	cb2.SetPosition(cb1.Position().X+cb1.Width()+10, cb1.Position().Y)
 	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) { bl1.SetAutoWidth(cb2.Value()) })
 	cb2.SetValue(true)

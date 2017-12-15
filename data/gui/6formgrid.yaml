@@ -173,10 +173,13 @@ panel1:
     items:
     - type: button
       text: OK
+      width: 80
     - type: button
       text: Apply
+      width: 80
     - type: button
       text: Cancel
+      width: 80
 
 
 
