@@ -29,6 +29,7 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 	t.menu = gui.NewMenu()
 	t.menu.SetBounded(false)
 	t.menu.SetVisible(false)
+	ctx.Gui.Add(t.menu)
 	options := []string{
 		"Hide", "",
 		"Align left", "Align center", "Align right", "",
@@ -47,7 +48,6 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 	})
 	t.menu.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		child := t.menu.UserData().(*gui.ImageLabel)
-		child.Remove(t.menu)
 		t.menu.SetVisible(false)
 		opid := ev.(*gui.MenuItem).Id()
 		// Get child layout parameters
@@ -105,9 +105,9 @@ func (t *GuiLayoutGrid) Initialize(ctx *Context) {
 		child.SetWidth(child.Width() + t.bwidth)
 		child.SetHeight(child.Height() + t.bheight)
 		child.Subscribe(gui.OnMouseDown, func(evname string, ev interface{}) {
-			t.menu.SetPosition(child.Width()/2, child.Height()/2)
-			child.Remove(t.menu)
-			child.Add(t.menu)
+			px := t.pan.Position().X + child.Position().X + child.Width()/2
+			py := t.pan.Position().Y + child.Position().Y + child.Height()/2
+			t.menu.SetPosition(px, py)
 			t.menu.SetUserData(child)
 			t.menu.SetVisible(true)
 		})
