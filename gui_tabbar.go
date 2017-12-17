@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/g3n/engine/gui"
 )
 
@@ -15,10 +17,15 @@ type GuiTabBar struct {
 func (t *GuiTabBar) Initialize(ctx *Context) {
 
 	// Button for adding tabs
+	tabCounter := 1
 	b1 := gui.NewButton("Add Tab")
 	b1.SetPosition(10, 10)
 	b1.Subscribe(gui.OnClick, func(name string, ev interface{}) {
-		log.Info("button 1 OnClick")
+		tabText := fmt.Sprintf("Tab: %d", tabCounter)
+		tab := t.tb.AddTab(tabText)
+		tabCounter++
+		tab.Content().SetLayout(gui.NewFillLayout(true, true))
+		tab.Content().Add(gui.NewImageLabel(tabText))
 	})
 	ctx.Gui.Add(b1)
 
