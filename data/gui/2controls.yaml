@@ -349,5 +349,41 @@ tree1:
         text: label4
       - type: RadioButton
         text: radiobutton1
+#
+# TabBar
+#
+tabbar1:
+    type: TabBar
+    name: tabbar1
+    position: 210 590
+    width: 400
+    height: 100
+    items:
+    - text: tab1
+      name: tab1
+      icon: ArrowBack 
+      content:
+        type: imagelabel
+        text: Tab1
+    - text: tab2
+      name: tab2
+      icon: Check
+      content:
+        type: imagelabel
+        text: Tab2
+    - text: tab3
+      name: tab3
+      imagefile: call-start.png
+      content:
+        type: button
+        text: button1
+        margins: 10
+    - text: tab4
+      name: tab4
+      icon: Contacts
+      pinned: true
+      content:
+        type: imagelabel
+        text: Pinned
 
 
