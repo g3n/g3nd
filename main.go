@@ -199,6 +199,7 @@ func main() {
 	} else {
 		buildGui(&ctx)
 	}
+	ctx.Renderer.SetGui(ctx.root)
 
 	// Setup scene
 	setupScene(&ctx)
@@ -241,9 +242,6 @@ func main() {
 		// Starts measuring this frame
 		ctx.frameRater.Start()
 
-		// Clear buffers
-		gs.Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
-
 		// Updates time and time delta in context
 		now := time.Now()
 		ctx.TimeDelta = now.Sub(ctx.Time)
@@ -255,15 +253,13 @@ func main() {
 		// If current test active, render test scene
 		if ctx.currentTest != nil {
 			ctx.currentTest.Render(&ctx)
-			err := ctx.Renderer.Render(ctx.Scene, ctx.Camera)
-			if err != nil {
-				log.Fatal("Render error: %s\n", err)
-			}
+			ctx.Renderer.SetScene(ctx.Scene)
+		} else {
+			ctx.Renderer.SetScene(nil)
 		}
 
-		// Render GUI over everything
-		gs.Clear(gls.DEPTH_BUFFER_BIT)
-		err := ctx.Renderer.Render(ctx.root, ctx.Camera)
+		// Render Scene and/or Gui
+		err := ctx.Renderer.Render(ctx.Camera)
 		if err != nil {
 			log.Fatal("Render error: %s\n", err)
 		}
@@ -280,9 +276,11 @@ func main() {
 		win.PollEvents()
 
 		// Swap window framebuffers
-		win.SwapBuffers()
-
-		// Controls the frame rate and updates the FPS for the user
+		if ctx.Renderer.NeedSwap() {
+			win.SwapBuffers()
+			log.Error("swap buffers")
+			// Controls the frame rate and updates the FPS for the user
+		}
 		ctx.frameRater.Wait()
 		updateFPS(&ctx)
 	}
