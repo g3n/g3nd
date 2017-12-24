@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
@@ -15,8 +14,8 @@ type GuiButton struct{}
 
 func (t *GuiButton) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
+	//axis := graphic.NewAxisHelper(1)
+	//ctx.Scene.Add(axis)
 
 	// Button 1
 	b1 := gui.NewButton("button 1")

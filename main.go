@@ -198,6 +198,7 @@ func main() {
 		ctx.Gui = ctx.root.GetPanel()
 	} else {
 		buildGui(&ctx)
+		ctx.Renderer.SetGuiPanel3D(ctx.Gui)
 	}
 	ctx.Renderer.SetGui(ctx.root)
 
@@ -275,12 +276,12 @@ func main() {
 		// Poll input events and process them
 		win.PollEvents()
 
-		// Swap window framebuffers
+		// Swap window framebuffers if necessary
 		if ctx.Renderer.NeedSwap() {
 			win.SwapBuffers()
-			log.Error("swap buffers")
-			// Controls the frame rate and updates the FPS for the user
+			//log.Error("swap buffers")
 		}
+		// Controls the frame rate and updates the FPS for the user
 		ctx.frameRater.Wait()
 		updateFPS(&ctx)
 	}
@@ -293,7 +294,7 @@ func buildGui(ctx *Context) {
 	dl := gui.NewDockLayout()
 	ctx.root.SetLayout(dl)
 
-	// Add transparent panel at the center to contain GUI tests
+	// Add transparent panel at the center to contain demos
 	ctx.Gui = gui.NewPanel(0, 0)
 	ctx.Gui.SetRenderable(false)
 	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})

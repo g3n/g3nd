@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -15,8 +15,8 @@ type GuiScroller struct{}
 
 func (t *GuiScroller) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
+	//axis := graphic.NewAxisHelper(1)
+	//ctx.Scene.Add(axis)
 
 	// Scroller 1
 	s1 := gui.NewVScroller(100, 200)

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -14,8 +13,8 @@ type GuiEdit struct{}
 
 func (t *GuiEdit) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
+	//axis := graphic.NewAxisHelper(1)
+	//ctx.Scene.Add(axis)
 
 	// Edit 1
 	ed1 := gui.NewEdit(100, "")

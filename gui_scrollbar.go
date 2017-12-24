@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+
 	"github.com/g3n/engine/gui"
 )
 
@@ -14,8 +14,8 @@ type GuiScrollBar struct{}
 
 func (t *GuiScrollBar) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
+	//axis := graphic.NewAxisHelper(1)
+	//ctx.Scene.Add(axis)
 
 	// Scroll bar 1
 	sb1 := gui.NewHScrollBar(100, 16)

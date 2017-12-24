@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
+	"strings"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
-	"strings"
 )
 
 func init() {
@@ -15,8 +15,8 @@ type GuiLabel struct{}
 
 func (t *GuiLabel) Initialize(ctx *Context) {
 
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
+	//axis := graphic.NewAxisHelper(1)
+	//ctx.Scene.Add(axis)
 
 	l1 := gui.NewLabel("label1")
 	l1.SetPosition(10, 10)
