@@ -297,6 +297,7 @@ func buildGui(ctx *Context) {
 	// Add transparent panel at the center to contain demos
 	ctx.Gui = gui.NewPanel(0, 0)
 	ctx.Gui.SetRenderable(false)
+	ctx.Gui.SetColor(math32.NewColor("white"))
 	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
 	ctx.root.Add(ctx.Gui)
 
