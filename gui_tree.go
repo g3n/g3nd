@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+
 	"github.com/g3n/engine/gui"
 )
 
@@ -14,9 +14,6 @@ type GuiTree struct {
 }
 
 func (t *GuiTree) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	labelId := 1
 	nodeId := 1

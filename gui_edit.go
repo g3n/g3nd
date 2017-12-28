@@ -13,9 +13,6 @@ type GuiEdit struct{}
 
 func (t *GuiEdit) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	// Edit 1
 	ed1 := gui.NewEdit(100, "")
 	ed1.SetPosition(10, 10)

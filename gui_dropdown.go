@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 )
@@ -15,9 +14,6 @@ func init() {
 type GuiDropdown struct{}
 
 func (t *GuiDropdown) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	// DropDown simple
 	dd1 := gui.NewDropDown(150, gui.NewImageLabel("init"))

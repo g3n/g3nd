@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -13,9 +12,6 @@ func init() {
 type GuiLayoutDock struct{}
 
 func (t *GuiLayoutDock) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	dl := gui.NewDockLayout()
 	ctx.Gui.SetLayout(dl)

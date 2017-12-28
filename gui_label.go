@@ -15,9 +15,6 @@ type GuiLabel struct{}
 
 func (t *GuiLabel) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	l1 := gui.NewLabel("label1")
 	l1.SetPosition(10, 10)
 	ctx.Gui.Add(l1)

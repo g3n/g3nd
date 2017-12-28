@@ -15,9 +15,6 @@ type GuiList struct{}
 
 func (t *GuiList) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	icons := []string{
 		icon.ArrowBack,
 		icon.ArrowDownward,

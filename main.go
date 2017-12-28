@@ -196,6 +196,7 @@ func main() {
 	ctx.root = gui.NewRoot(gs, win)
 	if *oNogui {
 		ctx.Gui = ctx.root.GetPanel()
+		ctx.Gui.SetColor(math32.NewColor("silver"))
 		ctx.Renderer.SetGuiPanel3D(nil)
 	} else {
 		buildGui(&ctx)

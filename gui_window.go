@@ -13,9 +13,6 @@ type GuiWindow struct{}
 
 func (t *GuiWindow) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	w1 := gui.NewWindow(200, 100)
 	w1.SetPosition(10, 10)
 	w1.SetResizable(gui.ResizeAll)

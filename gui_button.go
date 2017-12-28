@@ -14,9 +14,6 @@ type GuiButton struct{}
 
 func (t *GuiButton) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	// Button 1
 	b1 := gui.NewButton("button 1")
 	b1.SetPosition(10, 10)

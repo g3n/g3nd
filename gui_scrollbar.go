@@ -14,9 +14,6 @@ type GuiScrollBar struct{}
 
 func (t *GuiScrollBar) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	// Scroll bar 1
 	sb1 := gui.NewHScrollBar(100, 16)
 	sb1.SetPosition(10, 10)

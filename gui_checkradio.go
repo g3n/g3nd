@@ -13,9 +13,6 @@ type CheckRadio struct{}
 
 func (t *CheckRadio) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	// Checkbox 1
 	cb1 := gui.NewCheckBox("Checkbox 1")
 	cb1.SetPosition(10, 10)

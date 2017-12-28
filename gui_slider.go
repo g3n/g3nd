@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+
 	"github.com/g3n/engine/gui"
 )
 
@@ -13,9 +13,6 @@ func init() {
 type GuiSlider struct{}
 
 func (t *GuiSlider) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	// Slider 1
 	s1 := gui.NewHSlider(400, 32)

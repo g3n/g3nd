@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
+	"math"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
-	"math"
 )
 
 type GuiPanel struct {
@@ -19,10 +19,6 @@ func init() {
 }
 
 func (t *GuiPanel) Initialize(ctx *Context) {
-
-	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
-	ctx.Scene.Add(axis)
 
 	// Panel 1
 	t.p1 = gui.NewPanel(100, 50)

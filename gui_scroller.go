@@ -15,9 +15,6 @@ type GuiScroller struct{}
 
 func (t *GuiScroller) Initialize(ctx *Context) {
 
-	//axis := graphic.NewAxisHelper(1)
-	//ctx.Scene.Add(axis)
-
 	// Scroller 1
 	s1 := gui.NewVScroller(100, 200)
 	s1.SetPosition(10, 10)
