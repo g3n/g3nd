@@ -82,20 +82,21 @@ var TestMap = map[string]ITest{}
 
 // Command line options
 var (
-	oVersion    = flag.Bool("version", false, "Show version and exits")
-	oWidth      = flag.Int("width", 1000, "Initial window width in pixels")
-	oHeight     = flag.Int("height", 800, "Initial window height in pixels")
-	oFull       = flag.Bool("full", false, "Full screen on primary monitor")
-	oNogui      = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
-	oHideFPS    = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
-	oUpdateFPS  = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
-	oFPS        = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
-	oInterval   = flag.Int("interval", 0, "Sets the swap buffers interval to this value")
-	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
-	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
-	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
-	oProfile    = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
-	oStats      = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
+	oVersion     = flag.Bool("version", false, "Show version and exits")
+	oWidth       = flag.Int("width", 1000, "Initial window width in pixels")
+	oHeight      = flag.Int("height", 800, "Initial window height in pixels")
+	oFull        = flag.Bool("full", false, "Full screen on primary monitor")
+	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
+	oHideFPS     = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
+	oUpdateFPS   = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
+	oFPS         = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
+	oInterval    = flag.Int("interval", 0, "Sets the swap buffers interval to this value")
+	oLogColor    = flag.Bool("logcolors", false, "Colored logs")
+	oLogs        = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
+	oNoGlErrors  = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
+	oProfile     = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
+	oStats       = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
+	oRenderStats = flag.Bool("renderstats", false, "Shows gui renderer statistics in the console")
 )
 
 func main() {
@@ -276,8 +277,8 @@ func main() {
 		}
 
 		rstats := ctx.Renderer.Stats()
-		if rstats.Panels > 0 {
-			log.Debug("renderer stats:%+v", rstats)
+		if *oRenderStats && rstats.Panels > 0 {
+			log.Debug("Renderer stats:%+v", rstats)
 		}
 
 		// Poll input events and process them
