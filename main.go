@@ -196,6 +196,7 @@ func main() {
 	ctx.root = gui.NewRoot(gs, win)
 	if *oNogui {
 		ctx.Gui = ctx.root.GetPanel()
+		ctx.Renderer.SetGuiPanel3D(nil)
 	} else {
 		buildGui(&ctx)
 		ctx.Renderer.SetGuiPanel3D(ctx.Gui)
@@ -259,12 +260,6 @@ func main() {
 			ctx.Renderer.SetScene(nil)
 		}
 
-		// Render Scene and/or Gui
-		err := ctx.Renderer.Render(ctx.Camera)
-		if err != nil {
-			log.Fatal("Render error: %s\n", err)
-		}
-
 		// Update statistics
 		if ctx.stats.Update(time.Second) {
 			// Update statistics table
@@ -273,13 +268,23 @@ func main() {
 			}
 		}
 
+		// Render Scene and/or Gui
+		rendered, err := ctx.Renderer.Render(ctx.Camera)
+		if err != nil {
+			log.Fatal("Render error: %s\n", err)
+		}
+
+		rstats := ctx.Renderer.Stats()
+		if rstats.Panels > 0 {
+			log.Debug("renderer stats:%+v", rstats)
+		}
+
 		// Poll input events and process them
 		win.PollEvents()
 
 		// Swap window framebuffers if necessary
-		if ctx.Renderer.NeedSwap() {
+		if rendered {
 			win.SwapBuffers()
-			//log.Error("swap buffers")
 		}
 		// Controls the frame rate and updates the FPS for the user
 		ctx.frameRater.Wait()
@@ -297,7 +302,7 @@ func buildGui(ctx *Context) {
 	// Add transparent panel at the center to contain demos
 	ctx.Gui = gui.NewPanel(0, 0)
 	ctx.Gui.SetRenderable(false)
-	ctx.Gui.SetColor(math32.NewColor("white"))
+	ctx.Gui.SetColor(math32.NewColor("silver"))
 	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
 	ctx.root.Add(ctx.Gui)
 
