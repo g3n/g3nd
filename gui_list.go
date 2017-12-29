@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/g3n/engine/graphic"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 )
@@ -14,9 +14,6 @@ func init() {
 type GuiList struct{}
 
 func (t *GuiList) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	icons := []string{
 		icon.ArrowBack,

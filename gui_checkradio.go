@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -13,9 +12,6 @@ func init() {
 type CheckRadio struct{}
 
 func (t *CheckRadio) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	// Checkbox 1
 	cb1 := gui.NewCheckBox("Checkbox 1")

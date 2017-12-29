@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -13,9 +12,6 @@ func init() {
 type GuiWindow struct{}
 
 func (t *GuiWindow) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	w1 := gui.NewWindow(200, 100)
 	w1.SetPosition(10, 10)

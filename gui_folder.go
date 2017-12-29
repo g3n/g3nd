@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 )
 
@@ -14,9 +13,6 @@ type GuiFolder struct {
 }
 
 func (t *GuiFolder) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	cbExpand := gui.NewCheckBox("Expand left")
 	cbExpand.SetPosition(200, 10)

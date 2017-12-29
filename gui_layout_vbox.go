@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 )
@@ -16,9 +15,6 @@ func init() {
 type GuiLayoutVBox struct{}
 
 func (t *GuiLayoutVBox) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	// Adds reset size button
 	var p1 *gui.Panel

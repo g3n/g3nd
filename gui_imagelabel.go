@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/g3n/engine/graphic"
+	"strings"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
-	"strings"
 )
 
 func init() {
@@ -15,9 +15,6 @@ func init() {
 type GuiImageLabel struct{}
 
 func (t *GuiImageLabel) Initialize(ctx *Context) {
-
-	axis := graphic.NewAxisHelper(1)
-	ctx.Scene.Add(axis)
 
 	l1 := gui.NewImageLabel("label1")
 	l1.SetPosition(10, 10)

@@ -82,20 +82,21 @@ var TestMap = map[string]ITest{}
 
 // Command line options
 var (
-	oVersion    = flag.Bool("version", false, "Show version and exits")
-	oWidth      = flag.Int("width", 1000, "Initial window width in pixels")
-	oHeight     = flag.Int("height", 800, "Initial window height in pixels")
-	oFull       = flag.Bool("full", false, "Full screen on primary monitor")
-	oNogui      = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
-	oHideFPS    = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
-	oUpdateFPS  = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
-	oFPS        = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
-	oInterval   = flag.Int("interval", 0, "Sets the swap buffers interval to this value")
-	oLogColor   = flag.Bool("logcolors", false, "Colored logs")
-	oLogs       = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
-	oNoGlErrors = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
-	oProfile    = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
-	oStats      = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
+	oVersion     = flag.Bool("version", false, "Show version and exits")
+	oWidth       = flag.Int("width", 1000, "Initial window width in pixels")
+	oHeight      = flag.Int("height", 800, "Initial window height in pixels")
+	oFull        = flag.Bool("full", false, "Full screen on primary monitor")
+	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
+	oHideFPS     = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
+	oUpdateFPS   = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
+	oFPS         = flag.Uint("fps", 60, "Sets the frame rate in frames per second")
+	oInterval    = flag.Int("interval", 0, "Sets the swap buffers interval to this value")
+	oLogColor    = flag.Bool("logcolors", false, "Colored logs")
+	oLogs        = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
+	oNoGlErrors  = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
+	oProfile     = flag.String("profile", "", "Activate cpu profiling writing profile to the specified file")
+	oStats       = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
+	oRenderStats = flag.Bool("renderstats", false, "Shows gui renderer statistics in the console")
 )
 
 func main() {
@@ -196,9 +197,13 @@ func main() {
 	ctx.root = gui.NewRoot(gs, win)
 	if *oNogui {
 		ctx.Gui = ctx.root.GetPanel()
+		ctx.Gui.SetColor(math32.NewColor("silver"))
+		ctx.Renderer.SetGuiPanel3D(nil)
 	} else {
 		buildGui(&ctx)
+		ctx.Renderer.SetGuiPanel3D(ctx.Gui)
 	}
+	ctx.Renderer.SetGui(ctx.root)
 
 	// Setup scene
 	setupScene(&ctx)
@@ -241,9 +246,6 @@ func main() {
 		// Starts measuring this frame
 		ctx.frameRater.Start()
 
-		// Clear buffers
-		gs.Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
-
 		// Updates time and time delta in context
 		now := time.Now()
 		ctx.TimeDelta = now.Sub(ctx.Time)
@@ -255,17 +257,9 @@ func main() {
 		// If current test active, render test scene
 		if ctx.currentTest != nil {
 			ctx.currentTest.Render(&ctx)
-			err := ctx.Renderer.Render(ctx.Scene, ctx.Camera)
-			if err != nil {
-				log.Fatal("Render error: %s\n", err)
-			}
-		}
-
-		// Render GUI over everything
-		gs.Clear(gls.DEPTH_BUFFER_BIT)
-		err := ctx.Renderer.Render(ctx.root, ctx.Camera)
-		if err != nil {
-			log.Fatal("Render error: %s\n", err)
+			ctx.Renderer.SetScene(ctx.Scene)
+		} else {
+			ctx.Renderer.SetScene(nil)
 		}
 
 		// Update statistics
@@ -276,12 +270,24 @@ func main() {
 			}
 		}
 
+		// Render Scene and/or Gui
+		rendered, err := ctx.Renderer.Render(ctx.Camera)
+		if err != nil {
+			log.Fatal("Render error: %s\n", err)
+		}
+
+		rstats := ctx.Renderer.Stats()
+		if *oRenderStats && rstats.Panels > 0 {
+			log.Debug("Renderer stats:%+v", rstats)
+		}
+
 		// Poll input events and process them
 		win.PollEvents()
 
-		// Swap window framebuffers
-		win.SwapBuffers()
-
+		// Swap window framebuffers if necessary
+		if rendered {
+			win.SwapBuffers()
+		}
 		// Controls the frame rate and updates the FPS for the user
 		ctx.frameRater.Wait()
 		updateFPS(&ctx)
@@ -295,9 +301,10 @@ func buildGui(ctx *Context) {
 	dl := gui.NewDockLayout()
 	ctx.root.SetLayout(dl)
 
-	// Add transparent panel at the center to contain GUI tests
+	// Add transparent panel at the center to contain demos
 	ctx.Gui = gui.NewPanel(0, 0)
 	ctx.Gui.SetRenderable(false)
+	ctx.Gui.SetColor(math32.NewColor("silver"))
 	ctx.Gui.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
 	ctx.root.Add(ctx.Gui)
 
