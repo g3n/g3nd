@@ -39,21 +39,17 @@ type App struct {
 
 // IDemo is the interface that must be satisfied for all demo objects
 type IDemo interface {
-	Initialize(*App)
-	Render(*App)
+	Initialize(*App) // Called once to initialize the demo
+	Render(*App)     // Called at each frame for animations
 }
 
 // Command line options
-// The standard application object adds other command line options
+// The standard application object may add other command line options
 var (
 	oVersion     = flag.Bool("version", false, "Show version and exits")
-	oWidth       = flag.Int("width", 1000, "Initial window width in pixels")
-	oHeight      = flag.Int("height", 800, "Initial window height in pixels")
-	oFull        = flag.Bool("full", false, "Full screen on primary monitor")
 	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
 	oHideFPS     = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
 	oUpdateFPS   = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
-	oLogColor    = flag.Bool("logcolors", false, "Colored logs")
 	oLogs        = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 	oStats       = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
 	oRenderStats = flag.Bool("renderstats", false, "Shows gui renderer statistics in the console")
@@ -73,8 +69,9 @@ func Create(demoMap map[string]IDemo) *App {
 
 	// Creates standard application object
 	a, err := application.Create("G3ND", application.Options{
-		WinWidth:    800,
-		WinHeight:   600,
+		Width:       800,
+		Height:      600,
+		Fullscreen:  false,
 		LogLevel:    logger.DEBUG,
 		TargetFPS:   60,
 		EnableFlags: true,
@@ -147,7 +144,7 @@ func Create(demoMap map[string]IDemo) *App {
 			}
 		}
 		if app.currentDemo == nil {
-			app.log.Error("INVALID TEST NAME")
+			app.log.Error("Invalid demo name")
 			usage()
 			return nil
 		}
@@ -209,7 +206,7 @@ func (app *App) AmbLight() *light.Ambient {
 	return app.ambLight
 }
 
-// AddFinalizer adds a function which will be executed when another demo is initialized
+// AddFinalizer adds a function which will be executed before another demo is started
 func (app *App) AddFinalizer(f func()) {
 
 	app.finalizers = append(app.finalizers, f)
@@ -288,7 +285,7 @@ func (app *App) setupScene() {
 			app.Quit()
 			return
 		}
-		// Alt F10 toggles full screen
+		// Alt F11 toggles full screen
 		if kev.Keycode == window.KeyF11 && kev.Mods == window.ModAlt {
 			app.Window().SetFullScreen(!app.Window().FullScreen())
 			return

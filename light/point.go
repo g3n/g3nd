@@ -3,6 +3,7 @@ package light
 import (
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
@@ -88,22 +89,19 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	t.hl = NewLightMesh(&math32.Color{1, 1, 1})
 	t.hl.AddScene(app)
 
-	// Subscribe to key events
-	//	app.Gl.Subscribe(gls.OnKeyDown, t.onKey)
-
-	//	// Add controls
-	//    if app.Control == nil {
-	//        return
-	//    }
-	//	g := app.Control.AddGroup("Show lights")
-	//	cb1 := g.AddCheckBox("Horizontal").SetValue(t.hl.Mesh.Visible())
-	//	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-	//	    t.hl.Mesh.SetVisible(!t.hl.Mesh.Visible())
-	//	})
-	//	cb2 := g.AddCheckBox("Vertical").SetValue(t.vl.Mesh.Visible())
-	//	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-	//	    t.vl.Mesh.SetVisible(!t.vl.Mesh.Visible())
-	//	})
+	// Add controls
+	if app.ControlFolder() == nil {
+		return
+	}
+	g := app.ControlFolder().AddGroup("Show lights")
+	cb1 := g.AddCheckBox("Horizontal").SetValue(t.hl.Mesh.Visible())
+	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.hl.Mesh.SetVisible(!t.hl.Mesh.Visible())
+	})
+	cb2 := g.AddCheckBox("Vertical").SetValue(t.vl.Mesh.Visible())
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		t.vl.Mesh.SetVisible(!t.vl.Mesh.Visible())
+	})
 }
 
 func (t *PointLight) Render(app *g3nd.App) {
