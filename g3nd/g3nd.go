@@ -26,7 +26,7 @@ import (
 type App struct {
 	*application.Application                    // Embedded standard application object
 	log                      *logger.Logger     // Application logger
-	currentTest              ITest              // current test object
+	currentDemo              IDemo              // current test object
 	dirData                  string             // full path of data directory
 	labelFPS                 *gui.Label         // header FPS label
 	treeTests                *gui.Tree          // tree with test names
@@ -37,8 +37,8 @@ type App struct {
 	finalizers               []func()           // List of demo finalizers functions
 }
 
-// ITest is the interface that must be satisfied for all test objects
-type ITest interface {
+// IDemo is the interface that must be satisfied for all demo objects
+type IDemo interface {
 	Initialize(*App)
 	Render(*App)
 }
@@ -63,10 +63,10 @@ const (
 	ProgName = "G3N Demo"
 	ExecName = "g3nd"
 	Vmajor   = 0
-	Vminor   = 4
+	Vminor   = 5
 )
 
-func Create(demoMap map[string]ITest) *App {
+func Create(demoMap map[string]IDemo) *App {
 
 	// Sets the application usage
 	flag.Usage = usage
@@ -141,12 +141,12 @@ func Create(demoMap map[string]ITest) *App {
 		tname := flag.Args()[0]
 		for name, test := range demoMap {
 			if name == tname {
-				app.currentTest = test
-				app.currentTest.Initialize(app)
+				app.currentDemo = test
+				app.currentDemo.Initialize(app)
 				break
 			}
 		}
-		if app.currentTest == nil {
+		if app.currentDemo == nil {
 			app.log.Error("INVALID TEST NAME")
 			usage()
 			return nil
@@ -155,8 +155,8 @@ func Create(demoMap map[string]ITest) *App {
 
 	// Subscribe to before render events to call current test Render method
 	app.Subscribe(application.OnBeforeRender, func(evname string, ev interface{}) {
-		if app.currentTest != nil {
-			app.currentTest.Render(app)
+		if app.currentDemo != nil {
+			app.currentDemo.Render(app)
 		}
 	})
 
@@ -348,7 +348,7 @@ func (app *App) setupScene() {
 }
 
 // buildGui builds the tester GUI
-func (app *App) buildGui(demoMap map[string]ITest) {
+func (app *App) buildGui(demoMap map[string]IDemo) {
 
 	// Create dock layout for the tester root panel
 	dl := gui.NewDockLayout()
@@ -486,9 +486,9 @@ func (app *App) buildGui(demoMap map[string]ITest) {
 		label, ok := sel.(*gui.Label)
 		if ok {
 			app.setupScene()
-			test := label.GetNode().UserData().(ITest)
+			test := label.GetNode().UserData().(IDemo)
 			test.Initialize(app)
-			app.currentTest = test
+			app.currentDemo = test
 		}
 	})
 	app.Gui().Add(app.treeTests)

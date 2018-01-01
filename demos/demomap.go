@@ -5,4 +5,5 @@ import (
 )
 
 // Map maps the demo name string to its object
-var Map = map[string]g3nd.ITest{}
+// Individual demos sets the keys of this map
+var Map = map[string]g3nd.IDemo{}

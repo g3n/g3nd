@@ -11,6 +11,7 @@ import (
 	_ "github.com/g3n/g3nd/other"
 	_ "github.com/g3n/g3nd/shader"
 	_ "github.com/g3n/g3nd/skybox"
+	_ "github.com/g3n/g3nd/tests"
 	_ "github.com/g3n/g3nd/texture"
 
 	"github.com/g3n/g3nd/demos"
