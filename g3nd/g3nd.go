@@ -46,7 +46,6 @@ type IDemo interface {
 // Command line options
 // The standard application object may add other command line options
 var (
-	oVersion     = flag.Bool("version", false, "Show version and exits")
 	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
 	oHideFPS     = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
 	oUpdateFPS   = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
