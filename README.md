@@ -71,63 +71,66 @@ The FPS will be lower when the screen is maximized or full.
 
 # Creating a new demo/test
 
-You can use the `tests_model.go` file as a template
+You can use the `tests/model.go` file as a template
 for your tests. You can can change it directly or copy it to a
-new file such as `tests_mytest.go` and
+new file such as `tests/mytest.go` and
 experiment with the engine. Your new test will appear under the
-`|tests|` category with `mytest` name. The contents of the `tests_model.go`
+`|tests|` category with `mytest` name. The contents of the `tests/model.go`
 file are shown below, documenting the common structure of all
-demo/tests programs:
+demo programs:
 
 
 ```Go
 // This is a simple model for your tests
-package main
+package tests
 
 import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/demos"
+	"github.com/g3n/g3nd/g3nd"
 )
 
-// Sets the category and name of your test in the global map "TestMap"
+// Sets the category and name of your test in the demos.Map
 // The category name choosen here starts with a "|" so it shows as the
 // last category in list. Change "model" to the name of your test.
 func init() {
-	TestMap["|tests|.model"] = &testsModel{}
+	demos.Map["|tests|.model"] = &testsModel{}
 }
 
 // This is your test object. You can store state here.
 // By convention and to avoid conflict with other demo/tests name it
 // using your test category and name.
 type testsModel struct {
-	grid *graphic.GridHelper    // Pointer to a GridHelper created in 'Initialize'
+	grid *graphic.GridHelper // Pointer to a GridHelper created in 'Initialize'
 }
 
-// This method will be called once when the test is selected from the list.
-// ctx is a pointer to a Context structure built by the main program.
-// It allows access to several important object such as the scene (ctx.Scene),
-// camera (ctx.Camera) and the window (ctx.Win) among others.
-// You can build your scene adding your objects to the ctx.Scene.
-func (t *testsModel) Initialize(ctx *Context) {
+// This method will be called once when the test is selected from the G3ND list.
+// app is a pointer to the G3ND application.
+// It allows access to several methods such as app.Scene(), which returns the current scene,
+// app.GuiPanel(), app.Camera(), app.Window() among others.
+// You can build your scene adding your objects to the app.Scene()
+func (t *testsModel) Initialize(app *g3nd.App) {
 
 	// Show axis helper
 	ah := graphic.NewAxisHelper(1.0)
-	ctx.Scene.Add(ah)
+	app.Scene().Add(ah)
 
 	// Creates a grid helper and saves its pointer in the test state
 	t.grid = graphic.NewGridHelper(50, 1, &math32.Color{0.4, 0.4, 0.4})
-	ctx.Scene.Add(t.grid)
+	app.Scene().Add(t.grid)
 
 	// Changes the camera position
-	ctx.Camera.GetCamera().SetPosition(0, 4, 10)
+	app.Camera().GetCamera().SetPosition(0, 4, 10)
 }
 
 // This method will be called at every frame
 // You can animate your objects here.
-func (t *testsModel) Render(ctx *Context) {
+func (t *testsModel) Render(app *g3nd.App) {
 
 	// Rotate the grid, just for show.
-	t.grid.AddRotationY(0.005)
+	rps := app.FrameDeltaSeconds() * 2 * math32.Pi
+	t.grid.AddRotationY(rps * 0.05)
 }
 
 ```
