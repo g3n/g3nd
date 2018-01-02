@@ -55,12 +55,13 @@ var (
 )
 
 const (
-	ProgName = "G3N Demo"
-	ExecName = "g3nd"
-	Vmajor   = 0
-	Vminor   = 5
+	progName = "G3N Demo"
+	execName = "g3nd"
+	vmajor   = 0
+	vminor   = 5
 )
 
+// Create creates the G3ND application using the specified map of demos
 func Create(demoMap map[string]IDemo) *App {
 
 	// Sets the application usage
@@ -81,7 +82,7 @@ func Create(demoMap map[string]IDemo) *App {
 	app := new(App)
 	app.Application = a
 	app.log = app.Log()
-	app.log.Info("%s v%d.%d starting", ProgName, Vmajor, Vminor)
+	app.log.Info("%s v%d.%d starting", progName, vmajor, vminor)
 	app.stats = stats.NewStats(app.Gl())
 
 	// Apply log levels to engine package loggers
@@ -182,9 +183,8 @@ func (app *App) GuiPanel() *gui.Panel {
 
 	if *oNogui {
 		return &app.Gui().Panel
-	} else {
-		return app.Panel3D().GetPanel()
 	}
+	return app.Panel3D().GetPanel()
 }
 
 // DirData returns the base directory for data
@@ -199,7 +199,7 @@ func (app *App) ControlFolder() *gui.ControlFolder {
 	return app.control
 }
 
-// AmbLights returns the default scene ambient light
+// AmbLight returns the default scene ambient light
 func (app *App) AmbLight() *light.Ambient {
 
 	return app.ambLight
@@ -296,7 +296,9 @@ func (app *App) setupScene() {
 	})
 
 	// Subscribe to window resize events
-	app.Window().Subscribe(window.OnWindowSize, app.OnWindowResize)
+	app.Window().Subscribe(window.OnWindowSize, func(evname string, ev interface{}) {
+		app.OnWindowResize()
+	})
 
 	// Because all windows events were cleared
 	// We need to inform the gui root panel to subscribe again.
@@ -385,7 +387,7 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	title := gui.NewLabel(" ")
 	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-	title.SetText(fmt.Sprintf("%s v%d.%d", ProgName, Vmajor, Vminor))
+	title.SetText(fmt.Sprintf("%s v%d.%d", progName, vmajor, vminor))
 	title.SetColor(&lightTextColor)
 	header.Add(title)
 	// FPS
@@ -446,7 +448,7 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	// Sort test names
 	tnames := []string{}
 	nodes := make(map[string]*gui.TreeNode)
-	for name, _ := range demoMap {
+	for name := range demoMap {
 		tnames = append(tnames, name)
 	}
 	sort.Strings(tnames)
@@ -555,8 +557,8 @@ func (app *App) checkDirData(dirDataName string) string {
 // usage shows the application usage
 func usage() {
 
-	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", ProgName, Vmajor, Vminor)
-	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", ExecName)
+	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", progName, vmajor, vminor)
+	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", execName)
 	flag.PrintDefaults()
 	os.Exit(2)
 }
