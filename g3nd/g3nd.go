@@ -260,7 +260,7 @@ func (app *App) setupScene() {
 	app.Scene().Add(app.ambLight)
 
 	// Sets perspective camera position
-	width, height := app.Window().GetSize()
+	width, height := app.Window().Size()
 	aspect := float32(width) / float32(height)
 	app.CameraPersp().SetPosition(0, 0, 5)
 	app.CameraPersp().LookAt(&math32.Vector3{0, 0, 0})

@@ -162,7 +162,7 @@ func (t *Raycast) onMouse(app *g3nd.App, ev interface{}) {
 
 	// Convert mouse coordinates to normalized device coordinates
 	mev := ev.(*window.MouseEvent)
-	width, height := app.Window().GetSize()
+	width, height := app.Window().Size()
 	x := 2*(mev.Xpos/float32(width)) - 1
 	y := -2*(mev.Ypos/float32(height)) + 1
 
