@@ -11,7 +11,6 @@ import (
 
 	"github.com/g3n/engine/audio/al"
 	"github.com/g3n/engine/camera/control"
-	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/math32"
@@ -114,12 +113,8 @@ func Create(demoMap map[string]IDemo) *App {
 	app.dirData = app.checkDirData("data")
 	app.log.Info("Using data directory:%s", app.dirData)
 
-	// Shows OpenGL version
-	glVersion := app.Gl().GetString(gls.VERSION)
-	app.log.Info("OpenGL version: %s", glVersion)
-
-	// Try to load audio libraries
-	err = app.LoadAudioLibs()
+	// Open default audio device
+	err = app.OpenDefaultAudioDevice()
 	if err != nil {
 		app.log.Error("%v", err)
 	}
@@ -310,11 +305,9 @@ func (app *App) setupScene() {
 	app.SetOrbit(control.NewOrbitControl(app.Camera(), app.Window()))
 
 	// If audio active, resets global listener parameters
-	if app.AudioSupport() {
-		al.Listener3f(al.Position, 0, 0, 0)
-		al.Listener3f(al.Velocity, 0, 0, 0)
-		al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
-	}
+	al.Listener3f(al.Position, 0, 0, 0)
+	al.Listener3f(al.Velocity, 0, 0, 0)
+	al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
 
 	// If no gui control folder, nothing more to do
 	if app.control == nil {
@@ -457,10 +450,6 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 		parts := strings.Split(name, ".")
 		if len(parts) > 1 {
 			category := parts[0]
-			// Do not include "audio" demos if vorbis not supported
-			if category == "audio" && !app.VorbisSupport() {
-				continue
-			}
 			node := nodes[category]
 			if node == nil {
 				node = app.treeTests.AddNode(category)
