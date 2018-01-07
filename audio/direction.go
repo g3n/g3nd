@@ -52,7 +52,7 @@ func (t *AudioDirection) Initialize(app *g3nd.App) {
 	listener := audio.NewListener()
 	cam := app.Camera().GetCamera()
 	cdir := cam.Direction()
-	listener.SetDirectionv(&cdir)
+	listener.SetDirectionVec(&cdir)
 	cam.Add(listener)
 
 	// Creates player cones
