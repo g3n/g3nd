@@ -4,8 +4,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type GuiPanelChildren struct {
@@ -19,7 +19,7 @@ func init() {
 	demos.Map["gui.panel_children"] = &GuiPanelChildren{}
 }
 
-func (t *GuiPanelChildren) Initialize(app *g3nd.App) {
+func (t *GuiPanelChildren) Initialize(a *app.App) {
 
 	// Panel 0
 	t.p0 = gui.NewPanel(500, 300)
@@ -32,7 +32,7 @@ func (t *GuiPanelChildren) Initialize(app *g3nd.App) {
 	t.p0.SetPaddingsColor(math32.NewColor("blue"))
 	l0 := gui.NewLabel("P0")
 	t.p0.Add(l0)
-	app.GuiPanel().Add(t.p0)
+	a.GuiPanel().Add(t.p0)
 
 	// Panel 1
 	t.p1 = gui.NewPanel(400, 200)
@@ -75,8 +75,8 @@ func (t *GuiPanelChildren) Initialize(app *g3nd.App) {
 	t.p1.SetTopChild(t.p2)
 
 	// Subscribe to key events
-	app.Window().Subscribe(window.OnKeyDown, t.onKey)
-	app.Window().Subscribe(window.OnKeyRepeat, t.onKey)
+	a.Window().Subscribe(window.OnKeyDown, t.onKey)
+	a.Window().Subscribe(window.OnKeyRepeat, t.onKey)
 }
 
 func (t *GuiPanelChildren) onKey(evname string, ev interface{}) {
@@ -141,6 +141,6 @@ func (t *GuiPanelChildren) onKey(evname string, ev interface{}) {
 	}
 }
 
-func (t *GuiPanelChildren) Render(app *g3nd.App) {
+func (t *GuiPanelChildren) Render(a *app.App) {
 
 }

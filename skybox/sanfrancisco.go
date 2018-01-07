@@ -6,8 +6,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -17,7 +17,7 @@ func init() {
 type Skybox struct {
 }
 
-func (t *Skybox) Initialize(app *g3nd.App) {
+func (t *Skybox) Initialize(a *app.App) {
 
 	var textures = []string{
 		"sanfrancisco/posx.jpg",
@@ -30,22 +30,22 @@ func (t *Skybox) Initialize(app *g3nd.App) {
 
 	// Add axis helper
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	geom := geometry.NewBox(50, 50, 50, 2, 2, 2)
 	skybox := graphic.NewMesh(geom, nil)
 	for i := 0; i < 6; i++ {
-		tex, err := texture.NewTexture2DFromImage(app.DirData() + "/images/" + textures[i])
+		tex, err := texture.NewTexture2DFromImage(a.DirData() + "/images/" + textures[i])
 		if err != nil {
-			app.Log().Fatal("Error loading texture: %s", err)
+			a.Log().Fatal("Error loading texture: %s", err)
 		}
 		matFace := material.NewStandard(&math32.Color{1, 1, 1})
 		matFace.AddTexture(tex)
 		matFace.SetSide(material.SideBack)
 		skybox.AddGroupMaterial(matFace, i)
 	}
-	app.Scene().Add(skybox)
+	a.Scene().Add(skybox)
 }
 
-func (t *Skybox) Render(app *g3nd.App) {
+func (t *Skybox) Render(a *app.App) {
 }

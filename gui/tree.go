@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/g3n/engine/gui"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -15,7 +15,7 @@ func init() {
 type GuiTree struct {
 }
 
-func (t *GuiTree) Initialize(app *g3nd.App) {
+func (t *GuiTree) Initialize(a *app.App) {
 
 	labelId := 1
 	nodeId := 1
@@ -23,10 +23,10 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 	// Tree
 	tree := gui.NewTree(200, 300)
 	tree.SetPosition(10, 40)
-	app.GuiPanel().Add(tree)
+	a.GuiPanel().Add(tree)
 	tree.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		selected := tree.Selected()
-		app.Log().Info("OnChange: selected:%T", selected)
+		a.Log().Info("OnChange: selected:%T", selected)
 	})
 
 	addChild := func(child gui.IPanel) {
@@ -60,7 +60,7 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 		labelId++
 		addChild(item)
 	})
-	app.GuiPanel().Add(b1)
+	a.GuiPanel().Add(b1)
 
 	// Add checkbox button
 	b2 := gui.NewButton("Add checkbox")
@@ -70,7 +70,7 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 		labelId++
 		addChild(item)
 	})
-	app.GuiPanel().Add(b2)
+	a.GuiPanel().Add(b2)
 
 	// Add node button
 	b3 := gui.NewButton("Add node")
@@ -101,7 +101,7 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 			nodeId++
 		}
 	})
-	app.GuiPanel().Add(b3)
+	a.GuiPanel().Add(b3)
 
 	// Add remove button
 	b4 := gui.NewButton("Remove")
@@ -114,7 +114,7 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 		tree.Remove(sel)
 		sel.Dispose()
 	})
-	app.GuiPanel().Add(b4)
+	a.GuiPanel().Add(b4)
 
 	// Add clear button
 	b5 := gui.NewButton("Clear")
@@ -122,8 +122,8 @@ func (t *GuiTree) Initialize(app *g3nd.App) {
 	b5.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		tree.Clear()
 	})
-	app.GuiPanel().Add(b5)
+	a.GuiPanel().Add(b5)
 }
 
-func (t *GuiTree) Render(app *g3nd.App) {
+func (t *GuiTree) Render(a *app.App) {
 }

@@ -9,8 +9,8 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/text"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type Text1 struct {
@@ -33,17 +33,17 @@ lays completely undiscovered before us.
 Isaac Newton.
 `
 
-func (t *Text1) Initialize(app *g3nd.App) {
+func (t *Text1) Initialize(a *app.App) {
 
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 0, 10)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Creates Font
-	fontfile := app.DirData() + "/fonts/FreeSans.ttf"
+	fontfile := a.DirData() + "/fonts/FreeSans.ttf"
 	font, err := text.NewFont(fontfile)
 	if err != nil {
-		app.Log().Fatal(err.Error())
+		a.Log().Fatal(err.Error())
 	}
 	font.SetLineSpacing(1.0)
 	font.SetSize(28)
@@ -70,7 +70,7 @@ func (t *Text1) Initialize(app *g3nd.App) {
 		mat.AddTexture(tex)
 		mesh1.AddGroupMaterial(mat, idx)
 	}
-	app.Scene().Add(mesh1)
+	a.Scene().Add(mesh1)
 
 	// Plane texture
 	canvas := text.NewCanvas(300, 200, &math32.Color4{0, 1, 0, 0.8})
@@ -88,7 +88,7 @@ func (t *Text1) Initialize(app *g3nd.App) {
 	mat2.AddTexture(tex1)
 	mesh2 := graphic.NewMesh(geom2, mat2)
 	mesh2.SetPosition(2, 2, -0.8)
-	app.Scene().Add(mesh2)
+	a.Scene().Add(mesh2)
 
 	// Sprite1
 	stext := "Sprite1\nSprite1\nSprite1"
@@ -101,7 +101,7 @@ func (t *Text1) Initialize(app *g3nd.App) {
 	aspect := float32(swidth) / float32(sheight)
 	mesh3 := graphic.NewSprite(aspect, 1, mat3)
 	mesh3.SetPosition(-1.5, 1.5, 0.1)
-	app.Scene().Add(mesh3)
+	a.Scene().Add(mesh3)
 
 	// Sprite2
 	font.SetSize(28)
@@ -116,7 +116,7 @@ func (t *Text1) Initialize(app *g3nd.App) {
 	aspect = float32(swidth) / float32(sheight)
 	mesh4 := graphic.NewSprite(aspect, 1, mat4)
 	mesh4.SetPosition(1.5, -1.5, 0.1)
-	app.Scene().Add(mesh4)
+	a.Scene().Add(mesh4)
 
 	// Plane2
 	canvas = text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
@@ -129,15 +129,15 @@ func (t *Text1) Initialize(app *g3nd.App) {
 	mesh5 := graphic.NewMesh(geom5, mat5)
 	mesh5.SetPosition(-2, -1, -0.5)
 	t.planeTime = mesh5
-	app.Scene().Add(mesh5)
+	a.Scene().Add(mesh5)
 
 	axis := graphic.NewAxisHelper(1)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 }
 
-func (t *Text1) Render(app *g3nd.App) {
+func (t *Text1) Render(a *app.App) {
 
-	l1 := fmt.Sprintf("Time: %4.4f", app.RunSeconds())
+	l1 := fmt.Sprintf("Time: %4.4f", a.RunSeconds())
 	// Creates updated canvas
 	canvas := text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
 	t.font.SetSize(30)

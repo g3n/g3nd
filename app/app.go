@@ -1,4 +1,4 @@
-package g3nd
+package app
 
 import (
 	"flag"

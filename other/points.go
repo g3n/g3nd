@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"math/rand"
 )
@@ -21,13 +21,13 @@ func init() {
 	demos.Map["other.points"] = &Points2{}
 }
 
-func (t *Points2) Initialize(app *g3nd.App) {
+func (t *Points2) Initialize(a *app.App) {
 
-	app.Gl().ClearColor(0, 0, 0, 1)
-	app.CameraPersp().SetPositionZ(5)
+	a.Gl().ClearColor(0, 0, 0, 1)
+	a.CameraPersp().SetPositionZ(5)
 
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Load textures for the sprites
 	spnames := []string{
@@ -37,9 +37,9 @@ func (t *Points2) Initialize(app *g3nd.App) {
 	}
 	sprites := []*texture.Texture2D{}
 	for _, name := range spnames {
-		tex, err := texture.NewTexture2DFromImage(app.DirData() + "/images/" + name)
+		tex, err := texture.NewTexture2DFromImage(a.DirData() + "/images/" + name)
 		if err != nil {
-			app.Log().Fatal("Error loading texture: %s", err)
+			a.Log().Fatal("Error loading texture: %s", err)
 		}
 		sprites = append(sprites, tex)
 	}
@@ -72,11 +72,11 @@ func (t *Points2) Initialize(app *g3nd.App) {
 		t.points.AddMaterial(t.points, mat, start, count)
 		start += count
 	}
-	app.Scene().Add(t.points)
+	a.Scene().Add(t.points)
 }
 
-func (t *Points2) Render(app *g3nd.App) {
+func (t *Points2) Render(a *app.App) {
 
-	rps := app.FrameDeltaSeconds() * 2 * math32.Pi
+	rps := a.FrameDeltaSeconds() * 2 * math32.Pi
 	t.points.AddRotationY(rps * 0.05)
 }

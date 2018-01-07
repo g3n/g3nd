@@ -2,8 +2,8 @@ package gui
 
 import (
 	"github.com/g3n/engine/gui"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -14,7 +14,7 @@ type GuiFolder struct {
 	f1 *gui.Folder
 }
 
-func (t *GuiFolder) Initialize(app *g3nd.App) {
+func (t *GuiFolder) Initialize(app *app.App) {
 
 	cbExpand := gui.NewCheckBox("Expand left")
 	cbExpand.SetPosition(200, 10)
@@ -42,5 +42,5 @@ func (t *GuiFolder) Initialize(app *g3nd.App) {
 	app.GuiPanel().Add(t.f1)
 }
 
-func (t *GuiFolder) Render(app *g3nd.App) {
+func (t *GuiFolder) Render(app *app.App) {
 }

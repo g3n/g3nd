@@ -8,8 +8,8 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/obj"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 	"github.com/g3n/g3nd/util"
 )
 
@@ -22,16 +22,16 @@ type LoaderObj struct {
 	selFile    *util.FileSelectButton
 }
 
-func (t *LoaderObj) Initialize(app *g3nd.App) {
+func (t *LoaderObj) Initialize(a *app.App) {
 
 	// Creates file selection button
-	t.selFile = util.NewFileSelectButton(app.DirData()+"/obj", "Select File", 400, 300)
+	t.selFile = util.NewFileSelectButton(a.DirData()+"/obj", "Select File", 400, 300)
 	t.selFile.SetPosition(10, 10)
 	t.selFile.FS.SetFileFilters("*.obj")
-	app.GuiPanel().Add(t.selFile)
+	a.GuiPanel().Add(t.selFile)
 	t.selFile.Subscribe("OnSelect", func(evname string, ev interface{}) {
 		fpath := ev.(string)
-		err := t.load(app, fpath)
+		err := t.load(a, fpath)
 		if err == nil {
 			t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 			t.selFile.SetError("")
@@ -43,32 +43,32 @@ func (t *LoaderObj) Initialize(app *g3nd.App) {
 	// Adds white directional front light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 0, 10)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Adds white directional top light
 	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l2.SetPosition(0, 10, 0)
-	app.Scene().Add(l2)
+	a.Scene().Add(l2)
 
 	// Adds white directional right light
 	l3 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l3.SetPosition(10, 0, 0)
-	app.Scene().Add(l3)
+	a.Scene().Add(l3)
 
 	// Adds axis helper
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	fpath := "obj/cubemultitex.obj"
-	t.load(app, filepath.Join(app.DirData(), fpath))
+	t.load(a, filepath.Join(a.DirData(), fpath))
 	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 }
 
-func (t *LoaderObj) load(app *g3nd.App, path string) error {
+func (t *LoaderObj) load(a *app.App, path string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
-		app.Scene().Remove(t.prevLoaded)
+		a.Scene().Remove(t.prevLoaded)
 		t.prevLoaded.Dispose()
 		t.prevLoaded = nil
 	}
@@ -86,11 +86,11 @@ func (t *LoaderObj) load(app *g3nd.App, path string) error {
 		t.selFile.SetError(err.Error())
 		return err
 	}
-	app.Scene().Add(group)
+	a.Scene().Add(group)
 	t.prevLoaded = group
 	return nil
 }
 
-func (t *LoaderObj) Render(app *g3nd.App) {
+func (t *LoaderObj) Render(a *app.App) {
 
 }

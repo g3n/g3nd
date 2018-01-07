@@ -3,8 +3,8 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 	"github.com/g3n/g3nd/util"
 
 	"path/filepath"
@@ -19,16 +19,16 @@ type GuiBuilder struct {
 	container *gui.Panel
 }
 
-func (t *GuiBuilder) Initialize(app *g3nd.App) {
+func (t *GuiBuilder) Initialize(a *app.App) {
 
 	// Creates file selection button
-	t.selFile = util.NewFileSelectButton(app.DirData()+"/gui", "Select File", 400, 300)
+	t.selFile = util.NewFileSelectButton(a.DirData()+"/gui", "Select File", 400, 300)
 	t.selFile.SetPosition(0, 0)
 	t.selFile.FS.SetFileFilters("*.yaml")
-	app.GuiPanel().Add(t.selFile)
+	a.GuiPanel().Add(t.selFile)
 	t.selFile.Subscribe("OnSelect", func(evname string, ev interface{}) {
 		fpath := ev.(string)
-		t.build(app, fpath)
+		t.build(a, fpath)
 	})
 	t.selFile.SetMargins(2, 2, 2, 2)
 
@@ -39,22 +39,22 @@ func (t *GuiBuilder) Initialize(app *g3nd.App) {
 	t.container.SetColor4(&math32.Color4{1, 1, 1, 0})
 	// Internal function to resize container when gui resizes
 	onResize := func() {
-		t.container.SetSize(app.GuiPanel().ContentWidth(), app.GuiPanel().ContentHeight()-t.selFile.Height())
+		t.container.SetSize(a.GuiPanel().ContentWidth(), a.GuiPanel().ContentHeight()-t.selFile.Height())
 		t.container.SetPosition(0, t.selFile.Position().Y+t.selFile.Height())
 	}
-	app.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) { onResize() })
-	app.GuiPanel().Add(t.container)
+	a.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) { onResize() })
+	a.GuiPanel().Add(t.container)
 	onResize()
 
 	// Loads default gui builder file
-	t.build(app, app.DirData()+"/gui/1panels.yaml")
+	t.build(a, a.DirData()+"/gui/1panels.yaml")
 }
 
-func (t *GuiBuilder) Render(app *g3nd.App) {
+func (t *GuiBuilder) Render(app *app.App) {
 
 }
 
-func (t *GuiBuilder) build(app *g3nd.App, fpath string) {
+func (t *GuiBuilder) build(app *app.App, fpath string) {
 
 	// Creates gui builder
 	b := gui.NewBuilder()

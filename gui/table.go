@@ -7,8 +7,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -18,7 +18,7 @@ func init() {
 type GuiTable struct {
 }
 
-func (t *GuiTable) Initialize(app *g3nd.App) {
+func (t *GuiTable) Initialize(a *app.App) {
 
 	// Function to generate table data rows
 	nextRow := 0
@@ -70,7 +70,7 @@ func (t *GuiTable) Initialize(app *g3nd.App) {
 	mr.AddOption("Remove all rows").SetId("remAllRows")
 	mb.AddMenu("Row", mr)
 
-	app.GuiPanel().Add(mb)
+	a.GuiPanel().Add(mb)
 
 	// Time formatting function
 	//formatTime := func(row int, col string, val interface{}) string {
@@ -108,12 +108,12 @@ func (t *GuiTable) Initialize(app *g3nd.App) {
 	tab.SetBorders(1, 1, 1, 1)
 	tab.SetPosition(0, tableY)
 	tab.SetMargins(10, 10, 10, 10)
-	tab.SetSize(app.GuiPanel().ContentWidth(), app.GuiPanel().ContentHeight()-tableY)
-	app.GuiPanel().Add(tab)
+	tab.SetSize(a.GuiPanel().ContentWidth(), a.GuiPanel().ContentHeight()-tableY)
+	a.GuiPanel().Add(tab)
 
 	// Resize table
-	app.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) {
-		tab.SetSize(app.GuiPanel().ContentWidth(), app.GuiPanel().ContentHeight()-tableY)
+	a.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) {
+		tab.SetSize(a.GuiPanel().ContentWidth(), a.GuiPanel().ContentHeight()-tableY)
 	})
 
 	// Creates column context menu
@@ -296,6 +296,6 @@ func (t *GuiTable) Initialize(app *g3nd.App) {
 
 }
 
-func (t *GuiTable) Render(app *g3nd.App) {
+func (t *GuiTable) Render(a *app.App) {
 
 }

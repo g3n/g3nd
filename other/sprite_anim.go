@@ -5,8 +5,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"time"
 )
@@ -19,19 +19,19 @@ func init() {
 	demos.Map["other.sprite_anim"] = &SpriteAnim{}
 }
 
-func (t *SpriteAnim) Initialize(app *g3nd.App) {
+func (t *SpriteAnim) Initialize(a *app.App) {
 
 	// Initialize list of animators
 	t.anims = make([]*texture.Animator, 0)
 
 	// Adds axis helper
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Creates texture 1 and animator
-	tex1, err := texture.NewTexture2DFromImage(app.DirData() + "/images/explosion7.png")
+	tex1, err := texture.NewTexture2DFromImage(a.DirData() + "/images/explosion7.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	anim1 := texture.NewAnimator(tex1, 8, 8)
 	anim1.SetDispTime(16666 * time.Microsecond)
@@ -43,12 +43,12 @@ func (t *SpriteAnim) Initialize(app *g3nd.App) {
 	mat1.SetOpacity(1)
 	s1 := graphic.NewSprite(2, 2, mat1)
 	s1.SetPosition(-2, 2, 0)
-	app.Scene().Add(s1)
+	a.Scene().Add(s1)
 
 	// Creates texture 2 and animator
-	tex2, err := texture.NewTexture2DFromImage(app.DirData() + "/images/explosion3.png")
+	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/explosion3.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	anim2 := texture.NewAnimator(tex2, 4, 4)
 	anim2.SetDispTime(4 * 16666 * time.Microsecond)
@@ -59,12 +59,12 @@ func (t *SpriteAnim) Initialize(app *g3nd.App) {
 	mat2.SetOpacity(1)
 	s2 := graphic.NewSprite(2, 2, mat2)
 	s2.SetPosition(2, 2, 0)
-	app.Scene().Add(s2)
+	a.Scene().Add(s2)
 
 	// Creates texture 3 and animator
-	tex3, err := texture.NewTexture2DFromImage(app.DirData() + "/images/explosion4.png")
+	tex3, err := texture.NewTexture2DFromImage(a.DirData() + "/images/explosion4.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	anim3 := texture.NewAnimator(tex3, 40, 1)
 	anim3.SetDispTime(2 * 16666 * time.Microsecond)
@@ -75,12 +75,12 @@ func (t *SpriteAnim) Initialize(app *g3nd.App) {
 	mat3.SetOpacity(0.8)
 	s3 := graphic.NewSprite(3, 3, mat3)
 	s3.SetPosition(-2, -2, 0)
-	app.Scene().Add(s3)
+	a.Scene().Add(s3)
 
 	// Creates texture 4 and animator
-	tex4, err := texture.NewTexture2DFromImage(app.DirData() + "/images/walksequence.png")
+	tex4, err := texture.NewTexture2DFromImage(a.DirData() + "/images/walksequence.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	anim4 := texture.NewAnimator(tex4, 6, 5)
 	anim4.SetDispTime(2 * 16333 * time.Microsecond)
@@ -91,10 +91,10 @@ func (t *SpriteAnim) Initialize(app *g3nd.App) {
 	mat4.SetOpacity(1)
 	s4 := graphic.NewSprite(2, 2, mat4)
 	s4.SetPosition(2, -2, 0)
-	app.Scene().Add(s4)
+	a.Scene().Add(s4)
 }
 
-func (t *SpriteAnim) Render(app *g3nd.App) {
+func (t *SpriteAnim) Render(a *app.App) {
 
 	for _, anim := range t.anims {
 		anim.Update(time.Now())

@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"math"
 )
@@ -23,21 +23,21 @@ func init() {
 	demos.Map["light.point"] = &PointLight{}
 }
 
-func (t *PointLight) Initialize(app *g3nd.App) {
+func (t *PointLight) Initialize(a *app.App) {
 
 	// Creates right sphere
 	geom1 := geometry.NewSphere(0.5, 32, 32, 0, math.Pi*2, 0, math.Pi)
 	mat1 := material.NewStandard(&math32.Color{0, 0, 0.6})
 	sphere1 := graphic.NewMesh(geom1, mat1)
 	sphere1.SetPositionX(1)
-	app.Scene().Add(sphere1)
+	a.Scene().Add(sphere1)
 
 	// Creates left sphere
 	geom2 := geometry.NewSphere(0.5, 32, 32, 0, math.Pi*2, 0, math.Pi)
 	mat2 := material.NewPhong(&math32.Color{0, 0.5, 0.0})
 	sphere2 := graphic.NewMesh(geom2, mat2)
 	sphere2.SetPositionX(-1)
-	app.Scene().Add(sphere2)
+	a.Scene().Add(sphere2)
 
 	// Creates left plane
 	geom3 := geometry.NewPlane(4, 4, 8, 8)
@@ -45,7 +45,7 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	pleft := graphic.NewMesh(geom3, mat3)
 	pleft.SetPosition(-2, 0, 0)
 	pleft.SetRotationY(math.Pi / 2)
-	app.Scene().Add(pleft)
+	a.Scene().Add(pleft)
 
 	// Creates right plane
 	geom4 := geometry.NewPlane(4, 4, 8, 8)
@@ -53,7 +53,7 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	pright := graphic.NewMesh(geom4, mat4)
 	pright.SetPosition(2, 0, 0)
 	pright.SetRotationY(-math.Pi / 2)
-	app.Scene().Add(pright)
+	a.Scene().Add(pright)
 
 	// Creates top plane
 	geom5 := geometry.NewPlane(4, 4, 8, 8)
@@ -61,7 +61,7 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	ptop := graphic.NewMesh(geom5, mat5)
 	ptop.SetPosition(0, 2, 0)
 	ptop.SetRotationX(math.Pi / 2)
-	app.Scene().Add(ptop)
+	a.Scene().Add(ptop)
 
 	// Creates bottom plane
 	geom6 := geometry.NewPlane(4, 4, 8, 8)
@@ -69,31 +69,31 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	pbot := graphic.NewMesh(geom6, mat6)
 	pbot.SetPosition(0, -2, 0)
 	pbot.SetRotationX(-math.Pi / 2)
-	app.Scene().Add(pbot)
+	a.Scene().Add(pbot)
 
 	// Creates back plane
 	geom7 := geometry.NewPlane(4, 4, 8, 8)
 	mat7 := material.NewStandard(&math32.Color{1, 1, 1})
 	pback := graphic.NewMesh(geom7, mat7)
 	pback.SetPosition(0, 0, -2)
-	app.Scene().Add(pback)
+	a.Scene().Add(pback)
 
 	axis := graphic.NewAxisHelper(1)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Creates vertical point light
 	t.vl = NewLightMesh(&math32.Color{1, 1, 1})
-	t.vl.AddScene(app)
+	t.vl.AddScene(a)
 
 	// Creates horizontal point light
 	t.hl = NewLightMesh(&math32.Color{1, 1, 1})
-	t.hl.AddScene(app)
+	t.hl.AddScene(a)
 
 	// Add controls
-	if app.ControlFolder() == nil {
+	if a.ControlFolder() == nil {
 		return
 	}
-	g := app.ControlFolder().AddGroup("Show lights")
+	g := a.ControlFolder().AddGroup("Show lights")
 	cb1 := g.AddCheckBox("Horizontal").SetValue(t.hl.Mesh.Visible())
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.hl.Mesh.SetVisible(!t.hl.Mesh.Visible())
@@ -104,7 +104,7 @@ func (t *PointLight) Initialize(app *g3nd.App) {
 	})
 }
 
-func (t *PointLight) Render(app *g3nd.App) {
+func (t *PointLight) Render(a *app.App) {
 
 	t.vl.Position(0, 1.5*float32(math.Sin(t.count)), 0)
 	t.hl.Position(1.5*float32(math.Sin(t.count)), 1, 0)
@@ -138,9 +138,9 @@ func NewLightMesh(color *math32.Color) *LightMesh {
 	return l
 }
 
-func (l *LightMesh) AddScene(app *g3nd.App) {
+func (l *LightMesh) AddScene(a *app.App) {
 
-	app.Scene().Add(l.Mesh)
+	a.Scene().Add(l.Mesh)
 }
 
 func (l *LightMesh) Position(x, y, z float32) {

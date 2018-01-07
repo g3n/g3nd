@@ -3,8 +3,8 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -13,7 +13,7 @@ func init() {
 
 type CheckRadio struct{}
 
-func (t *CheckRadio) Initialize(app *g3nd.App) {
+func (t *CheckRadio) Initialize(app *app.App) {
 
 	// Checkbox 1
 	cb1 := gui.NewCheckBox("Checkbox 1")
@@ -118,5 +118,5 @@ func (t *CheckRadio) Initialize(app *g3nd.App) {
 	app.GuiPanel().Add(rb5)
 }
 
-func (t *CheckRadio) Render(app *g3nd.App) {
+func (t *CheckRadio) Render(app *app.App) {
 }

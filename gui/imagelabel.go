@@ -6,8 +6,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 
 type GuiImageLabel struct{}
 
-func (t *GuiImageLabel) Initialize(app *g3nd.App) {
+func (t *GuiImageLabel) Initialize(app *app.App) {
 
 	l1 := gui.NewImageLabel("label1")
 	l1.SetPosition(10, 10)
@@ -130,5 +130,5 @@ func (t *GuiImageLabel) Initialize(app *g3nd.App) {
 	app.GuiPanel().Add(l12)
 }
 
-func (t *GuiImageLabel) Render(app *g3nd.App) {
+func (t *GuiImageLabel) Render(app *app.App) {
 }

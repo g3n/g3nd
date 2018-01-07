@@ -5,8 +5,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -15,7 +15,7 @@ func init() {
 
 type GuiDropdown struct{}
 
-func (t *GuiDropdown) Initialize(app *g3nd.App) {
+func (t *GuiDropdown) Initialize(app *app.App) {
 
 	// DropDown simple
 	dd1 := gui.NewDropDown(150, gui.NewImageLabel("init"))
@@ -71,5 +71,5 @@ func (t *GuiDropdown) Initialize(app *g3nd.App) {
 	dd3.SetSelected(dd3.ItemAt(2))
 }
 
-func (t *GuiDropdown) Render(app *g3nd.App) {
+func (t *GuiDropdown) Render(app *app.App) {
 }

@@ -6,8 +6,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 
 type GuiLayoutHBox struct{}
 
-func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
+func (t *GuiLayoutHBox) Initialize(a *app.App) {
 
 	// Adds reset size button
 	var p1 *gui.Panel
@@ -27,7 +27,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 	rb.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		p1.SetSize(pwidth, pheight)
 	})
-	app.GuiPanel().Add(rb)
+	a.GuiPanel().Add(rb)
 
 	// Horizontal panel
 	params := gui.HBoxLayoutParams{Expand: 0, AlignV: gui.AlignTop}
@@ -36,7 +36,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 	p1.SetBorders(1, 1, 1, 1)
 	p1.SetBordersColor(math32.NewColor("Black"))
 	p1.SetPaddings(2, 2, 2, 2)
-	app.GuiPanel().Add(p1)
+	a.GuiPanel().Add(p1)
 	// Sets Horizontal box layout
 	bl1 := gui.NewHBoxLayout()
 	bl1.SetSpacing(4)
@@ -54,7 +54,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 		child.SetLayoutParams(&itemParams)
 		p1.Add(child)
 	})
-	app.GuiPanel().Add(p1b1)
+	a.GuiPanel().Add(p1b1)
 	// Del button
 	p1b2 := gui.NewButton("Del")
 	p1b2.SetPosition(p1b1.Position().X+p1b1.Width()+10, p1b1.Position().Y)
@@ -63,21 +63,21 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			p1.Remove(p1.Children()[0].(gui.IPanel))
 		}
 	})
-	app.GuiPanel().Add(p1b2)
+	a.GuiPanel().Add(p1b2)
 	// Auto height checkbox
 	cb1 := gui.NewCheckBox("Auto height")
 	cb1.SetPosition(p1b2.Position().X+p1b2.Width()+10, p1b2.Position().Y)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		bl1.SetAutoHeight(cb1.Value())
 	})
-	app.GuiPanel().Add(cb1)
+	a.GuiPanel().Add(cb1)
 	cb1.SetValue(true)
 	// Auto width checkbox
 	cb2 := gui.NewCheckBox("Auto width")
 	cb2.SetPosition(cb1.Position().X+cb1.Width()+10, cb1.Position().Y)
 	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) { bl1.SetAutoWidth(cb2.Value()) })
 	cb2.SetValue(true)
-	app.GuiPanel().Add(cb2)
+	a.GuiPanel().Add(cb2)
 	// X left
 	p1c1 := gui.NewRadioButton("Left")
 	p1c1.SetPosition(p1b2.Position().X+p1b2.Width()+10, cb1.Position().Y+30)
@@ -87,7 +87,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			bl1.SetAlignH(gui.AlignLeft)
 		}
 	})
-	app.GuiPanel().Add(p1c1)
+	a.GuiPanel().Add(p1c1)
 	// X center
 	p1c2 := gui.NewRadioButton("Center")
 	p1c2.SetPosition(p1c1.Position().X+p1c1.Width()+10, p1c1.Position().Y)
@@ -97,7 +97,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			bl1.SetAlignH(gui.AlignCenter)
 		}
 	})
-	app.GuiPanel().Add(p1c2)
+	a.GuiPanel().Add(p1c2)
 	// X right
 	p1c3 := gui.NewRadioButton("Right")
 	p1c3.SetPosition(p1c2.Position().X+p1c2.Width()+10, p1c1.Position().Y)
@@ -107,7 +107,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			bl1.SetAlignH(gui.AlignRight)
 		}
 	})
-	app.GuiPanel().Add(p1c3)
+	a.GuiPanel().Add(p1c3)
 	// X right
 	p1c4 := gui.NewRadioButton("Width")
 	p1c4.SetPosition(p1c3.Position().X+p1c3.Width()+10, p1c3.Position().Y)
@@ -117,7 +117,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			bl1.SetAlignH(gui.AlignWidth)
 		}
 	})
-	app.GuiPanel().Add(p1c4)
+	a.GuiPanel().Add(p1c4)
 
 	// Align next item to Top
 	p1c5 := gui.NewRadioButton("Top")
@@ -128,7 +128,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			params.AlignV = gui.AlignTop
 		}
 	})
-	app.GuiPanel().Add(p1c5)
+	a.GuiPanel().Add(p1c5)
 	// Align next item to Center
 	p1c6 := gui.NewRadioButton("Center")
 	p1c6.SetPosition(p1c5.Position().X+p1c5.Width()+10, p1c5.Position().Y)
@@ -138,7 +138,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			params.AlignV = gui.AlignCenter
 		}
 	})
-	app.GuiPanel().Add(p1c6)
+	a.GuiPanel().Add(p1c6)
 	// Align next item to Bottom
 	p1c7 := gui.NewRadioButton("Bottom")
 	p1c7.SetPosition(p1c6.Position().X+p1c6.Width()+10, p1c6.Position().Y)
@@ -148,7 +148,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			params.AlignV = gui.AlignBottom
 		}
 	})
-	app.GuiPanel().Add(p1c7)
+	a.GuiPanel().Add(p1c7)
 	// Align next item to Bottom
 	p1c8 := gui.NewRadioButton("Height")
 	p1c8.SetPosition(p1c7.Position().X+p1c7.Width()+10, p1c7.Position().Y)
@@ -158,7 +158,7 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			params.AlignV = gui.AlignHeight
 		}
 	})
-	app.GuiPanel().Add(p1c8)
+	a.GuiPanel().Add(p1c8)
 	// Expand factor for next item
 	cbexp := gui.NewCheckBox("Expand")
 	cbexp.SetPosition(p1c8.Position().X+p1c8.Width()+10, p1c8.Position().Y)
@@ -169,8 +169,8 @@ func (t *GuiLayoutHBox) Initialize(app *g3nd.App) {
 			params.Expand = 0
 		}
 	})
-	app.GuiPanel().Add(cbexp)
+	a.GuiPanel().Add(cbexp)
 }
 
-func (t *GuiLayoutHBox) Render(app *g3nd.App) {
+func (t *GuiLayoutHBox) Render(a *app.App) {
 }

@@ -14,14 +14,14 @@ import (
 	_ "github.com/g3n/g3nd/tests"
 	_ "github.com/g3n/g3nd/texture"
 
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func main() {
 
-	app := g3nd.Create(demos.Map)
-	if app != nil {
-		app.Run()
+	a := app.Create(demos.Map)
+	if a != nil {
+		a.Run()
 	}
 }

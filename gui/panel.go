@@ -4,8 +4,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type GuiPanel struct {
@@ -18,7 +18,7 @@ func init() {
 	demos.Map["gui.panel"] = &GuiPanel{}
 }
 
-func (t *GuiPanel) Initialize(app *g3nd.App) {
+func (t *GuiPanel) Initialize(a *app.App) {
 
 	// Panel 1
 	t.p1 = gui.NewPanel(100, 50)
@@ -31,7 +31,7 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	t.p1.SetColor(math32.NewColor("white"))
 	t.p1.SetPaddingsColor(math32.NewColor("green"))
 	t.p1.SetContentSize(100, 100)
-	app.GuiPanel().Add(t.p1)
+	a.GuiPanel().Add(t.p1)
 
 	// Panel 2
 	t.p2 = gui.NewPanel(t.p1.Width(), t.p1.Height())
@@ -43,7 +43,7 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	t.p2.SetColor(math32.NewColor("white"))
 	t.p2.SetPaddingsColor(math32.NewColor("green"))
 	t.p2.SetSize(100, 100)
-	app.GuiPanel().Add(t.p2)
+	a.GuiPanel().Add(t.p2)
 
 	// Panel 3 with several children
 	t.p3 = gui.NewPanel(400, 200).SetColor(math32.NewColor("gray"))
@@ -51,8 +51,8 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	t.p3.SetBorders(6, 6, 6, 6)
 	t.p3.SetBordersColor(math32.NewColor("black"))
 	t.p3.SetPaddings(2, 2, 2, 2)
-	app.GuiPanel().Add(t.p3)
-	p3Event := func(name string, ev interface{}) { app.Log().Debug("Parent:%v", name) }
+	a.GuiPanel().Add(t.p3)
+	p3Event := func(name string, ev interface{}) { a.Log().Debug("Parent:%v", name) }
 	t.p3.Subscribe(gui.OnCursor, p3Event)
 	t.p3.Subscribe(gui.OnCursorEnter, p3Event)
 	t.p3.Subscribe(gui.OnCursorLeave, p3Event)
@@ -70,7 +70,7 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	c.SetPosition(100, -10)
 	c.SetBorders(4, 4, 4, 4)
 	t.p3.Add(c)
-	c2Event := func(name string, ev interface{}) { app.Log().Debug("Child 2:%v", name) }
+	c2Event := func(name string, ev interface{}) { a.Log().Debug("Child 2:%v", name) }
 	c.Subscribe(gui.OnCursor, c2Event)
 	c.Subscribe(gui.OnCursorEnter, c2Event)
 	c.Subscribe(gui.OnCursorLeave, c2Event)
@@ -132,9 +132,9 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	c.Add(c1)
 
 	// Image panel 1
-	im, err := gui.NewImage(app.DirData() + "/images/tiger1.jpg")
+	im, err := gui.NewImage(a.DirData() + "/images/tiger1.jpg")
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	im.SetPosition(50, 400)
 	im.SetMargins(0, 0, 0, 0)
@@ -143,12 +143,12 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	im.SetPaddings(6, 6, 6, 6)
 	im.SetColor(math32.NewColor("white"))
 	im.SetContentAspectWidth(128)
-	app.GuiPanel().Add(im)
+	a.GuiPanel().Add(im)
 
 	// Image panel 2
-	im, err = gui.NewImage(app.DirData() + "/images/tiger1.jpg")
+	im, err = gui.NewImage(a.DirData() + "/images/tiger1.jpg")
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	im.SetPosition(250, 400)
 	im.SetMargins(0, 0, 0, 0)
@@ -157,10 +157,10 @@ func (t *GuiPanel) Initialize(app *g3nd.App) {
 	im.SetPaddings(0, 0, 40, 40)
 	im.SetColor(math32.NewColor("white"))
 	im.SetContentAspectWidth(90)
-	app.GuiPanel().Add(im)
+	a.GuiPanel().Add(im)
 
 	// Subscribe to key events
-	app.Window().Subscribe(window.OnKeyDown, t.onKey)
+	a.Window().Subscribe(window.OnKeyDown, t.onKey)
 }
 
 func (t *GuiPanel) onKey(evname string, ev interface{}) {
@@ -179,9 +179,9 @@ func (t *GuiPanel) onKey(evname string, ev interface{}) {
 
 }
 
-func (t *GuiPanel) Render(app *g3nd.App) {
+func (t *GuiPanel) Render(a *app.App) {
 
-	time := app.RunSeconds()
+	time := a.RunSeconds()
 	delta := (math32.Sin(time) + 1.0) / 2
 	maxWidth := 200
 	maxHeight := 100

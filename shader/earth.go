@@ -7,12 +7,12 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type Earth struct {
-	app    *g3nd.App
+	a      *app.App
 	sphere *graphic.Mesh
 }
 
@@ -20,16 +20,16 @@ func init() {
 	demos.Map["shader.earth"] = &Earth{}
 }
 
-func (t *Earth) Initialize(app *g3nd.App) {
+func (t *Earth) Initialize(a *app.App) {
 
-	t.app = app
-	app.Gl().ClearColor(0, 0, 0, 1)
+	t.a = a
+	a.Gl().ClearColor(0, 0, 0, 1)
 
-	app.AmbLight().SetIntensity(1)
+	a.AmbLight().SetIntensity(1)
 
 	// Create Skybox
 	skyboxData := graphic.SkyboxData{
-		app.DirData() + "/images/space/dark-s_", "jpg",
+		a.DirData() + "/images/space/dark-s_", "jpg",
 		[6]string{"px", "nx", "py", "ny", "pz", "nz"}}
 	skybox, err := graphic.NewSkybox(skyboxData)
 	if err != nil {
@@ -43,45 +43,45 @@ func (t *Earth) Initialize(app *g3nd.App) {
 		sbmat.SetUseLights(material.UseLightNone)
 		sbmat.SetEmissiveColor(&math32.Color{1, 1, 1})
 	}
-	app.Scene().Add(skybox)
+	a.Scene().Add(skybox)
 
 	// Adds directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.9)
 	dir1.SetPosition(0, 0, 100)
-	app.Scene().Add(dir1)
+	a.Scene().Add(dir1)
 
 	// Create day texture
-	texDay, err := texture.NewTexture2DFromImage(app.DirData() + "/images/earth_clouds_big.jpg")
+	texDay, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_clouds_big.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	texDay.SetFlipY(false)
 
 	// Create specular map texture
-	texSpecular, err := texture.NewTexture2DFromImage(app.DirData() + "/images/earth_spec_big.jpg")
+	texSpecular, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_spec_big.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	texSpecular.SetFlipY(false)
 
 	// Create night texture
-	texNight, err := texture.NewTexture2DFromImage(app.DirData() + "/images/earth_night_big.jpg")
+	texNight, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_night_big.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	texNight.SetFlipY(false)
 
 	// Create bump map texture
-	texBump, err := texture.NewTexture2DFromImage(app.DirData() + "/images/earth_bump_big.jpg")
+	texBump, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_bump_big.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	texBump.SetFlipY(false)
 
 	// Create custom shader
-	t.app.Renderer().AddShader("shaderEarthVertex", shaderEarthVertex)
-	t.app.Renderer().AddShader("shaderEarthFrag", shaderEarthFrag)
-	t.app.Renderer().AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
+	t.a.Renderer().AddShader("shaderEarthVertex", shaderEarthVertex)
+	t.a.Renderer().AddShader("shaderEarthFrag", shaderEarthFrag)
+	t.a.Renderer().AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
 
 	// Create custom material using the custom shader
 	matEarth := NewEarthMaterial(&math32.Color{1, 1, 1})
@@ -95,28 +95,28 @@ func (t *Earth) Initialize(app *g3nd.App) {
 	matEarth.AddTexture(texSpecular)
 	matEarth.AddTexture(texNight)
 	t.sphere = graphic.NewMesh(geom, matEarth)
-	app.Scene().Add(t.sphere)
+	a.Scene().Add(t.sphere)
 
 	// Create sun sprite
-	texSun, err := texture.NewTexture2DFromImage(app.DirData() + "/images/lensflare0_alpha.png")
+	texSun, err := texture.NewTexture2DFromImage(a.DirData() + "/images/lensflare0_alpha.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	sunMat := material.NewStandard(&math32.Color{1, 1, 1})
 	sunMat.AddTexture(texSun)
 	sun := graphic.NewSprite(10, 10, sunMat)
 	sun.SetPositionZ(20)
-	app.Scene().Add(sun)
+	a.Scene().Add(sun)
 
 	// Add axis helper
 	axis := graphic.NewAxisHelper(5)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 }
 
-func (t *Earth) Render(app *g3nd.App) {
+func (t *Earth) Render(a *app.App) {
 
-	t.sphere.AddRotationY(0.1 * app.FrameDeltaSeconds())
+	t.sphere.AddRotationY(0.1 * a.FrameDeltaSeconds())
 }
 
 //

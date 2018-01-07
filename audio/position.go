@@ -9,8 +9,8 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/text"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"time"
 )
@@ -28,60 +28,60 @@ type AudioPosition struct {
 	ps6 *PlayerSphere
 }
 
-func (t *AudioPosition) Initialize(app *g3nd.App) {
+func (t *AudioPosition) Initialize(a *app.App) {
 
 	// Show axis helper
 	ah := graphic.NewAxisHelper(1.0)
-	app.Scene().Add(ah)
+	a.Scene().Add(ah)
 
 	// Show grid helper
 	grid := graphic.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
-	app.Scene().Add(grid)
+	a.Scene().Add(grid)
 
 	// Sets camera position
-	app.Camera().GetCamera().SetPosition(0, 4, 12)
+	a.Camera().GetCamera().SetPosition(0, 4, 12)
 
 	// Creates listener and adds it to the current camera
 	listener := audio.NewListener()
-	app.Camera().GetCamera().Add(listener)
+	a.Camera().GetCamera().Add(listener)
 
 	// Creates player sphere
-	t.ps1 = NewPlayerSphere(app, "Vivaldi1.wav", &math32.Color{1, 0, 0})
+	t.ps1 = NewPlayerSphere(a, "Vivaldi1.wav", &math32.Color{1, 0, 0})
 	t.ps1.SetPosition(0, 0, 0)
 	t.ps1.speed = 1.00
 	t.ps1.player.SetRolloffFactor(1)
-	app.Scene().Add(t.ps1)
+	a.Scene().Add(t.ps1)
 
-	t.ps2 = NewPlayerSphere(app, "Bach1.ogg", &math32.Color{0, 1, 0})
+	t.ps2 = NewPlayerSphere(a, "Bach1.ogg", &math32.Color{0, 1, 0})
 	t.ps2.SetPosition(0, 1, 0)
 	t.ps2.speed = 0.90
-	app.Scene().Add(t.ps2)
+	a.Scene().Add(t.ps2)
 
-	t.ps3 = NewPlayerSphere(app, "bomb1.wav", &math32.Color{0, 0, 1})
+	t.ps3 = NewPlayerSphere(a, "bomb1.wav", &math32.Color{0, 0, 1})
 	t.ps3.SetPosition(0, 2, 0)
 	t.ps3.speed = 0.80
-	app.Scene().Add(t.ps3)
+	a.Scene().Add(t.ps3)
 
-	t.ps4 = NewPlayerSphere(app, "bomb2.ogg", &math32.Color{0, 1, 1})
+	t.ps4 = NewPlayerSphere(a, "bomb2.ogg", &math32.Color{0, 1, 1})
 	t.ps4.SetPosition(0, 3, 0)
 	t.ps4.speed = 0.70
-	app.Scene().Add(t.ps4)
+	a.Scene().Add(t.ps4)
 
-	t.ps5 = NewPlayerSphere(app, "tone_440hz.wav", &math32.Color{1, 1, 0})
+	t.ps5 = NewPlayerSphere(a, "tone_440hz.wav", &math32.Color{1, 1, 0})
 	t.ps5.SetPosition(0, 4, 0)
 	t.ps5.speed = 0.60
-	app.Scene().Add(t.ps5)
+	a.Scene().Add(t.ps5)
 
-	t.ps6 = NewPlayerSphere(app, "tone_1khz.wav", &math32.Color{1, 0, 1})
+	t.ps6 = NewPlayerSphere(a, "tone_1khz.wav", &math32.Color{1, 0, 1})
 	t.ps6.SetPosition(0, 5, 0)
 	t.ps6.speed = 0.50
-	app.Scene().Add(t.ps6)
+	a.Scene().Add(t.ps6)
 
 	// Add controls
-	if app.ControlFolder() == nil {
+	if a.ControlFolder() == nil {
 		return
 	}
-	g := app.ControlFolder().AddGroup("Play sources")
+	g := a.ControlFolder().AddGroup("Play sources")
 	cb1 := g.AddCheckBox("Vivaldi1").SetValue(true)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.ps1.Toggle()
@@ -108,14 +108,14 @@ func (t *AudioPosition) Initialize(app *g3nd.App) {
 	})
 }
 
-func (t *AudioPosition) Render(app *g3nd.App) {
+func (t *AudioPosition) Render(a *app.App) {
 
-	t.ps1.Update(app)
-	t.ps2.Update(app)
-	t.ps3.Update(app)
-	t.ps4.Update(app)
-	t.ps5.Update(app)
-	t.ps6.Update(app)
+	t.ps1.Update(a)
+	t.ps2.Update(a)
+	t.ps3.Update(a)
+	t.ps4.Update(a)
+	t.ps5.Update(a)
+	t.ps6.Update(a)
 }
 
 type PlayerSphere struct {
@@ -126,14 +126,14 @@ type PlayerSphere struct {
 	speed  float32
 }
 
-func NewPlayerSphere(app *g3nd.App, filename string, color *math32.Color) *PlayerSphere {
+func NewPlayerSphere(a *app.App, filename string, color *math32.Color) *PlayerSphere {
 
 	ps := new(PlayerSphere)
 
 	// Creates audio source
-	player, err := audio.NewPlayer(app.DirData() + "/audio/" + filename)
+	player, err := audio.NewPlayer(a.DirData() + "/audio/" + filename)
 	if err != nil {
-		app.Log().Fatal("error:%s", err)
+		a.Log().Fatal("error:%s", err)
 	}
 	ps.player = player
 
@@ -179,7 +179,7 @@ func (ps *PlayerSphere) Toggle() {
 	}
 }
 
-func (ss *PlayerSphere) Update(app *g3nd.App) {
+func (ss *PlayerSphere) Update(a *app.App) {
 
 	delta := time.Now().Sub(ss.start).Seconds()
 	x := 8 * math32.Cos(float32(delta)*ss.speed)

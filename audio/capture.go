@@ -4,8 +4,8 @@ import (
 	"github.com/g3n/engine/audio/al"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -25,27 +25,27 @@ const (
 	capSamples = 960   // Number of samples to show (~20ms)
 )
 
-func (t *AudioCapture) Initialize(app *g3nd.App) {
+func (t *AudioCapture) Initialize(a *app.App) {
 
 	// Try to open default capture device
 	dev, err := al.CaptureOpenDevice("", capRate, al.FormatMono16, 2*capSamples)
 	if err != nil {
 		l := gui.NewLabel("Error opening default capture device")
 		l.SetFontSize(22)
-		px := (app.GuiPanel().Width() - l.Width()) / 2
-		py := app.GuiPanel().Height() / 2
+		px := (a.GuiPanel().Width() - l.Width()) / 2
+		py := a.GuiPanel().Height() / 2
 		l.SetPosition(px, py)
-		app.Log().Error("%s", err)
-		app.GuiPanel().Add(l)
+		a.Log().Error("%s", err)
+		a.GuiPanel().Add(l)
 		return
 	}
 
 	// Adds function to close capture device
 	t.capDev = dev
-	app.AddFinalizer(func() {
+	a.AddFinalizer(func() {
 		al.CaptureStop(t.capDev)
 		al.CaptureCloseDevice(t.capDev)
-		app.Log().Debug("Audio capture device closed")
+		a.Log().Debug("Audio capture device closed")
 	})
 
 	// Creates chart panel
@@ -65,7 +65,7 @@ func (t *AudioCapture) Initialize(app *g3nd.App) {
 	t.chart.SetScaleY(5, &math32.Color{0.8, 0.8, 0.8})
 	t.chart.SetFontSizeY(13)
 	t.chart.SetRangeY(-1.0, 1.0)
-	app.GuiPanel().Add(t.chart)
+	a.GuiPanel().Add(t.chart)
 
 	// Adds line graph
 	t.gr = t.chart.AddLineGraph(&math32.Color{0, 0, 1}, nil)
@@ -78,7 +78,7 @@ func (t *AudioCapture) Initialize(app *g3nd.App) {
 	al.CaptureStart(t.capDev)
 }
 
-func (t *AudioCapture) Render(app *g3nd.App) {
+func (t *AudioCapture) Render(a *app.App) {
 
 	// If device was not created successfully, nothing to do
 	if t.capDev == nil {

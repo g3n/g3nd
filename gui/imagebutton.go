@@ -4,8 +4,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -14,7 +14,7 @@ func init() {
 
 type GuiImageButton struct{}
 
-func (t *GuiImageButton) Initialize(app *g3nd.App) {
+func (t *GuiImageButton) Initialize(app *app.App) {
 
 	// Large image button
 	b1, err := gui.NewImageButton(app.DirData() + "/images/tiger1.jpg")
@@ -89,6 +89,6 @@ func (t *GuiImageButton) Initialize(app *g3nd.App) {
 
 }
 
-func (t *GuiImageButton) Render(app *g3nd.App) {
+func (t *GuiImageButton) Render(app *app.App) {
 
 }

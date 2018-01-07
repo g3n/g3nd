@@ -9,8 +9,8 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/collada"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 	"github.com/g3n/g3nd/util"
 )
 
@@ -24,16 +24,16 @@ type LoaderCollada struct {
 	animTargets map[string]*collada.AnimationTarget
 }
 
-func (t *LoaderCollada) Initialize(app *g3nd.App) {
+func (t *LoaderCollada) Initialize(a *app.App) {
 
 	// Creates file selection button
-	t.selFile = util.NewFileSelectButton(app.DirData()+"/collada", "Select File", 400, 300)
+	t.selFile = util.NewFileSelectButton(a.DirData()+"/collada", "Select File", 400, 300)
 	t.selFile.SetPosition(10, 10)
 	t.selFile.FS.SetFileFilters("*.dae")
-	app.GuiPanel().Add(t.selFile)
+	a.GuiPanel().Add(t.selFile)
 	t.selFile.Subscribe("OnSelect", func(evname string, ev interface{}) {
 		fpath := ev.(string)
-		err := t.load(app, fpath)
+		err := t.load(a, fpath)
 		if err == nil {
 			t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 			t.selFile.SetError("")
@@ -46,36 +46,36 @@ func (t *LoaderCollada) Initialize(app *g3nd.App) {
 	// Add directional top white light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(0, 1, 0)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Add directional right white light
 	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l2.SetPosition(1, 0, 0)
-	app.Scene().Add(l2)
+	a.Scene().Add(l2)
 
 	// Add directional front  white light
 	l3 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l3.SetPosition(0, 1, 1)
-	app.Scene().Add(l3)
+	a.Scene().Add(l3)
 
 	// Sets camera position
-	app.Camera().GetCamera().SetPosition(0, 4, 10)
+	a.Camera().GetCamera().SetPosition(0, 4, 10)
 
 	// Adds axix helper
 	ah := graphic.NewAxisHelper(1.5)
-	app.Scene().Add(ah)
+	a.Scene().Add(ah)
 
 	// Loads default model
-	fpath := filepath.Join(app.DirData(), "collada/scene.dae")
-	t.load(app, fpath)
+	fpath := filepath.Join(a.DirData(), "collada/scene.dae")
+	t.load(a, fpath)
 	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 }
 
-func (t *LoaderCollada) load(app *g3nd.App, path string) error {
+func (t *LoaderCollada) load(a *app.App, path string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
-		app.Scene().Remove(t.prevLoaded)
+		a.Scene().Remove(t.prevLoaded)
 		t.prevLoaded.Dispose()
 		t.prevLoaded = nil
 	}
@@ -86,7 +86,7 @@ func (t *LoaderCollada) load(app *g3nd.App, path string) error {
 		t.selFile.SetError(err.Error())
 		return err
 	}
-	dec.SetDirImages(app.DirData() + "/images")
+	dec.SetDirImages(a.DirData() + "/images")
 
 	// Loads collada scene
 	s, err := dec.NewScene()
@@ -94,7 +94,7 @@ func (t *LoaderCollada) load(app *g3nd.App, path string) error {
 		t.selFile.SetError(err.Error())
 		return err
 	}
-	app.Scene().Add(s)
+	a.Scene().Add(s)
 	t.prevLoaded = s
 
 	// Checks for animations
@@ -110,10 +110,10 @@ func (t *LoaderCollada) load(app *g3nd.App, path string) error {
 	return nil
 }
 
-func (t *LoaderCollada) Render(app *g3nd.App) {
+func (t *LoaderCollada) Render(a *app.App) {
 
 	if t.animTargets != nil {
-		dt := app.FrameDeltaSeconds()
+		dt := a.FrameDeltaSeconds()
 		for _, at := range t.animTargets {
 			at.Update(dt)
 		}

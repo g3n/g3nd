@@ -6,8 +6,8 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 
 type Lines struct{}
 
-func (t *Lines) Initialize(app *g3nd.App) {
+func (t *Lines) Initialize(a *app.App) {
 
 	// Creates geometry
 	geom := geometry.NewGeometry()
@@ -47,8 +47,8 @@ func (t *Lines) Initialize(app *g3nd.App) {
 
 	// Creates lines with the specified geometry and material
 	lines1 := graphic.NewLines(geom, mat)
-	app.Scene().Add(lines1)
+	a.Scene().Add(lines1)
 }
 
-func (t *Lines) Render(app *g3nd.App) {
+func (t *Lines) Render(a *app.App) {
 }

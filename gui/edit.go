@@ -3,8 +3,8 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -13,7 +13,7 @@ func init() {
 
 type GuiEdit struct{}
 
-func (t *GuiEdit) Initialize(app *g3nd.App) {
+func (t *GuiEdit) Initialize(app *app.App) {
 
 	// Edit 1
 	ed1 := gui.NewEdit(100, "")
@@ -66,5 +66,5 @@ func (t *GuiEdit) Initialize(app *g3nd.App) {
 	app.GuiPanel().Add(cb1)
 }
 
-func (t *GuiEdit) Render(app *g3nd.App) {
+func (t *GuiEdit) Render(app *app.App) {
 }

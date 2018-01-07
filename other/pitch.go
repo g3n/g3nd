@@ -9,8 +9,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"math"
 )
@@ -30,22 +30,22 @@ ZX keys control banking (roll)
 R key resets to original position
 `
 
-func (t *Pitch) Initialize(app *g3nd.App) {
+func (t *Pitch) Initialize(a *app.App) {
 
 	// Subscribe to key events
-	app.Window().Subscribe(window.OnKeyRepeat, t.onKey)
-	app.Window().Subscribe(window.OnKeyDown, t.onKey)
+	a.Window().Subscribe(window.OnKeyRepeat, t.onKey)
+	a.Window().Subscribe(window.OnKeyDown, t.onKey)
 
 	// Add help label
 	label1 := gui.NewLabel(otherPitchHelp)
 	label1.SetFontSize(16)
 	label1.SetPosition(10, 10)
-	app.GuiPanel().Add(label1)
+	a.GuiPanel().Add(label1)
 
 	// Top directional light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.5)
 	l1.SetPosition(0, 1, 0)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Creates plane base mesh
 	base_geom := geometry.NewCircle(1, 3, 0, 2*math.Pi)
@@ -78,19 +78,19 @@ func (t *Pitch) Initialize(app *g3nd.App) {
 	t.base.SetRotationX(-math.Pi / 2)
 	t.base.SetPosition(0, 0, 0)
 
-	app.Scene().Add(t.base)
+	a.Scene().Add(t.base)
 
-	cam := app.Camera().GetCamera()
+	cam := a.Camera().GetCamera()
 	cam.SetPosition(-3, 3, 3)
-	spos := app.Scene().Position()
+	spos := a.Scene().Position()
 	cam.LookAt(&spos)
 
 	// Show axis helper
 	axis := graphic.NewAxisHelper(3)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 }
 
-func (t *Pitch) Render(app *g3nd.App) {
+func (t *Pitch) Render(a *app.App) {
 }
 
 func (t *Pitch) onKey(evname string, ev interface{}) {

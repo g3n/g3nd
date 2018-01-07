@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type Boxmulti2 struct {
@@ -19,41 +19,41 @@ func init() {
 	demos.Map["material.boxmulti2"] = &Boxmulti2{}
 }
 
-func (t *Boxmulti2) Initialize(app *g3nd.App) {
+func (t *Boxmulti2) Initialize(a *app.App) {
 
 	// Front directional light
 	l1 := light.NewDirectional(&math32.Color{0.4, 0.4, 0.4}, 1.0)
 	l1.SetPosition(0, 0, 1)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Axis helper
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Creates textures
-	tex0, err := texture.NewTexture2DFromImage(app.DirData() + "/images/checkerboard.jpg")
+	tex0, err := texture.NewTexture2DFromImage(a.DirData() + "/images/checkerboard.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	tex1, err := texture.NewTexture2DFromImage(app.DirData() + "/images/brick1.jpg")
+	tex1, err := texture.NewTexture2DFromImage(a.DirData() + "/images/brick1.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	tex2, err := texture.NewTexture2DFromImage(app.DirData() + "/images/wall1.jpg")
+	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/wall1.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	tex3, err := texture.NewTexture2DFromImage(app.DirData() + "/images/uvgrid.jpg")
+	tex3, err := texture.NewTexture2DFromImage(a.DirData() + "/images/uvgrid.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	tex4, err := texture.NewTexture2DFromImage(app.DirData() + "/images/moss.png")
+	tex4, err := texture.NewTexture2DFromImage(a.DirData() + "/images/moss.png")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	tex5, err := texture.NewTexture2DFromImage(app.DirData() + "/images/tiger1.jpg")
+	tex5, err := texture.NewTexture2DFromImage(a.DirData() + "/images/tiger1.jpg")
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 
 	mat0 := material.NewStandard(&math32.Color{1, 1, 1})
@@ -78,12 +78,12 @@ func (t *Boxmulti2) Initialize(app *g3nd.App) {
 	t.box.AddGroupMaterial(mat4, 4)
 	t.box.AddGroupMaterial(mat5, 5)
 
-	app.Scene().Add(t.box)
+	a.Scene().Add(t.box)
 }
 
-func (t *Boxmulti2) Render(app *g3nd.App) {
+func (t *Boxmulti2) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 6 seconds
-	delta := app.FrameDeltaSeconds() * 2 * math32.Pi / 6
+	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 6
 	t.box.AddRotationY(delta)
 }

@@ -7,12 +7,12 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type ShaderBricks struct {
-	app     *g3nd.App
+	a       *app.App
 	plane1  *graphic.Mesh
 	box1    *graphic.Mesh
 	sphere1 *graphic.Mesh
@@ -22,21 +22,21 @@ func init() {
 	demos.Map["shader.bricks"] = &ShaderBricks{}
 }
 
-func (t *ShaderBricks) Initialize(app *g3nd.App) {
+func (t *ShaderBricks) Initialize(a *app.App) {
 
 	// Adds directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.6)
 	dir1.SetPosition(0, 0, 100)
-	app.Scene().Add(dir1)
+	a.Scene().Add(dir1)
 
 	// Add axis helper
 	axis := graphic.NewAxisHelper(1)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Create custom shader
-	app.Renderer().AddShader("shaderBricksVertex", shaderBricksVertex)
-	app.Renderer().AddShader("shaderBricksFrag", shaderBricksFrag)
-	app.Renderer().AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
+	a.Renderer().AddShader("shaderBricksVertex", shaderBricksVertex)
+	a.Renderer().AddShader("shaderBricksFrag", shaderBricksFrag)
+	a.Renderer().AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
 
 	// Creates plane 1
 	geom1 := geometry.NewPlane(2, 2, 4, 4)
@@ -46,24 +46,24 @@ func (t *ShaderBricks) Initialize(app *g3nd.App) {
 	mat1.SetSpecularColor(&math32.Color{0, 0, 0})
 	t.plane1 = graphic.NewMesh(geom1, mat1)
 	t.plane1.SetPosition(-1.2, 1, 0)
-	app.Scene().Add(t.plane1)
+	a.Scene().Add(t.plane1)
 
 	// Creates box1
 	geom2 := geometry.NewBox(2, 2, 1, 2, 2, 2)
 	mat2 := NewBricksMaterial(&math32.Color{0.2, 0.4, 0.8})
 	t.box1 = graphic.NewMesh(geom2, mat2)
 	t.box1.SetPosition(1.2, 1, 0)
-	app.Scene().Add(t.box1)
+	a.Scene().Add(t.box1)
 
 	// Creates sphere 1
 	geom3 := geometry.NewSphere(1, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
 	mat3 := NewBricksMaterial(&math32.Color{0.5, 0.6, 0.7})
 	t.sphere1 = graphic.NewMesh(geom3, mat3)
 	t.sphere1.SetPosition(0, -1.2, 0)
-	app.Scene().Add(t.sphere1)
+	a.Scene().Add(t.sphere1)
 }
 
-func (t *ShaderBricks) Render(app *g3nd.App) {
+func (t *ShaderBricks) Render(a *app.App) {
 
 	t.plane1.AddRotationY(-0.005)
 	t.box1.AddRotationY(0.01)

@@ -3,8 +3,8 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -13,7 +13,7 @@ func init() {
 
 type GuiWindow struct{}
 
-func (t *GuiWindow) Initialize(app *g3nd.App) {
+func (t *GuiWindow) Initialize(a *app.App) {
 
 	w1 := gui.NewWindow(200, 100)
 	w1.SetPosition(10, 10)
@@ -26,7 +26,7 @@ func (t *GuiWindow) Initialize(app *g3nd.App) {
 	)
 	c1.SetBgColor(math32.NewColor("white"))
 	w1.Add(c1)
-	app.GuiPanel().Add(w1)
+	a.GuiPanel().Add(w1)
 
 	w2 := gui.NewWindow(200, 100)
 	w2.SetTitle("Window2")
@@ -41,8 +41,8 @@ func (t *GuiWindow) Initialize(app *g3nd.App) {
 	)
 	c2.SetBgColor(&math32.Color{0.7, 0.8, 0.9})
 	w2.Add(c2)
-	app.GuiPanel().Add(w2)
+	a.GuiPanel().Add(w2)
 }
 
-func (t *GuiWindow) Render(app *g3nd.App) {
+func (t *GuiWindow) Render(a *app.App) {
 }

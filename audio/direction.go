@@ -10,8 +10,8 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/text"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"time"
 )
@@ -29,80 +29,80 @@ type AudioDirection struct {
 	pc6 *PlayerCone
 }
 
-func (t *AudioDirection) Initialize(app *g3nd.App) {
+func (t *AudioDirection) Initialize(a *app.App) {
 
 	// Show axis helper
 	ah := graphic.NewAxisHelper(1.0)
-	app.Scene().Add(ah)
+	a.Scene().Add(ah)
 
 	// Show grid helper
 	grid := graphic.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
-	app.Scene().Add(grid)
+	a.Scene().Add(grid)
 
 	// Add directional white light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(10, 10, 10)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Sets camera position
-	app.Camera().GetCamera().SetPosition(0, 0, 10)
+	a.Camera().GetCamera().SetPosition(0, 0, 10)
 
 	// Creates listener and adds it to the current camera
 	// The listener must have the same initial direction as the camera
 	listener := audio.NewListener()
-	cam := app.Camera().GetCamera()
+	cam := a.Camera().GetCamera()
 	cdir := cam.Direction()
 	listener.SetDirectionVec(&cdir)
 	cam.Add(listener)
 
 	// Creates player cones
-	t.pc1 = NewPlayerCone(app, "Vivaldi1.wav", &math32.Color{1, 0, 0})
+	t.pc1 = NewPlayerCone(a, "Vivaldi1.wav", &math32.Color{1, 0, 0})
 	t.pc1.SetPosition(0, 0, 3)
 	t.pc1.SetDirection(&math32.Vector3{0, 0, 1})
 	t.pc1.player.SetLooping(true)
 	t.pc1.player.Play()
-	app.Scene().Add(t.pc1)
+	a.Scene().Add(t.pc1)
 
-	t.pc2 = NewPlayerCone(app, "Bach1.ogg", &math32.Color{0, 1, 0})
+	t.pc2 = NewPlayerCone(a, "Bach1.ogg", &math32.Color{0, 1, 0})
 	t.pc2.SetPosition(3, 0, 0)
 	t.pc2.SetDirection(&math32.Vector3{1, 0, 0})
 	t.pc2.player.SetLooping(true)
 	t.pc2.player.Play()
-	app.Scene().Add(t.pc2)
+	a.Scene().Add(t.pc2)
 
-	t.pc3 = NewPlayerCone(app, "engine.ogg", &math32.Color{0, 0, 1})
+	t.pc3 = NewPlayerCone(a, "engine.ogg", &math32.Color{0, 0, 1})
 	t.pc3.SetPosition(0, 0, -3)
 	t.pc3.SetDirection(&math32.Vector3{0, 0, -1})
 	t.pc3.player.SetLooping(true)
 	t.pc3.player.Play()
-	app.Scene().Add(t.pc3)
+	a.Scene().Add(t.pc3)
 
-	t.pc4 = NewPlayerCone(app, "bomb2.ogg", &math32.Color{0, 1, 1})
+	t.pc4 = NewPlayerCone(a, "bomb2.ogg", &math32.Color{0, 1, 1})
 	t.pc4.SetPosition(-3, 0, 0)
 	t.pc4.SetDirection(&math32.Vector3{-1, 0, 0})
 	t.pc4.player.SetLooping(true)
 	t.pc4.player.Play()
-	app.Scene().Add(t.pc4)
+	a.Scene().Add(t.pc4)
 
-	t.pc5 = NewPlayerCone(app, "tone_440hz.wav", &math32.Color{1, 1, 1})
+	t.pc5 = NewPlayerCone(a, "tone_440hz.wav", &math32.Color{1, 1, 1})
 	t.pc5.SetPosition(0, 3, 0)
 	t.pc5.SetDirection(&math32.Vector3{0, 1, 0})
 	t.pc5.player.SetLooping(true)
 	t.pc5.player.Play()
-	app.Scene().Add(t.pc5)
+	a.Scene().Add(t.pc5)
 
-	t.pc6 = NewPlayerCone(app, "tone_1khz.wav", &math32.Color{1, 0, 1})
+	t.pc6 = NewPlayerCone(a, "tone_1khz.wav", &math32.Color{1, 0, 1})
 	t.pc6.SetPosition(0, -3, 0)
 	t.pc6.SetDirection(&math32.Vector3{0, -1, 0})
 	t.pc6.player.SetLooping(true)
 	t.pc6.player.Play()
-	app.Scene().Add(t.pc6)
+	a.Scene().Add(t.pc6)
 
 	// Add controls
-	if app.ControlFolder() == nil {
+	if a.ControlFolder() == nil {
 		return
 	}
-	g1 := app.ControlFolder().AddGroup("Play sources")
+	g1 := a.ControlFolder().AddGroup("Play sources")
 	cb1 := g1.AddCheckBox("Vivaldi1").SetValue(true)
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.pc1.Toggle()
@@ -128,7 +128,7 @@ func (t *AudioDirection) Initialize(app *g3nd.App) {
 		t.pc6.Toggle()
 	})
 
-	g2 := app.ControlFolder().AddGroup("Sound Cone")
+	g2 := a.ControlFolder().AddGroup("Sound Cone")
 	g1s1 := g2.AddSlider("Outer Cone:", 360, t.pc1.player.OuterCone())
 	g1s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.pc1.player.SetOuterCone(g1s1.Value())
@@ -149,7 +149,7 @@ func (t *AudioDirection) Initialize(app *g3nd.App) {
 	})
 }
 
-func (t *AudioDirection) Render(app *g3nd.App) {
+func (t *AudioDirection) Render(app *app.App) {
 
 }
 
@@ -161,7 +161,7 @@ type PlayerCone struct {
 	direction math32.Vector3
 }
 
-func NewPlayerCone(app *g3nd.App, filename string, color *math32.Color) *PlayerCone {
+func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCone {
 
 	pc := new(PlayerCone)
 

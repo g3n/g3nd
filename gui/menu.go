@@ -5,8 +5,8 @@ import (
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"strings"
 )
@@ -18,7 +18,7 @@ func init() {
 type GuiMenu struct {
 }
 
-func (t *GuiMenu) Initialize(app *g3nd.App) {
+func (t *GuiMenu) Initialize(a *app.App) {
 
 	// Label
 	mbText := "Selected: "
@@ -27,7 +27,7 @@ func (t *GuiMenu) Initialize(app *g3nd.App) {
 	mbOption.SetPaddings(2, 2, 2, 2)
 	mbOption.SetBgColor(math32.NewColor("white"))
 	mbOption.SetBorders(1, 1, 1, 1)
-	app.GuiPanel().Add(mbOption)
+	a.GuiPanel().Add(mbOption)
 
 	// Event handler for menu clicks
 	onClick := func(evname string, ev interface{}) {
@@ -135,10 +135,9 @@ func (t *GuiMenu) Initialize(app *g3nd.App) {
 		SetId("optionB").
 		SetShortcut(window.ModAlt, window.KeyB)
 
-	app.GuiPanel().Add(mb)
-	app.GuiPanel().Root().SetKeyFocus(mb)
-
+	a.GuiPanel().Add(mb)
+	a.GuiPanel().Root().SetKeyFocus(mb)
 }
 
-func (t *GuiMenu) Render(app *g3nd.App) {
+func (t *GuiMenu) Render(a *app.App) {
 }

@@ -5,8 +5,8 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"math"
 )
@@ -22,14 +22,14 @@ type Children struct {
 	count float32
 }
 
-func (t *Children) Initialize(app *g3nd.App) {
+func (t *Children) Initialize(a *app.App) {
 
 	t.circ1 = graphic.NewMesh(
 		geometry.NewCircle(0.5, 3, 0, 2*math.Pi),
 		material.NewStandard(&math32.Color{0, 1, 0}),
 	)
 	t.circ1.SetPositionX(0)
-	app.Scene().Add(t.circ1)
+	a.Scene().Add(t.circ1)
 
 	t.circ2 = graphic.NewMesh(
 		geometry.NewCircle(0.3, 5, 0, 2*math.Pi),
@@ -46,10 +46,10 @@ func (t *Children) Initialize(app *g3nd.App) {
 	t.circ2.Add(t.circ3)
 }
 
-func (t *Children) Render(app *g3nd.App) {
+func (t *Children) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 5 seconds
-	delta := app.FrameDeltaSeconds() * 2 * math32.Pi / 5
+	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 5
 	t.circ1.AddRotationZ(delta)
 	t.circ1.SetPositionX(math32.Sin(float32(t.count)))
 	t.count += delta

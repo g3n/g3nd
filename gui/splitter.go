@@ -3,8 +3,8 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -13,7 +13,7 @@ func init() {
 
 type GuiSplitter struct{}
 
-func (t *GuiSplitter) Initialize(app *g3nd.App) {
+func (t *GuiSplitter) Initialize(a *app.App) {
 
 	s1 := gui.NewHSplitter(400, 200)
 	s1.SetPosition(10, 10)
@@ -27,7 +27,7 @@ func (t *GuiSplitter) Initialize(app *g3nd.App) {
 	s1.P1.SetBordersColor(math32.NewColor("black"))
 	s1.P1.Add(gui.NewLabel("This is the right panel\nof the splitter"))
 	s1.SetSplit(0.75)
-	app.GuiPanel().Add(s1)
+	a.GuiPanel().Add(s1)
 
 	s2 := gui.NewVSplitter(400, 200)
 	s2.SetPosition(10, 300)
@@ -41,8 +41,8 @@ func (t *GuiSplitter) Initialize(app *g3nd.App) {
 	s2.P1.SetBordersColor(math32.NewColor("black"))
 	s2.P1.Add(gui.NewLabel("This is the bottom panel\nof the splitter"))
 	s2.SetSplit(0.25)
-	app.GuiPanel().Add(s2)
+	a.GuiPanel().Add(s2)
 }
 
-func (t *GuiSplitter) Render(app *g3nd.App) {
+func (t *GuiSplitter) Render(a *app.App) {
 }

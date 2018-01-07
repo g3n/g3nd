@@ -6,8 +6,8 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 
 type LineStrip struct{}
 
-func (t *LineStrip) Initialize(app *g3nd.App) {
+func (t *LineStrip) Initialize(a *app.App) {
 
 	//
 	// Creates line strip geometry using ONE interlaced buffer for vertices and colors
@@ -45,7 +45,7 @@ func (t *LineStrip) Initialize(app *g3nd.App) {
 	// Creates line strip with the specified geometry and material
 	lines1 := graphic.NewLineStrip(geom1, mat1)
 	lines1.SetPosition(-0.6, 0, 0)
-	app.Scene().Add(lines1)
+	a.Scene().Add(lines1)
 
 	//
 	// Creates line strip geometry using TWO buffers: one for vertices and one for colors
@@ -81,8 +81,8 @@ func (t *LineStrip) Initialize(app *g3nd.App) {
 	// Creates line strip with the specified geometry and material
 	lines2 := graphic.NewLineStrip(geom2, mat2)
 	lines2.SetPosition(0.6, 0, 0)
-	app.Scene().Add(lines2)
+	a.Scene().Add(lines2)
 }
 
-func (t *LineStrip) Render(app *g3nd.App) {
+func (t *LineStrip) Render(a *app.App) {
 }

@@ -6,8 +6,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 
 type GuiChart struct{}
 
-func (t *GuiChart) Initialize(app *g3nd.App) {
+func (t *GuiChart) Initialize(app *app.App) {
 
 	// Creates Chart panel
 	chart := gui.NewChart(0, 0)
@@ -201,7 +201,7 @@ func (t *GuiChart) Initialize(app *g3nd.App) {
 	})
 }
 
-func (t *GuiChart) Render(app *g3nd.App) {
+func (t *GuiChart) Render(app *app.App) {
 
 }
 

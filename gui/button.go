@@ -4,8 +4,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -14,7 +14,7 @@ func init() {
 
 type GuiButton struct{}
 
-func (t *GuiButton) Initialize(app *g3nd.App) {
+func (t *GuiButton) Initialize(app *app.App) {
 
 	// Button 1
 	b1 := gui.NewButton("button 1")
@@ -103,6 +103,6 @@ func (t *GuiButton) Initialize(app *g3nd.App) {
 	app.GuiPanel().Add(b7)
 }
 
-func (t *GuiButton) Render(app *g3nd.App) {
+func (t *GuiButton) Render(app *app.App) {
 
 }

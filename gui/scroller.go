@@ -5,8 +5,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -15,12 +15,12 @@ func init() {
 
 type GuiScroller struct{}
 
-func (t *GuiScroller) Initialize(app *g3nd.App) {
+func (t *GuiScroller) Initialize(a *app.App) {
 
 	// Scroller 1
 	s1 := gui.NewVScroller(100, 200)
 	s1.SetPosition(10, 10)
-	app.GuiPanel().Add(s1)
+	a.GuiPanel().Add(s1)
 	// Scroller 1 - add button
 	b1 := gui.NewButton("Add")
 	b1.SetPosition(s1.Position().X+s1.Width()+10, s1.Position().Y)
@@ -34,13 +34,13 @@ func (t *GuiScroller) Initialize(app *g3nd.App) {
 			s1.Add(gui.NewLabel(text))
 			return
 		}
-		img, err := gui.NewImage(app.DirData() + "/images/ok.png")
+		img, err := gui.NewImage(a.DirData() + "/images/ok.png")
 		if err != nil {
-			app.Log().Fatal("%s", err)
+			a.Log().Fatal("%s", err)
 		}
 		s1.Add(img)
 	})
-	app.GuiPanel().Add(b1)
+	a.GuiPanel().Add(b1)
 	// Scroller 1 - remove button
 	b2 := gui.NewButton("Del")
 	b2.SetPosition(s1.Position().X+s1.Width()+10, s1.Position().Y+30)
@@ -50,16 +50,16 @@ func (t *GuiScroller) Initialize(app *g3nd.App) {
 			p.Dispose()
 		}
 	})
-	app.GuiPanel().Add(b2)
+	a.GuiPanel().Add(b2)
 
 	// Scroller 2
 	s2 := gui.NewHScroller(300, 100)
 	s2.SetPosition(10, 240)
-	app.GuiPanel().Add(s2)
+	a.GuiPanel().Add(s2)
 	// Scroller 2 - add button
 	b21 := gui.NewButton("Add")
 	b21.SetPosition(s2.Position().X, s2.Position().Y+s2.Height()+10)
-	app.GuiPanel().Add(b21)
+	a.GuiPanel().Add(b21)
 	b21.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
 		l := gui.NewLabel(" ")
 		l.SetPaddings(2, 4, 2, 4)
@@ -76,8 +76,8 @@ func (t *GuiScroller) Initialize(app *g3nd.App) {
 			s2.RemoveAt(0)
 		}
 	})
-	app.GuiPanel().Add(b22)
+	a.GuiPanel().Add(b22)
 }
 
-func (t *GuiScroller) Render(app *g3nd.App) {
+func (t *GuiScroller) Render(a *app.App) {
 }

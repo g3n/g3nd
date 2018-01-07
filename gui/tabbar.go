@@ -9,8 +9,8 @@ import (
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -21,7 +21,7 @@ type GuiTabBar struct {
 	tb *gui.TabBar
 }
 
-func (t *GuiTabBar) Initialize(app *g3nd.App) {
+func (t *GuiTabBar) Initialize(a *app.App) {
 
 	// Button for adding tabs
 	tabCounter := 1
@@ -46,10 +46,10 @@ func (t *GuiTabBar) Initialize(app *g3nd.App) {
 		label.SetBgColor(math32.NewColor(cname))
 		tab.SetContent(label)
 		// Sets Tab menu
-		t.setTabMenu(app, tab)
+		t.setTabMenu(a, tab)
 
 	})
-	app.GuiPanel().Add(b1)
+	a.GuiPanel().Add(b1)
 
 	// Button for removing all tabs
 	b2 := gui.NewButton("Clear All")
@@ -60,22 +60,22 @@ func (t *GuiTabBar) Initialize(app *g3nd.App) {
 		}
 		tabCounter = 1
 	})
-	app.GuiPanel().Add(b2)
+	a.GuiPanel().Add(b2)
 
 	// Creates TabBar
 	t.tb = gui.NewTabBar(0, 0)
 	tby := b1.Position().Y + b1.Height() + 10
 	t.tb.SetPosition(b1.Position().X, tby)
-	app.GuiPanel().Add(t.tb)
+	a.GuiPanel().Add(t.tb)
 
 	// Resizes TabBar when main window resizes
-	app.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) {
-		t.tb.SetSize(app.GuiPanel().ContentWidth()-t.tb.Position().X-10, app.GuiPanel().ContentHeight()-tby-10)
+	a.GuiPanel().Subscribe(gui.OnResize, func(evname string, ev interface{}) {
+		t.tb.SetSize(a.GuiPanel().ContentWidth()-t.tb.Position().X-10, a.GuiPanel().ContentHeight()-tby-10)
 	})
-	app.GuiPanel().Dispatch(gui.OnResize, nil)
+	a.GuiPanel().Dispatch(gui.OnResize, nil)
 }
 
-func (t *GuiTabBar) setTabMenu(app *g3nd.App, tab *gui.Tab) {
+func (t *GuiTabBar) setTabMenu(a *app.App, tab *gui.Tab) {
 
 	// Creates menu and adds options
 	menu := gui.NewMenu()
@@ -132,7 +132,7 @@ func (t *GuiTabBar) setTabMenu(app *g3nd.App, tab *gui.Tab) {
 			}
 		case setImage:
 			idx := rand.Int31n(int32(len(images)))
-			tab.SetImage(filepath.Join(app.DirData(), "/images", images[idx]))
+			tab.SetImage(filepath.Join(a.DirData(), "/images", images[idx]))
 		case pin:
 			tab.SetPinned(true)
 		case unpin:
@@ -167,5 +167,5 @@ func (t *GuiTabBar) setTabMenu(app *g3nd.App, tab *gui.Tab) {
 	})
 }
 
-func (t *GuiTabBar) Render(app *g3nd.App) {
+func (t *GuiTabBar) Render(a *app.App) {
 }

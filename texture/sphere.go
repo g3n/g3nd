@@ -8,8 +8,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 	"math"
 )
 
@@ -24,23 +24,23 @@ func init() {
 	demos.Map["texture.sphere"] = &Texsphere{}
 }
 
-func (t *Texsphere) Initialize(app *g3nd.App) {
+func (t *Texsphere) Initialize(a *app.App) {
 
 	// Adds directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir1.SetPosition(0, 0, 100)
-	app.Scene().Add(dir1)
+	a.Scene().Add(dir1)
 
 	// Adds directional top light
 	dir2 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir2.SetPosition(0, 100, 0)
-	app.Scene().Add(dir2)
+	a.Scene().Add(dir2)
 
 	// Creates texture 1
-	texfile := app.DirData() + "/images/checkerboard.jpg"
+	texfile := a.DirData() + "/images/checkerboard.jpg"
 	tex1, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	tex1.SetWrapS(gls.REPEAT)
 	tex1.SetWrapT(gls.REPEAT)
@@ -51,13 +51,13 @@ func (t *Texsphere) Initialize(app *g3nd.App) {
 	mat1.AddTexture(tex1)
 	t.sphere1 = graphic.NewMesh(geom1, mat1)
 	t.sphere1.SetPosition(-1.1, 1.1, 0)
-	app.Scene().Add(t.sphere1)
+	a.Scene().Add(t.sphere1)
 
 	// Creates texture 2
-	texfile = app.DirData() + "/images/earth_clouds_big.jpg"
+	texfile = a.DirData() + "/images/earth_clouds_big.jpg"
 	tex2, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	tex2.SetFlipY(false)
 	// Creates sphere 2
@@ -66,13 +66,13 @@ func (t *Texsphere) Initialize(app *g3nd.App) {
 	mat2.AddTexture(tex2)
 	t.sphere2 = graphic.NewMesh(geom2, mat2)
 	t.sphere2.SetPosition(1.1, 1.1, 0)
-	app.Scene().Add(t.sphere2)
+	a.Scene().Add(t.sphere2)
 
 	// Creates texture 3
-	texfile = app.DirData() + "/images/uvgrid.jpg"
+	texfile = a.DirData() + "/images/uvgrid.jpg"
 	tex3, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	tex3.SetFlipY(false)
 	// Creates sphere 3
@@ -81,13 +81,13 @@ func (t *Texsphere) Initialize(app *g3nd.App) {
 	mat3.AddTexture(tex3)
 	t.sphere3 = graphic.NewMesh(geom3, mat3)
 	t.sphere3.SetPosition(-1.1, -1.1, 0)
-	app.Scene().Add(t.sphere3)
+	a.Scene().Add(t.sphere3)
 
 	// Creates texture 4
-	texfile = app.DirData() + "/images/brick1.jpg"
+	texfile = a.DirData() + "/images/brick1.jpg"
 	tex4, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error loading texture: %s", err)
+		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	// Creates sphere 4
 	geom4 := geometry.NewSphere(1, 32, 32, 0, math.Pi, 0, math.Pi/2)
@@ -96,13 +96,13 @@ func (t *Texsphere) Initialize(app *g3nd.App) {
 	mat4.SetSide(material.SideDouble)
 	t.sphere4 = graphic.NewMesh(geom4, mat4)
 	t.sphere4.SetPosition(1.1, -1.1, 0)
-	app.Scene().Add(t.sphere4)
+	a.Scene().Add(t.sphere4)
 
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 }
 
-func (t *Texsphere) Render(app *g3nd.App) {
+func (t *Texsphere) Render(a *app.App) {
 
 	t.sphere1.AddRotationY(0.01)
 	t.sphere2.AddRotationY(-0.01)

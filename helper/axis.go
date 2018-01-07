@@ -2,8 +2,8 @@ package helper
 
 import (
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -12,11 +12,11 @@ func init() {
 
 type AxisHelper struct{}
 
-func (t *AxisHelper) Initialize(app *g3nd.App) {
+func (t *AxisHelper) Initialize(a *app.App) {
 
 	ah := graphic.NewAxisHelper(1.0)
-	app.Scene().Add(ah)
+	a.Scene().Add(ah)
 }
 
-func (t *AxisHelper) Render(app *g3nd.App) {
+func (t *AxisHelper) Render(a *app.App) {
 }

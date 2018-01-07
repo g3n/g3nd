@@ -5,8 +5,8 @@ import (
 
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -25,13 +25,13 @@ type GuiLayoutGrid struct {
 	menu    *gui.Menu       // child menu
 }
 
-func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
+func (t *GuiLayoutGrid) Initialize(a *app.App) {
 
 	// Creates menu with child options
 	t.menu = gui.NewMenu()
 	t.menu.SetBounded(false)
 	t.menu.SetVisible(false)
-	app.GuiPanel().Add(t.menu)
+	a.GuiPanel().Add(t.menu)
 	options := []string{
 		"Hide", "",
 		"Align left", "Align center", "Align right", "",
@@ -123,7 +123,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 		t.colspan = nil
 		t.ddcs.SelectPos(0)
 	})
-	app.GuiPanel().Add(b1)
+	a.GuiPanel().Add(b1)
 
 	// Clear button
 	b2 := gui.NewButton("Clear")
@@ -134,7 +134,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 		t.sw.SetValue(0)
 		t.sh.SetValue(0)
 	})
-	app.GuiPanel().Add(b2)
+	a.GuiPanel().Add(b2)
 
 	// Slider for child width
 	t.sw = gui.NewHSlider(42, 22)
@@ -143,7 +143,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 	t.sw.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.bwidth = t.sw.Value() * 100
 	})
-	app.GuiPanel().Add(t.sw)
+	a.GuiPanel().Add(t.sw)
 
 	// Slider for child height
 	t.sh = gui.NewHSlider(42, 22)
@@ -152,7 +152,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 	t.sh.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.bheight = t.sh.Value() * 100
 	})
-	app.GuiPanel().Add(t.sh)
+	a.GuiPanel().Add(t.sh)
 
 	// Colspan dropdown
 	t.ddcs = gui.NewDropDown(100, gui.NewImageLabel("colspan"))
@@ -174,7 +174,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 			t.colspan = nil
 		}
 	})
-	app.GuiPanel().Add(t.ddcs)
+	a.GuiPanel().Add(t.ddcs)
 
 	// Grid Layout horizontal alignment
 	dd1 := gui.NewDropDown(100, gui.NewImageLabel("horizontal"))
@@ -195,7 +195,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 		sel := dd1.Selected()
 		t.layout.SetAlignH(sel.UserData().(gui.Align))
 	})
-	app.GuiPanel().Add(dd1)
+	a.GuiPanel().Add(dd1)
 
 	// Grid Layout vertical alignment
 	dd2 := gui.NewDropDown(100, gui.NewImageLabel("vertical"))
@@ -216,7 +216,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 		sel := dd2.Selected()
 		t.layout.SetAlignV(sel.UserData().(gui.Align))
 	})
-	app.GuiPanel().Add(dd2)
+	a.GuiPanel().Add(dd2)
 
 	// CheckBox for horizontal expansion
 	cb1 := gui.NewCheckBox("ExpandH")
@@ -224,7 +224,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.layout.SetExpandH(cb1.Value())
 	})
-	app.GuiPanel().Add(cb1)
+	a.GuiPanel().Add(cb1)
 
 	// CheckBox for vertical expansion
 	cb2 := gui.NewCheckBox("ExpandV")
@@ -232,7 +232,7 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.layout.SetExpandV(cb2.Value())
 	})
-	app.GuiPanel().Add(cb2)
+	a.GuiPanel().Add(cb2)
 
 	// Creates panel with grid layout
 	t.pan = gui.NewPanel(600, 400)
@@ -241,8 +241,8 @@ func (t *GuiLayoutGrid) Initialize(app *g3nd.App) {
 	t.pan.SetBorders(1, 1, 1, 1)
 	t.layout = gui.NewGridLayout(6)
 	t.pan.SetLayout(t.layout)
-	app.GuiPanel().Add(t.pan)
+	a.GuiPanel().Add(t.pan)
 }
 
-func (t *GuiLayoutGrid) Render(app *g3nd.App) {
+func (t *GuiLayoutGrid) Render(a *app.App) {
 }

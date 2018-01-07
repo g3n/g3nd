@@ -10,8 +10,8 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -19,7 +19,7 @@ func init() {
 }
 
 type TankTest struct {
-	app      *g3nd.App
+	a        *app.App
 	velocity float32        // linear velocity (m/s)
 	rotvel   float32        // rotation velocity (rad/s)
 	model    *TankModel     // tank model
@@ -38,45 +38,45 @@ const (
 	CMD_LAST
 )
 
-func (t *TankTest) Initialize(app *g3nd.App) {
+func (t *TankTest) Initialize(a *app.App) {
 
-	t.app = app
-	app.Orbit().EnableKeys = false
+	t.a = a
+	a.Orbit().EnableKeys = false
 
 	// Add directional white light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	l1.SetPosition(10, 10, 10)
-	app.Scene().Add(l1)
+	a.Scene().Add(l1)
 
 	// Show grid helper
 	grid := graphic.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
-	app.Scene().Add(grid)
+	a.Scene().Add(grid)
 
 	// Sets camera position
-	app.Camera().GetCamera().SetPosition(0, 4, 10)
+	a.Camera().GetCamera().SetPosition(0, 4, 10)
 
 	// Add help label
 	label1 := gui.NewLabel("Use ASDW to drive tank\nUse JKLI to move cannon")
 	label1.SetFontSize(16)
 	label1.SetPosition(10, 10)
-	app.GuiPanel().Add(label1)
+	a.GuiPanel().Add(label1)
 
 	// Creates tank model
 	t.model = t.newTankModel()
 	t.velocity = 5.0
 	t.rotvel = 0.8
-	app.Scene().Add(t.model.node)
+	a.Scene().Add(t.model.node)
 
 	// Subscribe to key events
-	app.Window().Subscribe(window.OnKeyDown, t.onKey)
-	app.Window().Subscribe(window.OnKeyUp, t.onKey)
+	a.Window().Subscribe(window.OnKeyDown, t.onKey)
+	a.Window().Subscribe(window.OnKeyUp, t.onKey)
 }
 
-func (t *TankTest) Render(app *g3nd.App) {
+func (t *TankTest) Render(a *app.App) {
 
 	if t.commands[CMD_LEFT] || t.commands[CMD_RIGHT] {
 		// Calculates angle delta to rotate
-		angle := t.rotvel * t.app.FrameDeltaSeconds()
+		angle := t.rotvel * t.a.FrameDeltaSeconds()
 		if t.commands[CMD_RIGHT] {
 			angle = -angle
 		}
@@ -94,7 +94,7 @@ func (t *TankTest) Render(app *g3nd.App) {
 
 	if t.commands[CMD_FORWARD] || t.commands[CMD_BACKWARD] {
 		// Calculates the distance to move
-		dist := t.velocity * float32(t.app.FrameDeltaSeconds())
+		dist := t.velocity * float32(t.a.FrameDeltaSeconds())
 		// Calculates wheel rotation
 		var rot = -dist / 0.5
 
@@ -221,10 +221,10 @@ func (t *TankTest) newTankModel() *TankModel {
 	model.node = core.NewNode()
 
 	// Loads tank wheel texture
-	texfile := t.app.DirData() + "/images/wheel.png"
+	texfile := t.a.DirData() + "/images/wheel.png"
 	tex, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		t.app.Log().Fatal("Error:%s loading texture:%s", err, texfile)
+		t.a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 
 	// Create the tank wheels and add them to the group

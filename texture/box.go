@@ -8,8 +8,8 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/window"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type Texbox struct {
@@ -30,31 +30,31 @@ func init() {
 	demos.Map["texture.box"] = &Texbox{}
 }
 
-func (t *Texbox) Initialize(app *g3nd.App) {
+func (t *Texbox) Initialize(a *app.App) {
 
 	axis := graphic.NewAxisHelper(1)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Adds white directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir1.SetPosition(0, 0, 10)
-	app.Scene().Add(dir1)
+	a.Scene().Add(dir1)
 
 	// Adds blue directional right light
 	dir2 := light.NewDirectional(&math32.Color{0, 0, 1}, 1.0)
 	dir2.SetPosition(10, 0, 0)
-	app.Scene().Add(dir2)
+	a.Scene().Add(dir2)
 
 	// Adds red directional left light
 	dir3 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
 	dir3.SetPosition(-10, 0, 0)
-	app.Scene().Add(dir3)
+	a.Scene().Add(dir3)
 
 	// Creates texture1
-	texfile := app.DirData() + "/images/checkerboard.jpg"
+	texfile := a.DirData() + "/images/checkerboard.jpg"
 	tex1, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error:%s loading texture:%s", err, texfile)
+		a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 	t.tex1 = tex1
 	// Creates box 1
@@ -63,13 +63,13 @@ func (t *Texbox) Initialize(app *g3nd.App) {
 	t.mat1.AddTexture(t.tex1)
 	t.box1 = graphic.NewMesh(geom1, t.mat1)
 	t.box1.SetPosition(-1.5, 1, 0)
-	app.Scene().Add(t.box1)
+	a.Scene().Add(t.box1)
 
 	// Creates texture2
-	texfile = app.DirData() + "/images/brick1.jpg"
+	texfile = a.DirData() + "/images/brick1.jpg"
 	tex2, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error:%s loading texture:%s", err, texfile)
+		a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 	t.tex2 = tex2
 	// Creates box 2
@@ -78,13 +78,13 @@ func (t *Texbox) Initialize(app *g3nd.App) {
 	t.mat2.AddTexture(t.tex2)
 	t.box2 = graphic.NewMesh(geom2, t.mat2)
 	t.box2.SetPosition(1.5, 1, 0)
-	app.Scene().Add(t.box2)
+	a.Scene().Add(t.box2)
 
 	// Creates texture3
-	texfile = app.DirData() + "/images/moss.png"
+	texfile = a.DirData() + "/images/moss.png"
 	tex3, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
-		app.Log().Fatal("Error:%s loading texture:%s", err, texfile)
+		a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 	t.tex3 = tex3
 	// Creates box 3
@@ -94,7 +94,7 @@ func (t *Texbox) Initialize(app *g3nd.App) {
 	t.mat3.AddTexture(t.tex3)
 	t.box3 = graphic.NewMesh(geom3, t.mat3)
 	t.box3.SetPosition(-1.5, -1, 0)
-	app.Scene().Add(t.box3)
+	a.Scene().Add(t.box3)
 
 	// Creates box 4
 	geom4 := geometry.NewBox(1.5, 1.5, 1.5, 16, 16, 16)
@@ -103,15 +103,15 @@ func (t *Texbox) Initialize(app *g3nd.App) {
 	t.mat4.AddTexture(t.tex3.Incref())
 	t.box4 = graphic.NewMesh(geom4, t.mat4)
 	t.box4.SetPosition(1.5, -1, 0)
-	app.Scene().Add(t.box4)
+	a.Scene().Add(t.box4)
 
 	// Subscribe to key events
-	app.Window().Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
-		t.onKey(app, ev)
+	a.Window().Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
+		t.onKey(a, ev)
 	})
 }
 
-func (t *Texbox) Render(app *g3nd.App) {
+func (t *Texbox) Render(a *app.App) {
 
 	t.box1.AddRotationY(0.01)
 	t.box2.AddRotationY(-0.01)
@@ -119,7 +119,7 @@ func (t *Texbox) Render(app *g3nd.App) {
 	t.box4.AddRotationY(-0.01)
 }
 
-func (t *Texbox) onKey(app *g3nd.App, ev interface{}) {
+func (t *Texbox) onKey(a *app.App, ev interface{}) {
 
 	kev := ev.(*window.KeyEvent)
 	if kev.Action == window.Release {
@@ -133,14 +133,14 @@ func (t *Texbox) onKey(app *g3nd.App, ev interface{}) {
 	case window.Key3:
 		t.tex3.SetVisible(!t.tex3.Visible())
 	case window.Key4:
-		err := t.tex2.SetImage(app.DirData() + "/images/wall1.jpg")
+		err := t.tex2.SetImage(a.DirData() + "/images/wall1.jpg")
 		if err != nil {
-			app.Log().Fatal("Error:%s loading texture", err)
+			a.Log().Fatal("Error:%s loading texture", err)
 		}
 	case window.Key5:
-		err := t.tex2.SetImage(app.DirData() + "/images/brick1.jpg")
+		err := t.tex2.SetImage(a.DirData() + "/images/brick1.jpg")
 		if err != nil {
-			app.Log().Fatal("Error:%s loading texture", err)
+			a.Log().Fatal("Error:%s loading texture", err)
 		}
 	case window.Key6:
 		if t.mat4.HasTexture(t.tex2) {

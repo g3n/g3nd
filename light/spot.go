@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type SpotLight struct {
@@ -22,14 +22,14 @@ func init() {
 	demos.Map["light.spot"] = &SpotLight{}
 }
 
-func (t *SpotLight) Initialize(app *g3nd.App) {
+func (t *SpotLight) Initialize(a *app.App) {
 
 	// Adds axis helper
 	axis := graphic.NewAxisHelper(1)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Sets camera position
-	app.Camera().GetCamera().SetPosition(0, 6, 10)
+	a.Camera().GetCamera().SetPosition(0, 6, 10)
 
 	// Creates base plane
 	geom1 := geometry.NewPlane(6, 6, 16, 16)
@@ -37,7 +37,7 @@ func (t *SpotLight) Initialize(app *g3nd.App) {
 	mat1.SetSide(material.SideDouble)
 	plane1 := graphic.NewMesh(geom1, mat1)
 	plane1.SetRotationX(math32.Pi / 2)
-	app.Scene().Add(plane1)
+	a.Scene().Add(plane1)
 
 	// Creates left plane
 	geom2 := geometry.NewPlane(6, 6, 16, 16)
@@ -46,7 +46,7 @@ func (t *SpotLight) Initialize(app *g3nd.App) {
 	plane2 := graphic.NewMesh(geom2, mat2)
 	plane2.SetRotationY(math32.Pi / 2)
 	plane2.SetPosition(-3, 3, 0)
-	app.Scene().Add(plane2)
+	a.Scene().Add(plane2)
 
 	// Creates right plane
 	geom3 := geometry.NewPlane(6, 6, 16, 16)
@@ -56,34 +56,34 @@ func (t *SpotLight) Initialize(app *g3nd.App) {
 	plane3 := graphic.NewMesh(geom3, mat3)
 	plane3.SetRotationY(-math32.Pi / 2)
 	plane3.SetPosition(3, 3, 0)
-	app.Scene().Add(plane3)
+	a.Scene().Add(plane3)
 
 	// Creates red spot light
 	t.spot1 = NewSpotLightMesh(&math32.Color{1, 0, 0})
 	t.spot1.Mesh.SetPosition(-1, 3, 1)
 	t.spot1.Light.SetDirection(&math32.Vector3{0, -1, 0})
-	app.Scene().Add(t.spot1.Mesh)
+	a.Scene().Add(t.spot1.Mesh)
 
 	// Creates green spot light
 	t.spot2 = NewSpotLightMesh(&math32.Color{0, 1, 0})
 	t.spot2.Mesh.SetPosition(1, 3, -1)
 	t.spot2.Light.SetDirection(&math32.Vector3{0, -1, 0})
-	app.Scene().Add(t.spot2.Mesh)
+	a.Scene().Add(t.spot2.Mesh)
 
 	// Creates blue spot light
 	t.spot3 = NewSpotLightMesh(&math32.Color{0, 0, 1})
 	t.spot3.Mesh.SetPosition(0, 3, 0)
 	t.spot3.Light.SetDirection(&math32.Vector3{0, -1, 0})
-	app.Scene().Add(t.spot3.Mesh)
+	a.Scene().Add(t.spot3.Mesh)
 
 	// Subscribe to key events
 	//	app.Gl.Subscribe(gls.OnKeyDown, t.onKey)
 	//
 	// Add controls
-	if app.ControlFolder() == nil {
+	if a.ControlFolder() == nil {
 		return
 	}
-	g := app.ControlFolder().AddGroup("Show lights")
+	g := a.ControlFolder().AddGroup("Show lights")
 	cb1 := g.AddCheckBox("Red").SetValue(t.spot1.Mesh.Visible())
 	cb1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		t.spot1.Mesh.SetVisible(!t.spot1.Mesh.Visible())
@@ -98,9 +98,9 @@ func (t *SpotLight) Initialize(app *g3nd.App) {
 	})
 }
 
-func (t *SpotLight) Render(app *g3nd.App) {
+func (t *SpotLight) Render(a *app.App) {
 
-	t.rot += app.FrameDeltaSeconds()
+	t.rot += a.FrameDeltaSeconds()
 	t.spot1.SetRotationZ(t.rot)
 	t.spot2.SetRotationZ(-t.rot)
 	t.spot3.Mesh.SetPosition(0, 3+1.5*math32.Sin(t.rot), 0)
@@ -129,9 +129,9 @@ func NewSpotLightMesh(color *math32.Color) *SpotLightMesh {
 	return l
 }
 
-func (l *SpotLightMesh) AddScene(app *g3nd.App) {
+func (l *SpotLightMesh) AddScene(a *app.App) {
 
-	app.Scene().Add(l.Mesh)
+	a.Scene().Add(l.Mesh)
 }
 
 func (l *SpotLightMesh) Position(x, y, z float32) {

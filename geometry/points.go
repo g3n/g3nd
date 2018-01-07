@@ -6,8 +6,8 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 func init() {
@@ -16,11 +16,11 @@ func init() {
 
 type Points struct{}
 
-func (t *Points) Initialize(app *g3nd.App) {
+func (t *Points) Initialize(a *app.App) {
 
 	// Adds axis helper to the scene
 	axis := graphic.NewAxisHelper(2)
-	app.Scene().Add(axis)
+	a.Scene().Add(axis)
 
 	// Creates geometry
 	geom := geometry.NewGeometry()
@@ -52,8 +52,8 @@ func (t *Points) Initialize(app *g3nd.App) {
 	// Creates points mesh
 	mesh := graphic.NewPoints(geom, mat)
 	mesh.SetScale(1, 1, 1)
-	app.Scene().Add(mesh)
+	a.Scene().Add(mesh)
 }
 
-func (t *Points) Render(app *g3nd.App) {
+func (t *Points) Render(a *app.App) {
 }

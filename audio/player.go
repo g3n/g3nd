@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 
 	"time"
 )
@@ -25,41 +25,41 @@ type AudioPlayer struct {
 	pc4        *PlayerControl
 }
 
-func (t *AudioPlayer) Initialize(app *g3nd.App) {
+func (t *AudioPlayer) Initialize(a *app.App) {
 
 	var err error
-	t.pc1, err = NewPlayerControl(app, "bomb1.wav")
+	t.pc1, err = NewPlayerControl(a, "bomb1.wav")
 	t.pc1.player.SetLooping(false)
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	t.pc1.SetPosition(40, 10)
-	app.GuiPanel().Add(t.pc1)
+	a.GuiPanel().Add(t.pc1)
 
-	t.pc2, err = NewPlayerControl(app, "Vivaldi1.wav")
+	t.pc2, err = NewPlayerControl(a, "Vivaldi1.wav")
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	t.pc2.SetPosition(40, t.pc1.Position().Y+t.pc1.Height()+20)
-	app.GuiPanel().Add(t.pc2)
+	a.GuiPanel().Add(t.pc2)
 
-	t.pc3, err = NewPlayerControl(app, "bomb2.ogg")
+	t.pc3, err = NewPlayerControl(a, "bomb2.ogg")
 	t.pc3.player.SetLooping(false)
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	t.pc3.SetPosition(40, t.pc2.Position().Y+t.pc2.Height()+40)
-	app.GuiPanel().Add(t.pc3)
+	a.GuiPanel().Add(t.pc3)
 
-	t.pc4, err = NewPlayerControl(app, "Bach1.ogg")
+	t.pc4, err = NewPlayerControl(a, "Bach1.ogg")
 	if err != nil {
-		app.Log().Fatal("%s", err)
+		a.Log().Fatal("%s", err)
 	}
 	t.pc4.SetPosition(40, t.pc3.Position().Y+t.pc3.Height()+20)
-	app.GuiPanel().Add(t.pc4)
+	a.GuiPanel().Add(t.pc4)
 }
 
-func (t *AudioPlayer) Render(app *g3nd.App) {
+func (t *AudioPlayer) Render(a *app.App) {
 
 	if time.Now().Sub(t.lastUpdate) < 100*time.Millisecond {
 		return
@@ -80,10 +80,10 @@ type PlayerControl struct {
 	sliderPitch *gui.Slider
 }
 
-func NewPlayerControl(app *g3nd.App, filename string) (*PlayerControl, error) {
+func NewPlayerControl(a *app.App, filename string) (*PlayerControl, error) {
 
 	// Creates player
-	player, err := audio.NewPlayer(app.DirData() + "/audio/" + filename)
+	player, err := audio.NewPlayer(a.DirData() + "/audio/" + filename)
 	if err != nil {
 		return nil, err
 	}

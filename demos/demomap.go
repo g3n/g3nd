@@ -1,9 +1,9 @@
 package demos
 
 import (
-	"github.com/g3n/g3nd/g3nd"
+	"github.com/g3n/g3nd/app"
 )
 
 // Map maps the demo name string to its object
 // Individual demos sets the keys of this map
-var Map = map[string]g3nd.IDemo{}
+var Map = map[string]app.IDemo{}

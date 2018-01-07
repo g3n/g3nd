@@ -7,8 +7,8 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
-	"github.com/g3n/g3nd/g3nd"
 )
 
 type Blending struct {
@@ -19,10 +19,10 @@ func init() {
 	demos.Map["material.blending"] = &Blending{}
 }
 
-func (t *Blending) Initialize(app *g3nd.App) {
+func (t *Blending) Initialize(a *app.App) {
 
-	app.CameraPersp().SetPositionZ(600)
-	app.AmbLight().SetIntensity(2)
+	a.CameraPersp().SetPositionZ(600)
+	a.AmbLight().SetIntensity(2)
 
 	// Creates checker board textures for background
 	c1 := &math32.Color{0.7, 0.7, 0.7}
@@ -39,7 +39,7 @@ func (t *Blending) Initialize(app *g3nd.App) {
 	geombg := geometry.NewPlane(4000, 3000, 1, 1)
 	meshbg := graphic.NewMesh(geombg, matbg)
 	meshbg.SetPosition(0, 0, -1)
-	app.Scene().Add(meshbg)
+	a.Scene().Add(meshbg)
 
 	// Builds list of textures
 	texnames := []string{
@@ -49,9 +49,9 @@ func (t *Blending) Initialize(app *g3nd.App) {
 	}
 	texlist := []*texture.Texture2D{}
 	for _, tname := range texnames {
-		tex, err := texture.NewTexture2DFromImage(app.DirData() + "/images/" + tname)
+		tex, err := texture.NewTexture2DFromImage(a.DirData() + "/images/" + tname)
 		if err != nil {
-			app.Log().Fatal("Error loading texture: %s", err)
+			a.Log().Fatal("Error loading texture: %s", err)
 		}
 		texlist = append(texlist, tex)
 	}
@@ -82,7 +82,7 @@ func (t *Blending) Initialize(app *g3nd.App) {
 			x := (float32(i) - float32(len(blendings))/2) * 110
 			mesh := graphic.NewMesh(geo1.Incref(), material)
 			mesh.SetPosition(x, float32(y), 0)
-			app.Scene().Add(mesh)
+			a.Scene().Add(mesh)
 		}
 	}
 
@@ -93,9 +93,9 @@ func (t *Blending) Initialize(app *g3nd.App) {
 	addImageRow(texlist[4], -300)
 }
 
-func (t *Blending) Render(app *g3nd.App) {
+func (t *Blending) Render(a *app.App) {
 
-	time := app.RunSeconds() * 0.003
+	time := a.RunSeconds() * 0.003
 	rx, ry := t.texbg.Repeat()
 	ox := math32.Mod(time*rx, 1.0)
 	oy := math32.Mod(time*ry, 1.0)
