@@ -46,8 +46,8 @@ line such as:
 
 `>g3nd geometry.box`
 
-The G3ND windows shows the current FPS rate (frames per second) of your system for any demo,
-and also the maximum potential FPS rate.
+The G3ND window shows the current FPS rate (frames per second) of your system and the maximum potential FPS rate.
+The desired FPS rate can be adjusted using the command line parameters: `-swapinterval` and `-targetfps`.
 
 # Creating a new demo/test
 
