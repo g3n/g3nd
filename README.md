@@ -13,31 +13,12 @@ of a lot of necessary initializations and housekeeping.
 # Dependencies for installation
 
 G3ND imports the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
-It needs an OpenGL driver installed in your system and on Unix like systems
-depends on some C libraries that can be installed using the platform package manager.
-In all cases it is necessary to have a gcc compatible C compiler installed.
-
-* For Ubuntu/Debian-like Linux distributions, install `libgl1-mesa-dev` and `xorg-dev` packages.
-* For CentOS/Fedora-like Linux distributions, install `libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel mesa-libGL-devel libXi-devel` packages.
-* Currently it was not tested on OS X.
-* For Windows we tested the build using the [mingw-w64](https://mingw-w64.org) toolchain.
-
-G3ND checks if audio libraries are installed in the system at runtime
-and if found enables the execution of audio demos.
-The following libraries are necessary for the audio demos:
-
-* For Ubuntu/Debian-like Linux distributions, install `libopenal1` and `libvorbisfile3`
-* For CentOS/Fedora-like Linux distributions, install `libopenal1` and `libvorbisfile3`
-* Currently it was not tested on OS X.
-* For Windows its is necessary to install the following dlls: `OpenAL32.dll, libogg.dll, libvorbis.dll` and `libvorbisfile.dll`.
-  See [windows_audio_dlls](https://github.com/g3n/windows_audio_dlls) for how to get them.
-
-G3ND was only tested with Go1.7.4+.
+Please check theses dependencies before installing.
 
 # Installation
 
-The following command will download G3ND, the engine and all its dependencies, compile and
-install the packages and the g3nd binary. Make sure your GOPATH is set correctly.
+The following command will download G3ND, the engine and third party Go packages on which it depends,
+compile and install the packages and the `g3nd` binary. Make sure your GOPATH is set correctly.
 
 `go get -u github.com/g3n/g3nd`
 
@@ -56,6 +37,7 @@ Click on a category in the tree to expand it and then select a demo to show.
 
 At the upper right corner is located the `Control` folder, which when clicked
 shows some controls which can change the parameters of the current demo.
+To run G3ND at fullscreen press `Alt-F11` or start it using the `-fullscreen` command line flag.
 
 To exit the program press ESC or close the window.
 
@@ -64,10 +46,8 @@ line such as:
 
 `>g3nd geometry.box`
 
-To check the maximum FPS rate (frames per second) of your system for any demo,
-run G3ND with the option `-interval 0`.
-Note that at least one core of your system CPU will run at 100% utilization.
-The FPS will be lower when the screen is maximized or full.
+The G3ND windows shows the current FPS rate (frames per second) of your system for any demo,
+and also the maximum potential FPS rate.
 
 # Creating a new demo/test
 
