@@ -95,6 +95,11 @@ func (t *GuiPanelModal) createPanel(a *app.App) *gui.Panel {
 	dd1.SetLayoutParams(&gui.HBoxLayoutParams{Expand: 0, AlignV: gui.AlignCenter})
 	p.Add(dd1)
 
+	// Edit
+	e1 := gui.NewEdit(100, "edit text")
+	e1.SetLayoutParams(&gui.HBoxLayoutParams{Expand: 0, AlignV: gui.AlignCenter})
+	p.Add(e1)
+
 	return p
 }
 
