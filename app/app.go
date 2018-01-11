@@ -67,10 +67,12 @@ func Create(demoMap map[string]IDemo) *App {
 	flag.Usage = usage
 
 	// Creates standard application object
-	a, err := application.Create("G3ND", application.Options{
+	a, err := application.Create(application.Options{
+		Title:       progName,
 		Width:       800,
 		Height:      600,
 		Fullscreen:  false,
+		LogPrefix:   "G3ND",
 		LogLevel:    logger.DEBUG,
 		TargetFPS:   60,
 		EnableFlags: true,
