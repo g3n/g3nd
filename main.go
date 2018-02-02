@@ -22,6 +22,9 @@ func main() {
 
 	a := app.Create(demos.Map)
 	if a != nil {
-		a.Run()
+		err := a.Run()
+		if err != nil {
+			panic(err)
+		}
 	}
 }
