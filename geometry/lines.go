@@ -43,7 +43,6 @@ func (t *Lines) Initialize(a *app.App) {
 
 	// Creates basic material
 	mat := material.NewBasic()
-	mat.SetLineWidth(2.0)
 
 	// Creates lines with the specified geometry and material
 	lines1 := graphic.NewLines(geom, mat)
