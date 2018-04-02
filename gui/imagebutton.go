@@ -50,8 +50,8 @@ func (t *GuiImageButton) Initialize(app *app.App) {
 	}
 
 	bs := gui.ImageButtonStyle{
-		Border:      gui.BorderSizes{0, 0, 0, 0},
-		Paddings:    gui.BorderSizes{0, 0, 0, 0},
+		Border:      gui.RectBounds{0, 0, 0, 0},
+		Paddings:    gui.RectBounds{0, 0, 0, 0},
 		BorderColor: math32.Color4{0, 0, 0, 1},
 		BgColor:     math32.Color4{0, 0, 0, 0},
 		FgColor:     math32.Color{0.85, 0.85, 0.85},
