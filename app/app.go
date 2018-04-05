@@ -357,12 +357,12 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 
 	// Adds header after the gui central panel to ensure that the control folder
 	// stays over the gui panel when opened.
-	headerColor := math32.Color{0, 0.15, 0.3}
-	lightTextColor := math32.Color{0.8, 0.8, 0.8}
+	headerColor := math32.Color4{0, 0.15, 0.3, 1}
+	lightTextColor := math32.Color4{0.8, 0.8, 0.8, 1}
 	header := gui.NewPanel(600, 40)
 	header.SetBorders(0, 0, 0, 0)
 	header.SetPaddings(4, 4, 4, 4)
-	header.SetColor(&headerColor)
+	header.SetColor4(&headerColor)
 	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
 
 	// Horizontal box layout for the header
@@ -383,7 +383,7 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	title.SetText(fmt.Sprintf("%s v%d.%d", progName, vmajor, vminor))
-	title.SetColor(&lightTextColor)
+	title.SetColor4(&lightTextColor)
 	header.Add(title)
 	// FPS
 	if !*oHideFPS {
@@ -391,13 +391,13 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 		l1.SetFontSize(fontSize)
 		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 		l1.SetText("  FPS: ")
-		l1.SetColor(&lightTextColor)
+		l1.SetColor4(&lightTextColor)
 		header.Add(l1)
 		// FPS value
 		app.labelFPS = gui.NewLabel(" ")
 		app.labelFPS.SetFontSize(fontSize)
 		app.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-		app.labelFPS.SetColor(&lightTextColor)
+		app.labelFPS.SetColor4(&lightTextColor)
 		header.Add(app.labelFPS)
 	}
 

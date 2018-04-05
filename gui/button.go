@@ -63,7 +63,7 @@ func (t *GuiButton) Initialize(app *app.App) {
 	styles := gui.StyleDefault().Button
 	styles.Over.BorderColor = math32.Color4Name("red", 1)
 	styles.Pressed.BorderColor = math32.Color4Name("red", 1)
-	styles.Normal.FgColor = math32.ColorName("blue")
+	styles.Normal.FgColor = math32.Color4Name("blue")
 	b5.SetStyles(&styles)
 	b5.Subscribe(gui.OnClick, func(name string, ev interface{}) {
 		app.Log().Info("button 5 OnClick")

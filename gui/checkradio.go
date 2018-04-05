@@ -39,7 +39,7 @@ func (t *CheckRadio) Initialize(app *app.App) {
 	// Copy and change the default style
 	styles := gui.StyleDefault().CheckRadio
 	styles.Over.BgColor = math32.Color4Name("red", 1)
-	styles.Over.FgColor = math32.ColorName("blue")
+	styles.Over.FgColor = math32.Color4Name("blue")
 	cb3.SetStyles(&styles)
 	cb3.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		app.Log().Info("Checkbox3 OnChange. State:%v", cb3.Value())

@@ -49,13 +49,12 @@ func (t *GuiImageButton) Initialize(app *app.App) {
 		panic(err)
 	}
 
-	bs := gui.ImageButtonStyle{
-		Border:      gui.RectBounds{0, 0, 0, 0},
-		Paddings:    gui.RectBounds{0, 0, 0, 0},
-		BorderColor: math32.Color4{0, 0, 0, 1},
-		BgColor:     math32.Color4{0, 0, 0, 0},
-		FgColor:     math32.Color{0.85, 0.85, 0.85},
-	}
+	bs := gui.ImageButtonStyle{}
+	bs.Border = gui.RectBounds{0, 0, 0, 0}
+	bs.Padding = gui.RectBounds{0, 0, 0, 0}
+	bs.BorderColor = math32.Color4{0, 0, 0, 1}
+	bs.BgColor = math32.Color4{0, 0, 0, 0}
+	bs.FgColor = math32.Color4{0.85, 0.85, 0.85, 0}
 	bss := gui.ImageButtonStyles{
 		Normal:   bs,
 		Over:     bs,
