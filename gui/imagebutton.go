@@ -54,7 +54,7 @@ func (t *GuiImageButton) Initialize(app *app.App) {
 	bs.Padding = gui.RectBounds{0, 0, 0, 0}
 	bs.BorderColor = math32.Color4{0, 0, 0, 1}
 	bs.BgColor = math32.Color4{0, 0, 0, 0}
-	bs.FgColor = math32.Color4{0.85, 0.85, 0.85, 0}
+	bs.FgColor = math32.Color4{0.85, 0.85, 0.85, 1}
 	bss := gui.ImageButtonStyles{
 		Normal:   bs,
 		Over:     bs,
