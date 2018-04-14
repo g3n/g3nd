@@ -64,7 +64,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	a.Scene().Add(mesh4)
 
 	// Circle
-	geom5 := geometry.NewCircle(0.6, 5, 0, 2*math32.Pi)
+	geom5 := geometry.NewCircle(0.6, 5)
 	mat5 := material.NewStandard(&math32.Color{0.5, 0.5, 0.9})
 	mat5.SetSide(material.SideDouble)
 	mesh5 := graphic.NewMesh(geom5, mat5)

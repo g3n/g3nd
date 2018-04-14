@@ -253,7 +253,7 @@ func (t *TankTest) newTankModel() *TankModel {
 			model.node.Add(meshWheel)
 
 			// Creates wheel cap
-			geomCap := geometry.NewCircle(CAP_RADIUS, 20, 0, 2*math32.Pi)
+			geomCap := geometry.NewCircle(CAP_RADIUS, 20)
 			meshCap := graphic.NewMesh(geomCap, matCap)
 			meshCap.SetPositionX(-(BASE_LENGTH / 2) + WHEEL_RADIUS + 0.2 + float32(i)*(WHEEL_RADIUS*2))
 			meshCap.SetPositionY(WHEEL_RADIUS)
