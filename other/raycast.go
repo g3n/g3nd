@@ -41,7 +41,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	a.Scene().Add(mesh1)
 
 	// Box
-	geom2 := geometry.NewBox(1, 1, 1, 1, 1, 1)
+	geom2 := geometry.NewCube(1)
 	mat2 := material.NewPhong(&math32.Color{1, 0, 0})
 	mat2.SetSide(material.SideFront)
 	mesh2 := graphic.NewMesh(geom2, mat2)

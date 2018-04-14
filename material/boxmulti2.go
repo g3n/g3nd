@@ -69,7 +69,7 @@ func (t *Boxmulti2) Initialize(a *app.App) {
 	mat5 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat5.AddTexture(tex5)
 
-	geom := geometry.NewBox(1, 1, 1, 2, 2, 2)
+	geom := geometry.NewSegmentedCube(1,2)
 	t.box = graphic.NewMesh(geom, nil)
 	t.box.AddGroupMaterial(mat0, 0)
 	t.box.AddGroupMaterial(mat1, 1)

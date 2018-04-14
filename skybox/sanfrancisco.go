@@ -32,7 +32,7 @@ func (t *Skybox) Initialize(a *app.App) {
 	axis := graphic.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
-	geom := geometry.NewBox(50, 50, 50, 2, 2, 2)
+	geom := geometry.NewCube(50)
 	skybox := graphic.NewMesh(geom, nil)
 	for i := 0; i < 6; i++ {
 		tex, err := texture.NewTexture2DFromImage(a.DirData() + "/images/" + textures[i])

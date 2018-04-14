@@ -62,7 +62,7 @@ func (t *ShaderGeometry) Initialize(a *app.App) {
 	a.Scene().Add(t.plane)
 
 	// Adds box
-	boxGeom := geometry.NewBox(1, 1, 1, 1, 1, 1)
+	boxGeom := geometry.NewCube(1)
 	mat.Incref()
 	t.box = graphic.NewMesh(boxGeom, mat)
 	t.box.SetPosition(0, 0, 0)

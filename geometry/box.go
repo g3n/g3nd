@@ -22,7 +22,7 @@ func init() {
 func (t *Box) Initialize(a *app.App) {
 
 	// Add box
-	geom := geometry.NewBox(1, 1, 1, 2, 2, 2)
+	geom := geometry.NewSegmentedCube(1,2)
 	mat := material.NewStandard(&math32.Color{0.5, 0, 0})
 	mat.SetWireframe(false)
 	t.box = graphic.NewMesh(geom, mat)

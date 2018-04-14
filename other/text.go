@@ -53,7 +53,7 @@ func (t *Text1) Initialize(a *app.App) {
 	t.font = font
 
 	// Creates Box
-	geom1 := geometry.NewBox(1, 1, 1, 2, 2, 2)
+	geom1 := geometry.NewSegmentedCube(1,2)
 	mesh1 := graphic.NewMesh(geom1, nil)
 	// Creates box materials
 	width := 128
