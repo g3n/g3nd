@@ -76,37 +76,37 @@ func (t *Scroller) Initialize(app *app.App) {
 
 	// Interlocking style radio buttons
 
-	interlocking1 := gui.NewRadioButton("ScrollbarInterlockinggVertical")
+	interlocking1 := gui.NewRadioButton("ScrollbarInterlockingVertical")
 	interlocking1.SetPosition(200, 420)
 	interlocking1.Label.SetFontSize(14)
-	interlocking1.SetGroup("ScrollbarInterlockingg")
+	interlocking1.SetGroup("ScrollbarInterlocking")
 	interlocking1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if interlocking1.Value() == true {
-			app.Log().Info("ScrollbarInterlockinggVertical")
+			app.Log().Info("ScrollbarInterlockingVertical")
 			scroller.SetScrollbarInterlocking(gui.ScrollbarInterlockingVertical)
 		}
 	})
 	app.GuiPanel().Add(interlocking1)
 
-	interlocking2 := gui.NewRadioButton("ScrollbarInterlockinggHorizontal")
+	interlocking2 := gui.NewRadioButton("ScrollbarInterlockingHorizontal")
 	interlocking2.SetPosition(200, 445)
 	interlocking2.Label.SetFontSize(14)
-	interlocking2.SetGroup("ScrollbarInterlockingg")
+	interlocking2.SetGroup("ScrollbarInterlocking")
 	interlocking2.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if interlocking2.Value() == true {
-			app.Log().Info("ScrollbarInterlockinggHorizontal")
+			app.Log().Info("ScrollbarInterlockingHorizontal")
 			scroller.SetScrollbarInterlocking(gui.ScrollbarInterlockingHorizontal)
 		}
 	})
 	app.GuiPanel().Add(interlocking2)
 
-	interlocking3 := gui.NewRadioButton("ScrollbarInterlockinggNone")
+	interlocking3 := gui.NewRadioButton("ScrollbarInterlockingNone")
 	interlocking3.SetPosition(200, 470)
 	interlocking3.Label.SetFontSize(14)
-	interlocking3.SetGroup("ScrollbarInterlockingg")
+	interlocking3.SetGroup("ScrollbarInterlocking")
 	interlocking3.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if interlocking3.Value() == true {
-			app.Log().Info("ScrollbarInterlockinggNone")
+			app.Log().Info("ScrollbarInterlockingNone")
 			scroller.SetScrollbarInterlocking(gui.ScrollbarInterlockingNone)
 		}
 	})
