@@ -46,10 +46,10 @@ func (t *Text1) Initialize(a *app.App) {
 		a.Log().Fatal(err.Error())
 	}
 	font.SetLineSpacing(1.0)
-	font.SetSize(28)
+	font.SetPointSize(28)
 	font.SetDPI(72)
-	font.SetFgColor4(&math32.Color4{0, 0, 1, 1})
-	font.SetBgColor4(&math32.Color4{1, 1, 0, 0.8})
+	font.SetFgColor(&math32.Color4{0, 0, 1, 1})
+	font.SetBgColor(&math32.Color4{1, 1, 0, 0.8})
 	t.font = font
 
 	// Creates Box
@@ -76,10 +76,10 @@ func (t *Text1) Initialize(a *app.App) {
 	canvas := text.NewCanvas(300, 200, &math32.Color4{0, 1, 0, 0.8})
 	canvas.DrawText(0, 20, "Message1", font)
 	canvas.DrawText(100, 50, "Other text", font)
-	font.SetFgColor4(&math32.Color4{1, 0, 0, 1})
+	font.SetFgColor(&math32.Color4{1, 0, 0, 1})
 	canvas.DrawText(20, 100, "In Red", font)
-	font.SetSize(48)
-	font.SetFgColor4(&math32.Color4{0, 0, 0, 1})
+	font.SetPointSize(48)
+	font.SetFgColor(&math32.Color4{0, 0, 0, 1})
 	canvas.DrawText(0, 150, "BIGGER", font)
 	// Plane
 	tex1 := texture.NewTexture2DFromRGBA(canvas.RGBA)
@@ -104,7 +104,7 @@ func (t *Text1) Initialize(a *app.App) {
 	a.Scene().Add(mesh3)
 
 	// Sprite2
-	font.SetSize(28)
+	font.SetPointSize(28)
 	swidth, sheight = font.MeasureText(newtonMsg)
 	mx := 10
 	swidth += 2 * mx
@@ -140,7 +140,7 @@ func (t *Text1) Render(a *app.App) {
 	l1 := fmt.Sprintf("Time: %4.4f", a.RunSeconds())
 	// Creates updated canvas
 	canvas := text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
-	t.font.SetSize(30)
+	t.font.SetPointSize(30)
 	canvas.DrawText(0, 0, l1, t.font)
 	// Update material texture
 	t.planeTex.SetFromRGBA(canvas.RGBA)
