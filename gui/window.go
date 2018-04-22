@@ -24,6 +24,7 @@ func (t *GuiWindow) Initialize(a *app.App) {
 			"This window does not have a title\n" +
 			"It is resizable on all borders\n",
 	)
+	c1.SetColor(math32.NewColor("black"))
 	c1.SetBgColor(math32.NewColor("white"))
 	w1.Add(c1)
 	a.GuiPanel().Add(w1)
@@ -39,6 +40,7 @@ func (t *GuiWindow) Initialize(a *app.App) {
 			"It is resizable on the bottom and right borders\n" +
 			"It is movable by dragging its title",
 	)
+	c2.SetColor(math32.NewColor("black"))
 	c2.SetBgColor(&math32.Color{0.7, 0.8, 0.9})
 	w2.Add(c2)
 	a.GuiPanel().Add(w2)

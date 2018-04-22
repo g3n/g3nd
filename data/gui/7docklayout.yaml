@@ -13,12 +13,12 @@ layout:
 items:
 - type: imagelabel
   text: top1
-  color: white
+  color: turquoise
   layoutparams:
       edge: top
 - type: imagelabel
   text: top2
-  color: yellow
+  color: purple
   layoutparams:
       edge: top
 - type: imagelabel

@@ -350,17 +350,17 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	// Add transparent panel at the center to contain demos
 	center := gui.NewPanel(0, 0)
 	center.SetRenderable(false)
-	center.SetColor(math32.NewColor("silver"))
+	center.SetColor4(&gui.StyleDefault().Scroller.BgColor)
 	center.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
 	app.Gui().Add(center)
 	app.SetPanel3D(center)
 
 	// Adds header after the gui central panel to ensure that the control folder
 	// stays over the gui panel when opened.
-	headerColor := math32.Color4{0, 0.15, 0.3, 1}
+	headerColor := math32.Color4{13.0/256.0, 41.0/256.0, 62.0/256.0, 1}
 	lightTextColor := math32.Color4{0.8, 0.8, 0.8, 1}
 	header := gui.NewPanel(600, 40)
-	header.SetBorders(0, 0, 0, 0)
+	header.SetBorders(0, 0, 1, 0)
 	header.SetPaddings(4, 4, 4, 4)
 	header.SetColor4(&headerColor)
 	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
