@@ -3,7 +3,6 @@ package gui
 import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
-	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
@@ -25,7 +24,6 @@ func (t *GuiMenu) Initialize(a *app.App) {
 	mbOption := gui.NewLabel(mbText)
 	mbOption.SetPosition(300, 10)
 	mbOption.SetPaddings(2, 2, 2, 2)
-	mbOption.SetBgColor(math32.NewColor("white"))
 	mbOption.SetBorders(1, 1, 1, 1)
 	a.GuiPanel().Add(mbOption)
 
