@@ -6,7 +6,7 @@ It can be used to learn the game engine API by examining the source code of the 
 It's very easy to create a new demo as the main program takes care of a lot of initializations and housekeeping.
 
 <p align="center">
-  <img style="float: right;" src="data/images/g3nd_screenshots.png" alt="G3ND In Action"/>
+  <img style="float: right;" src="https://raw.githubusercontent.com/g3n/g3nd/master/data/images/g3nd_screenshots.png" alt="G3ND In Action"/>
 </p>
 
 # Dependencies for installation
