@@ -40,7 +40,6 @@ func (t *LineStrip) Initialize(a *app.App) {
 
 	// Creates basic material
 	mat1 := material.NewBasic()
-	mat1.SetLineWidth(2.0)
 
 	// Creates line strip with the specified geometry and material
 	lines1 := graphic.NewLineStrip(geom1, mat1)
@@ -76,7 +75,6 @@ func (t *LineStrip) Initialize(a *app.App) {
 
 	// Creates basic material
 	mat2 := material.NewBasic()
-	mat2.SetLineWidth(2.0)
 
 	// Creates line strip with the specified geometry and material
 	lines2 := graphic.NewLineStrip(geom2, mat2)

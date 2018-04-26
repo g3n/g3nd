@@ -50,7 +50,6 @@ func (t *GuiChart) Initialize(app *app.App) {
 	cbG1.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbG1.Value() {
 			g1 = chart.AddLineGraph(&math32.Color{0, 0, 1}, data1)
-			g1.SetLineWidth(2.0)
 		} else {
 			chart.RemoveGraph(g1)
 			g1 = nil
@@ -71,7 +70,6 @@ func (t *GuiChart) Initialize(app *app.App) {
 	cbG2.Subscribe(gui.OnChange, func(name string, ev interface{}) {
 		if cbG2.Value() {
 			g2 = chart.AddLineGraph(&math32.Color{1, 0, 0}, data2)
-			g2.SetLineWidth(2.0)
 		} else {
 			chart.RemoveGraph(g2)
 			g2 = nil
