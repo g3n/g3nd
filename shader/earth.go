@@ -23,8 +23,7 @@ func init() {
 func (t *Earth) Initialize(a *app.App) {
 
 	t.a = a
-	a.Gl().ClearColor(0, 0, 0, 1)
-
+	t.a.Renderer().SetSortObjects(false)
 	a.AmbLight().SetIntensity(1)
 
 	// Create Skybox
