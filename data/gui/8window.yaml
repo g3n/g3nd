@@ -14,7 +14,6 @@ items:
 - type: panel
   borders: 0
   paddings: 6
-  color: silver
   layoutparams:
     edge: top
   layout:
@@ -89,7 +88,6 @@ items:
 - type: panel
   borders: 0 0 1 0
   paddings: 4
-  color: lightgray
   layoutparams:
     edge: top
   layout:
@@ -205,7 +203,7 @@ items:
         resize: true
         expand: 1
     - type: chart
-      color: lightblue
+      color: white
       paddings: 8
       layoutparams:
         alignh: width
@@ -228,7 +226,6 @@ items:
 
 # Status bar
 - type: panel
-  color: silver
   paddings: 2
   borders: 1 0 0 0
   layoutparams:

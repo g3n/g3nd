@@ -253,7 +253,7 @@ func (t *TankTest) newTankModel() *TankModel {
 			model.node.Add(meshWheel)
 
 			// Creates wheel cap
-			geomCap := geometry.NewCircle(CAP_RADIUS, 20, 0, 2*math32.Pi)
+			geomCap := geometry.NewCircle(CAP_RADIUS, 20)
 			meshCap := graphic.NewMesh(geomCap, matCap)
 			meshCap.SetPositionX(-(BASE_LENGTH / 2) + WHEEL_RADIUS + 0.2 + float32(i)*(WHEEL_RADIUS*2))
 			meshCap.SetPositionY(WHEEL_RADIUS)
@@ -274,7 +274,7 @@ func (t *TankTest) newTankModel() *TankModel {
 
 	// Creates the wheel tracks
 	for i := 0; i < 2; i++ {
-		geomTrack := geometry.NewBox(WHEEL_RADIUS*6, WHEEL_WIDTH+EPS, TRACK_HEIGHT, 1, 1, 1)
+		geomTrack := geometry.NewBox(WHEEL_RADIUS*6, WHEEL_WIDTH+EPS, TRACK_HEIGHT)
 		matTrack := material.NewPhong(TRACK_COLOR)
 		meshTrack := graphic.NewMesh(geomTrack, matTrack)
 		var zdir float32 = 1.0
@@ -287,7 +287,7 @@ func (t *TankTest) newTankModel() *TankModel {
 	}
 
 	// Creates the tank base chassis and adds it to the group
-	geomBase := geometry.NewBox(BASE_LENGTH, BASE_WIDTH, BASE_HEIGHT, 4, 4, 4)
+	geomBase := geometry.NewBox(BASE_LENGTH, BASE_WIDTH, BASE_HEIGHT)
 	matBase := material.NewPhong(BASE_COLOR)
 	model.meshBase = graphic.NewMesh(geomBase, matBase)
 	model.meshBase.SetPosition(

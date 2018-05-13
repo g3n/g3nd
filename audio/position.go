@@ -147,7 +147,7 @@ func NewPlayerSphere(a *app.App, filename string, color *math32.Color) *PlayerSp
 
 	// Adds plane with file name
 	font := gui.StyleDefault().Font
-	font.SetSize(32)
+	font.SetPointSize(32)
 	width, height := font.MeasureText(filename)
 	canvas := text.NewCanvas(width, height, &math32.Color4{0, 0, 0, 0})
 	aspect := float32(width) / float32(height)

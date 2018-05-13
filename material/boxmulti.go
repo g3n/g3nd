@@ -30,7 +30,7 @@ func (t *Boxmulti) Initialize(a *app.App) {
 	a.Scene().Add(axis)
 
 	// Creates box geometry
-	geom := geometry.NewBox(1, 1, 1, 1, 1, 1)
+	geom := geometry.NewCube(1)
 
 	// Creates box materials
 	mat0 := material.NewStandard(&math32.Color{1, 0, 0})

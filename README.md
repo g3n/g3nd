@@ -1,28 +1,27 @@
 # G3ND - G3N Game Engine Demo Program
 
-G3ND is a demo/test program for the [G3N](https://github.com/g3n/engine) Go 3D Game Engine.
-It contains demos of the main features of the engine and also some basic tests.
-It can also be used to learn how to use the game engine by examining the source code of the demo programs.
-It is very easy to create a new demo as the main program takes care
-of a lot of necessary initializations and housekeeping.
+G3ND is a demo/test program for the [G3N](https://github.com/g3n/engine) 3D game engine.
+It demonstrates the main features of the engine and contains some basic tests.
+It can be used to learn the game engine API by examining the source code of the demo programs.
+It's very easy to create a new demo as the main program takes care of a lot of initializations and housekeeping.
 
 <p align="center">
-  <img style="float: right;" src="data/images/g3nd2.gif" alt="G3ND In Action"/>
+  <img style="float: right;" src="https://raw.githubusercontent.com/g3n/g3nd/master/data/images/g3nd_screenshots.png" alt="G3ND In Action"/>
 </p>
 
 # Dependencies for installation
 
-G3ND imports the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
-Please check theses dependencies before installing.
+G3ND only depends on the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
+Please verify that the engine dependencies are in place before installing.
 
 # Installation
 
-The following command will download G3ND, the engine and third party Go packages on which it depends,
-compile and install the packages and the `g3nd` binary. Make sure your GOPATH is set correctly.
+The following command will download G3ND, the engine, and third party Go packages on which it depends.
+It will also compile and install the packages and the `g3nd` binary. Make sure your GOPATH is set correctly.
 
 `go get -u github.com/g3n/g3nd`
 
-Note: G3ND comes with a data directory with media files: images, textures, models and audio files.
+Note: G3ND comes with a data directory with media files including images, textures, models and audio files.
 Currently this directory has aproximately 50MB. The download and compilation may take some time.
 To see what is going on you can alternatively supply the verbose flag:
 

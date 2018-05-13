@@ -252,6 +252,9 @@ func (app *App) setupScene() {
 	// Sets default background color
 	app.Gl().ClearColor(0.6, 0.6, 0.6, 1.0)
 
+	// Reset renderer z-sorting flag
+	app.Renderer().SetSortObjects(true)
+
 	// Adds ambient light to the test scene
 	app.ambLight = light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.5)
 	app.Scene().Add(app.ambLight)
@@ -350,19 +353,19 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	// Add transparent panel at the center to contain demos
 	center := gui.NewPanel(0, 0)
 	center.SetRenderable(false)
-	center.SetColor(math32.NewColor("silver"))
+	center.SetColor4(&gui.StyleDefault().Scroller.BgColor)
 	center.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
 	app.Gui().Add(center)
 	app.SetPanel3D(center)
 
 	// Adds header after the gui central panel to ensure that the control folder
 	// stays over the gui panel when opened.
-	headerColor := math32.Color{0, 0.15, 0.3}
-	lightTextColor := math32.Color{0.8, 0.8, 0.8}
+	headerColor := math32.Color4{13.0/256.0, 41.0/256.0, 62.0/256.0, 1}
+	lightTextColor := math32.Color4{0.8, 0.8, 0.8, 1}
 	header := gui.NewPanel(600, 40)
-	header.SetBorders(0, 0, 0, 0)
+	header.SetBorders(0, 0, 1, 0)
 	header.SetPaddings(4, 4, 4, 4)
-	header.SetColor(&headerColor)
+	header.SetColor4(&headerColor)
 	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
 
 	// Horizontal box layout for the header
@@ -383,7 +386,7 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	title.SetFontSize(fontSize)
 	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 	title.SetText(fmt.Sprintf("%s v%d.%d", progName, vmajor, vminor))
-	title.SetColor(&lightTextColor)
+	title.SetColor4(&lightTextColor)
 	header.Add(title)
 	// FPS
 	if !*oHideFPS {
@@ -391,13 +394,13 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 		l1.SetFontSize(fontSize)
 		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
 		l1.SetText("  FPS: ")
-		l1.SetColor(&lightTextColor)
+		l1.SetColor4(&lightTextColor)
 		header.Add(l1)
 		// FPS value
 		app.labelFPS = gui.NewLabel(" ")
 		app.labelFPS.SetFontSize(fontSize)
 		app.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-		app.labelFPS.SetColor(&lightTextColor)
+		app.labelFPS.SetColor4(&lightTextColor)
 		header.Add(app.labelFPS)
 	}
 

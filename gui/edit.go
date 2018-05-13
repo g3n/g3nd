@@ -37,8 +37,8 @@ func (t *GuiEdit) Initialize(app *app.App) {
 	ed3.SetFontSize(20)
 	// Copy and change the default style
 	styles := gui.StyleDefault().Edit
-	styles.Over.BgColor = math32.ColorName("red")
-	styles.Over.FgColor = math32.ColorName("green")
+	styles.Over.BgColor = math32.Color4Name("red")
+	styles.Over.FgColor = math32.Color4Name("green")
 	ed3.SetStyles(&styles)
 	ed3.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		app.Log().Info("Edit 3 OnChange:%s", ed3.Text())

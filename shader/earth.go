@@ -23,8 +23,7 @@ func init() {
 func (t *Earth) Initialize(a *app.App) {
 
 	t.a = a
-	a.Gl().ClearColor(0, 0, 0, 1)
-
+	t.a.Renderer().SetSortObjects(false)
 	a.AmbLight().SetIntensity(1)
 
 	// Create Skybox
@@ -104,6 +103,7 @@ func (t *Earth) Initialize(a *app.App) {
 	}
 	sunMat := material.NewStandard(&math32.Color{1, 1, 1})
 	sunMat.AddTexture(texSun)
+	sunMat.SetTransparent(true)
 	sun := graphic.NewSprite(10, 10, sunMat)
 	sun.SetPositionZ(20)
 	a.Scene().Add(sun)

@@ -31,6 +31,7 @@ func (t *GuiPanelChildren) Initialize(a *app.App) {
 	t.p0.SetColor(math32.NewColor("white"))
 	t.p0.SetPaddingsColor(math32.NewColor("blue"))
 	l0 := gui.NewLabel("P0")
+	l0.SetColor(math32.NewColor("black"))
 	t.p0.Add(l0)
 	a.GuiPanel().Add(t.p0)
 
@@ -46,6 +47,7 @@ func (t *GuiPanelChildren) Initialize(a *app.App) {
 	//app.Gui().Add(t.p0)
 	t.p0.Add(t.p1)
 	l1 := gui.NewLabel("P1(ASDW): Child of P0")
+	l1.SetColor(math32.NewColor("black"))
 	t.p1.Add(l1)
 
 	// Panel2
@@ -57,6 +59,7 @@ func (t *GuiPanelChildren) Initialize(a *app.App) {
 	t.p2.SetPaddings(8, 8, 8, 8)
 	t.p2.SetPaddingsColor(math32.NewColor("black"))
 	l2 := gui.NewLabel("P2(JKLI): Child of P1")
+	l2.SetColor(math32.NewColor("black"))
 	t.p2.Add(l2)
 	t.p1.Add(t.p2)
 
@@ -70,6 +73,7 @@ func (t *GuiPanelChildren) Initialize(a *app.App) {
 	t.p3.SetPaddingsColor(math32.NewColor("black"))
 	t.p3.SetBounded(false)
 	l3 := gui.NewLabel("P3(FGHT): Child of P1 (unbounded)")
+	l3.SetColor(math32.NewColor("black"))
 	t.p3.Add(l3)
 	t.p1.Add(t.p3)
 	t.p1.SetTopChild(t.p2)

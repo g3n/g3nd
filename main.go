@@ -22,12 +22,11 @@ func main() {
 
 	// Creates application and panics if error
 	a := app.Create(demos.Map)
-	if a == nil {
-		return
-	}
-	// Runs application and panics if error
-	err := a.Run()
-	if err != nil {
-		panic(err)
+
+	if a != nil {
+		err := a.Run()
+		if err != nil {
+			panic(err)
+		}
 	}
 }

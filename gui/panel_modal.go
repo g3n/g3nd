@@ -39,17 +39,17 @@ func (t *GuiPanelModal) setModal(a *app.App, p gui.IPanel) {
 	// If no modal panels, sets all panels color to white
 	if p == nil {
 		for _, ipan := range t.panels {
-			ipan.GetPanel().SetColor(math32.NewColor("white"))
+			ipan.GetPanel().SetColor4(&math32.Color4{})
 		}
 		return
 	}
 	// Sets the modal panel color to white and others to gray
 	for _, ipan := range t.panels {
 		if ipan == p {
-			ipan.GetPanel().SetColor(math32.NewColor("white"))
+			ipan.GetPanel().SetColor4(&math32.Color4{})
 			continue
 		}
-		ipan.GetPanel().SetColor(math32.NewColor("lightgray"))
+		ipan.GetPanel().SetColor(math32.NewColor("gray"))
 	}
 }
 
@@ -59,7 +59,6 @@ func (t *GuiPanelModal) createPanel(a *app.App) *gui.Panel {
 	p := gui.NewPanel(0, 0)
 	p.SetBorders(1, 1, 1, 1)
 	p.SetPaddings(8, 8, 8, 8)
-	p.SetColor(math32.NewColor("white"))
 	layout := gui.NewHBoxLayout()
 	layout.SetSpacing(10)
 	layout.SetAlignH(gui.AlignCenter)

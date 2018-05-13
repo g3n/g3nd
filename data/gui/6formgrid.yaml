@@ -6,7 +6,6 @@ panel1:
   name: panel1
   position: 0 0
   borders: 1
-  color: white
   width: 400
   height: 100
   layout:
@@ -19,7 +18,6 @@ panel1:
     borders: 0 0 1 0
     paddings: 4 
     margins: 0 0 4 0
-    color: 0.8 0.8 0.8 1
     layoutparams:
       alignh: width
     layout:
@@ -28,7 +26,6 @@ panel1:
       autoheight: true
     items:
     - type: label
-      color: white
       text: Form Title
   # Form inner panel (with grid layout)
   - type: panel
@@ -160,8 +157,6 @@ panel1:
     # VBox last row: buttons
   - type: panel
     name: row5
-    color: 0.8 0.8 0.8 1
-    borders: 1 0 0 0
     paddings: 10
     layoutparams:
       alignh: width

@@ -49,7 +49,7 @@ func (t *ShaderBricks) Initialize(a *app.App) {
 	a.Scene().Add(t.plane1)
 
 	// Creates box1
-	geom2 := geometry.NewBox(2, 2, 1, 2, 2, 2)
+	geom2 := geometry.NewSegmentedBox(2, 2, 1, 2, 2, 2)
 	mat2 := NewBricksMaterial(&math32.Color{0.2, 0.4, 0.8})
 	t.box1 = graphic.NewMesh(geom2, mat2)
 	t.box1.SetPosition(1.2, 1, 0)

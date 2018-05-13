@@ -11,7 +11,6 @@ import (
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
 
-	"math"
 )
 
 func init() {
@@ -31,7 +30,7 @@ func (t *Texcircle) Initialize(a *app.App) {
 	dir1.SetPosition(0, 0, 10)
 	a.Scene().Add(dir1)
 
-	geom1 := geometry.NewCircle(1, 3, 0, 2*math.Pi)
+	geom1 := geometry.NewCircle(1, 3)
 	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(false)
 	tex1 := texture.NewBoard(32, 32, math32.NewColor("white"), math32.NewColor("black"), math32.NewColor("black"), math32.NewColor("white"), 0.8)
@@ -45,7 +44,7 @@ func (t *Texcircle) Initialize(a *app.App) {
 	t.mesh1.SetPositionZ(0)
 	a.Scene().Add(t.mesh1)
 
-	geom2 := geometry.NewCircle(1, 50, 0, 2*math.Pi)
+	geom2 := geometry.NewCircle(1, 50)
 	mat2 := material.NewStandard(&math32.Color{0.5, 0.5, 0.5})
 	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/tiger1.jpg")
 	if err != nil {
@@ -59,7 +58,7 @@ func (t *Texcircle) Initialize(a *app.App) {
 	t.mesh2.SetPositionZ(-0.5)
 	a.Scene().Add(t.mesh2)
 
-	geom3 := geometry.NewCircle(1, 5, 0, 2*math.Pi)
+	geom3 := geometry.NewCircle(1, 5)
 	mat3 := material.NewStandard(&math32.Color{1, 0, 0})
 	tex3 := texture.NewBoard(32, 32, math32.NewColor("white"), math32.NewColor("black"), math32.NewColor("black"), math32.NewColor("white"), 0.6)
 	tex3.SetWrapS(gls.REPEAT)

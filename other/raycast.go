@@ -41,7 +41,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	a.Scene().Add(mesh1)
 
 	// Box
-	geom2 := geometry.NewBox(1, 1, 1, 1, 1, 1)
+	geom2 := geometry.NewCube(1)
 	mat2 := material.NewPhong(&math32.Color{1, 0, 0})
 	mat2.SetSide(material.SideFront)
 	mesh2 := graphic.NewMesh(geom2, mat2)
@@ -64,7 +64,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	a.Scene().Add(mesh4)
 
 	// Circle
-	geom5 := geometry.NewCircle(0.6, 5, 0, 2*math32.Pi)
+	geom5 := geometry.NewCircle(0.6, 5)
 	mat5 := material.NewStandard(&math32.Color{0.5, 0.5, 0.9})
 	mat5.SetSide(material.SideDouble)
 	mesh5 := graphic.NewMesh(geom5, mat5)
@@ -85,6 +85,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	mat7 := material.NewPhong(&math32.Color{0.8, 0.7, 0.3})
 	mat7.SetSide(material.SideFront)
 	mat7.SetOpacity(0.6)
+	mat7.SetTransparent(true)
 	mesh7 := graphic.NewMesh(geom7, mat7)
 	mesh7.SetPosition(0, 0, 0)
 	a.Scene().Add(mesh7)
