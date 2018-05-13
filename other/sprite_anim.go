@@ -21,6 +21,8 @@ func init() {
 
 func (t *SpriteAnim) Initialize(a *app.App) {
 
+	a.AmbLight().SetIntensity(1)
+
 	// Initialize list of animators
 	t.anims = make([]*texture.Animator, 0)
 
@@ -47,12 +49,12 @@ func (t *SpriteAnim) Initialize(a *app.App) {
 	a.Scene().Add(s1)
 
 	// Creates texture 2 and animator
-	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/explosion3.png")
+	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/smoke30.png")
 	if err != nil {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	anim2 := texture.NewAnimator(tex2, 4, 4)
-	anim2.SetDispTime(4 * 16666 * time.Microsecond)
+	anim2 := texture.NewAnimator(tex2, 6,5)
+	anim2.SetDispTime(2 * 16666 * time.Microsecond)
 	t.anims = append(t.anims, anim2)
 
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
