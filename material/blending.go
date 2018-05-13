@@ -77,6 +77,7 @@ func (t *Blending) Initialize(a *app.App) {
 		for i := 0; i < len(blendings); i++ {
 			material := material.NewPhong(&math32.Color{1, 1, 1})
 			material.SetOpacity(1)
+			material.SetTransparent(true)
 			material.AddTexture(tex)
 			material.SetBlending(blendings[i].value)
 			x := (float32(i) - float32(len(blendings))/2) * 110

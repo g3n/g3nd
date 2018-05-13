@@ -85,6 +85,7 @@ func (t *Raycast) Initialize(a *app.App) {
 	mat7 := material.NewPhong(&math32.Color{0.8, 0.7, 0.3})
 	mat7.SetSide(material.SideFront)
 	mat7.SetOpacity(0.6)
+	mat7.SetTransparent(true)
 	mesh7 := graphic.NewMesh(geom7, mat7)
 	mesh7.SetPosition(0, 0, 0)
 	a.Scene().Add(mesh7)
