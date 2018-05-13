@@ -189,6 +189,7 @@ func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCo
 	// Adds plane with file name
 	font := gui.StyleDefault().Font
 	font.SetPointSize(48)
+	font.SetColor(&math32.Color4{0,0,0,1})
 	width, height := font.MeasureText(filename)
 	canvas := text.NewCanvas(width, height, &math32.Color4{0, 0, 0, 0})
 	aspect := float32(width) / float32(height)
@@ -197,6 +198,7 @@ func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCo
 	plane_geom := geometry.NewPlane(2.0, 2.0/aspect, 1, 1)
 	plane_mat := material.NewStandard(math32.NewColor("white"))
 	plane_mat.AddTexture(tex)
+	plane_mat.SetTransparent(true)
 	pc.label = graphic.NewMesh(plane_geom, plane_mat)
 	pc.label.SetPosition(0, 0, 0.51)
 	pc.Add(pc.label)
