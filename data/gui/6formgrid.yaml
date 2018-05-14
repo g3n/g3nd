@@ -1,0 +1,180 @@
+#
+# Form using grid layout
+#
+panel1:
+  type: panel
+  name: panel1
+  position: 0 0
+  borders: 1
+  width: 400
+  height: 100
+  layout:
+    type: vbox
+    spacing: 10
+    autoheight: true
+  items:
+  # Form title row
+  - type: panel
+    borders: 0 0 1 0
+    paddings: 4 
+    margins: 0 0 4 0
+    layoutparams:
+      alignh: width
+    layout:
+      type: hbox
+      alignh: center
+      autoheight: true
+    items:
+    - type: label
+      text: Form Title
+  # Form inner panel (with grid layout)
+  - type: panel
+    borders: 0
+    height: 200
+    layoutparams:
+      alignh: width
+      alignv: height
+    layout:
+      type: grid
+      cols: 10
+      alignh: left
+      alignv: center
+      expandh: true
+      expandv: true
+    items:
+    # Grid row
+    - type: imageLabel
+      text: "Enter first name:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+        colspan: 0
+    - type: edit
+      width: 200
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+    # Grid row
+    - type: imageLabel
+      text: "Enter second name:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+        colspan: 0
+    - type: edit
+      width: 200
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+    # Grid row
+    - type: imageLabel
+      text: "Check any box:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+        colspan: 0
+    - type: checkbox
+      text: checkbox1
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 0
+    - type: checkbox
+      text: checkbox2
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+    # Grid row
+    - type: imageLabel
+      text: "Select one radio button:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+        colspan: 0
+    - type: radiobutton
+      text: radio1
+      group: group1
+      layoutparams:
+        alignh: left
+        alignv: center
+    - type: radiobutton
+      text: radio2
+      group: group1
+      layoutparams:
+        alignh: left
+        alignv: center
+    - type: radiobutton
+      text: radio3
+      group: group1
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+    # Grid Row
+    - type: imagelabel
+      text: "Select from list:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+    - type: dropdown
+      width: 100
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+      items:
+      - type: ImageLabel
+        text: item1
+      - type: ImageLabel
+        text: item2
+      - type: ImageLabel
+        text: item3
+      - type: ImageLabel
+        text: item4
+    # Grid row
+    - type: imagelabel
+      text: "Sets the level:"
+      paddings: 4
+      layoutparams:
+        alignh: right
+        alignv: center
+    - type: hslider
+      text: level
+      width: 200
+      value: 0.5
+      layoutparams:
+        alignh: left
+        alignv: center
+        colspan: 100
+    # VBox last row: buttons
+  - type: panel
+    name: row5
+    paddings: 10
+    layoutparams:
+      alignh: width
+    layout:
+      type: hbox
+      alignh: right
+      spacing: 20
+      autoheight: true
+    items:
+    - type: button
+      text: OK
+      width: 80
+    - type: button
+      text: Apply
+      width: 80
+    - type: button
+      text: Cancel
+      width: 80
+
+
+

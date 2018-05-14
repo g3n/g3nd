@@ -1,0 +1,60 @@
+#
+# Dock layout
+#
+type: panel
+name: panel1
+position: 0 0
+borders: 1
+paddings: 0
+width: 600
+height: 500
+layout:
+    type: dock
+items:
+- type: imagelabel
+  text: top1
+  color: turquoise
+  layoutparams:
+      edge: top
+- type: imagelabel
+  text: top2
+  color: purple
+  layoutparams:
+      edge: top
+- type: imagelabel
+  text: right1
+  width: 60
+  color: green
+  layoutparams:
+      edge: right
+- type: imagelabel
+  text: right2
+  width: 60
+  color: red
+  layoutparams:
+      edge: right
+- type: imagelabel
+  text: bottom1
+  color: blue
+  layoutparams:
+      edge: bottom
+- type: imagelabel
+  text: bottom2
+  color: gray
+  layoutparams:
+      edge: bottom
+- type: imagelabel
+  text: left1
+  width: 60
+  color: red
+  layoutparams:
+      edge: left
+- type: imagelabel
+  text: left2
+  borders: 1
+  width: 60
+  layoutparams:
+      edge: left
+
+
+

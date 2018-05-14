@@ -1,0 +1,389 @@
+#
+# Label
+#
+label1:
+    type: Label
+    text: label1
+
+label2:
+    type: Label
+    text: label2
+    position: 50 0
+    margins: 2
+    borders: 3
+    bordercolor: red
+    paddings: 4
+
+label3:
+    type: Label
+    text: label3
+    position: 120 0
+    margins: 2
+    borders: 4
+    bordercolor: green
+    paddings: 4
+    bgcolor: white
+    fontcolor: blue
+    fontsize: 20
+
+label4:
+    type: Label
+    text: |-
+        label4: first line
+        label4: second line
+        label4: last line
+    position: 200 0
+    margins: 2
+    borders: 1 4 1 4
+    bordercolor: yellow
+    paddings: 0 10 0 10
+    bgcolor: ivory 0.9
+    fontcolor: purple
+    fontsize: 18
+    fontdpi: 64
+    linespacing: 1.2
+
+label5:
+    type: Label
+    icon: ArrowBack ArrowDownward ArrowDropDown e5d8
+    position: 370 0
+    borders: 1
+    fontsize: 22
+ 
+imglabel1:
+    type: ImageLabel
+    text: imagelabel1
+    height: 60
+    position: 480 0
+    borders: 2
+    bordercolor: white
+    paddings: 0 10 0 10
+    icon: ArrowDownward ArrowDropDown
+
+#
+# Button
+#
+button1:
+    type: Button
+    text: button1
+    position: 0 80
+
+button2:
+    type: Button
+    text: button2
+    position: 70 80
+    icon: ArrowDownward
+
+button3:
+    type: Button
+    text: button3
+    position: 160 80
+    imagefile: ok.png
+
+button4:
+    type: Button
+    text: button4
+    position: 240 80
+    icon: ArrowDownward ArrowDropDown
+    width: 100
+    height: 40
+#
+# Edit
+#
+edit1:
+    type: Edit
+    width: 100
+    position: 0 130
+
+edit2:
+    type: Edit
+    width: 120
+    position: 120 130
+    placeholder: place holder
+
+edit3:
+    type: Edit
+    width: 140
+    position: 260 130
+    placeholder: place holder
+    enabled: false
+    text: initial text
+
+#
+# CheckBox / RadioButton
+#
+checkbox1:
+    type: CheckBox
+    text: checkbox1
+    position: 0 160
+        
+checkbox2:
+    type: CheckBox
+    text: checkbox2
+    position: 100 160
+
+radiobutton1:
+    type: RadioButton
+    text: radiobutton1
+    position: 200 160
+
+radiobutton2:
+    type: RadioButton
+    text: radiobutton2
+    position: 310 160
+
+radiobuttong1:
+    type: RadioButton
+    text: radiobuttong1
+    position: 420 160
+    group: group1
+
+radiobuttong2:
+    type: RadioButton
+    text: radiobuttong2
+    position: 530 160
+    group: group1
+
+radiobuttong3:
+    type: RadioButton
+    text: radiobuttong2
+    position: 640 160
+    group: group1
+
+#
+# List
+#
+vlist1:
+    type: VList
+    width: 100
+    height: 80
+    position: 0 200
+    items:
+    - type: Label
+      text: item1
+    - type: Label
+      text: item2
+    - type: Label
+      text: item3
+    - type: Label
+      text: item4
+
+hlist1:
+    type: HList
+    width: 200
+    height: 40
+    position: 120 200
+    items:
+    - type: Label
+      text: item1
+    - type: Label
+      text: item2
+    - type: Label
+      text: item3
+    - type: Label
+      text: item4
+    - type: Label
+      text: item5
+    - type: Label
+      text: item6
+#
+# DropDown
+#
+dropdown1:
+    type: DropDown
+    width: 140
+    position: 350 200
+    imagelabel:
+        text: dropdown1
+        icon: Computer 
+    items:
+        - type: ImageLabel
+          text: item1
+          icon: Call
+        - type: ImageLabel
+          text: item2
+          icon: Computer
+        - type: ImageLabel
+          text: item3
+          icon: Contacts
+#
+# Menu
+#
+menu1: &menu1
+    type: Menu
+    text: menu1
+    position: 0 290
+    items:
+    - text: item1
+    - text: item2
+    - text: item3
+    - text: item4
+          
+menu2: &menu2
+    type: Menu
+    text: menu2
+    position: 70 290
+    items:
+    - text: option1
+      icon: ArrowDownward
+      shortcut: Ctrl+A
+    - text: option2
+      icon: CheckBox
+      shortcut: Alt+B
+    - type: Separator
+    - text: option3
+      icon: Computer
+      shortcut: Ctrl+Alt+B
+    - text: option4
+      icon: Contacts
+      shortcut: Shift+Ctrl+Alt+B
+    - type: menu
+      text: sub menu
+      items:
+      - text: sub menu option1
+      - text: sub menu option2
+      - type: separator
+      - text: sub menu option3
+
+menubar1:
+    type: menubar
+    position: 310, 290
+    items:
+    - *menu1
+    - *menu2
+    - type: Separator
+    - text: option1
+    - type: Separator
+    - text: option2
+    - *menu1
+#
+# Slider
+#
+slider1:
+    type: HSlider
+    position: 0, 430
+    width: 100
+    visible: true
+    enabled: false
+    height: 22
+    text: slider1
+    value: 0.5
+    scalefactor: 2
+
+slider2:
+    type: VSlider
+    text: slider2
+    position: 0, 460
+    width: 100
+    height: 100
+    value: 0.5
+    scalefactor: 1
+#
+# Splitter
+#
+splitter1:
+    type: HSplitter
+    name: splitter1
+    borders: 1
+    position: 110, 460
+    width: 200
+    height: 100
+    panel0:
+        borders: 2
+        bordercolor: white
+        color: red
+    panel1:
+        borders: 2
+        bordercolor: yellow
+        color: blue
+
+splitter2:
+    type: VSplitter
+    name: splitter2
+    borders: 1
+    position: 340, 460
+    width: 200
+    height: 100
+    panel0:
+      color: green
+      items:
+      - type: label
+        text: panel0
+    panel1:
+      color: purple
+      items:
+      - type: label
+        text: panel1
+#
+# Tree
+#
+tree1:
+    type: Tree
+    name: tree1
+    position: 0 590
+    width: 200
+    height: 180
+    items:
+    - type: Label
+      text: label1
+    - type: Node
+      text: node1
+      items:
+      - type: Label
+        text: label2
+      - type: Label
+        text: label3
+      - type: Node
+        text: node1/2
+      - type: CheckBox
+        text: checkbox1
+      - type: Node
+        text: node1/3
+        items:
+        - type: Label
+          text: label4
+    - type: Node
+      text: node2
+      items:
+      - type: Label
+        text: label4
+      - type: RadioButton
+        text: radiobutton1
+#
+# TabBar
+#
+tabbar1:
+    type: TabBar
+    name: tabbar1
+    position: 210 590
+    width: 400
+    height: 100
+    items:
+    - text: tab1
+      name: tab1
+      icon: ArrowBack 
+      content:
+        type: imagelabel
+        text: Tab1
+    - text: tab2
+      name: tab2
+      icon: Check
+      content:
+        type: imagelabel
+        text: Tab2
+    - text: tab3
+      name: tab3
+      imagefile: call-start.png
+      content:
+        type: button
+        text: button1
+        margins: 10
+    - text: tab4
+      name: tab4
+      icon: Contacts
+      pinned: true
+      content:
+        type: imagelabel
+        text: Pinned
+
+

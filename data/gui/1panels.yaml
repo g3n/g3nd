@@ -1,0 +1,100 @@
+#
+# Panels
+#
+Panel1: &panel1
+    type: Panel
+    name: panel1
+    position: 0 0
+    width:  100
+    height: 50
+    margins: 2 2 2 2
+    borders: 2 4 2 4
+    bordercolor: 0 1 1 0.3
+    paddings:  2 2 2 2
+    color:  red
+
+Panel2: &panel2
+    type: Panel
+    name: panel2
+    position: 120 0
+    width:  48
+    height: 50
+    margins: 2
+    borders: 4
+    bordercolor: purple
+    paddings: 0 0 0 0
+    color: green
+
+panel3:
+    type: Panel
+    name: panel3
+    position: 200,0
+    width:  200
+    height: 100
+    margins: 2
+    borders: 4
+    bordercolor: purple
+    paddings: 0,0,0,0
+    color: blue
+    items:
+    - *panel1
+    - type: panel
+      name: panel3.1
+      width: 10
+      height: 10
+      borders: 4
+      color: yellow
+
+panel4:
+    type: ImagePanel
+    name: panel4
+    position: 0 120
+    imagefile: "tiger1.jpg"
+    borders: 2
+    bordercolor: yellow
+    paddings: 2,2,2,2
+
+panel5:
+    type: ImagePanel
+    name: panel5
+    position: 240 120
+    imagefile: "uvgrid.jpg"
+    aspectwidth: 256
+    borders: 4
+    bordercolor: white
+    items:
+    - type: ImagePanel
+      name: imagepanel1
+      position: 30, 30
+      imagefile: "tiger1.jpg"
+      aspectwidth: 64
+    - type: ImagePanel
+      name: imagepanel2
+      position: 100, 30
+      imagefile: "tiger1.jpg"
+      aspectwidth: 64
+    - type: Panel
+      name: panel6
+      position: 30, 100
+      width: 200
+      height: 140
+      borders: 4
+      bordercolor: red
+      color: green
+      items:
+      - type: ImagePanel
+        name: imagepanel3
+        position: 30, 30
+        imagefile: "tiger1.jpg"
+        aspectwidth: 64
+      - type: Panel
+        name: panel7
+        width: 64
+        height: 64
+        position: 100, 30
+        borders: 8
+        bordercolor: blue
+        color: white
+
+
+

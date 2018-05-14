@@ -1,0 +1,241 @@
+#
+# Window
+#
+type: window
+width: 600
+height: 400
+title: Window Title
+resizeborders: top right bottom
+layout:
+  type: dock
+items:
+
+# Application header
+- type: panel
+  borders: 0
+  paddings: 6
+  layoutparams:
+    edge: top
+  layout:
+    type: hbox
+    spacing: 2
+    autoheight: true
+  items:
+  # app icon
+  - type: imagelabel
+    icon: Settings
+  # app name
+  - type: imagelabel
+    text: App name
+  # spacer
+  - type: panel
+    layoutparams:
+      expand: 1
+  # app version label
+  - type: imagelabel
+    text: "Version:"
+  # app version label value
+  - type: imagelabel
+    text: "0.0.1"
+
+# Menubar top panel
+- type: MenuBar
+  layoutparams:
+    edge: top
+  items:
+  - type: Menu
+    text: File
+    items:
+    - text: item1
+    - text: item2
+    - text: item3
+    - text: item4
+  - type: Menu
+    text: Edit
+    items:
+    - text: option1
+      icon: ArrowDownward
+      shortcut: Ctrl+A
+    - text: option2
+      icon: CheckBox
+      shortcut: Alt+B
+    - type: Separator
+    - text: option3
+      icon: Computer
+      shortcut: Ctrl+Alt+B
+    - text: option4
+      icon: Contacts
+      shortcut: Shift+Ctrl+Alt+B
+    - type: Menu
+      text: sub menu
+      items:
+      - text: sub menu option1
+      - text: sub menu option2
+      - type: separator
+      - text: sub menu option3
+  - type: Menu
+    text: View
+    items:
+    - text: Toolbar
+    - text: Status bar
+  - type: Menu
+    text: Help
+    items:
+    - text: help topic 1
+    - text: help topic 2
+
+# Toolbar
+- type: panel
+  borders: 0 0 1 0
+  paddings: 4
+  layoutparams:
+    edge: top
+  layout:
+    type: hbox
+    spacing: 8
+    alignv: center
+    autoheight: true
+  items:
+  - type: button
+    icon: Done 
+  - type: button
+    icon: Build 
+  - type: button
+    icon: Cached 
+  - type: dropdown
+    layoutparams:
+      alignv: center
+    width: 100
+    items:
+    - type: ImageLabel
+      text: item1
+    - type: ImageLabel
+      text: item2
+    - type: ImageLabel
+      text: item3
+    - type: ImageLabel
+      text: item4
+  - type: checkbox
+    text: check1
+    layoutparams:
+      alignv: center
+  - type: checkbox
+    text: check2
+    layoutparams:
+      alignv: center
+  - type: hslider
+    width: 80
+    text: Volume
+    layoutparams:
+      alignv: center
+
+# Center panel
+- type: hsplitter
+  split: 0.3
+  layoutparams:
+    edge: center
+  # Left panel
+  panel0:
+    layout:
+      type: vbox
+    items:
+    - type: tree
+      layoutparams:
+        alignh: width
+        expand: 1
+      items:
+      - type: Node
+        text: node1
+        items:
+        - type:
+          text: node1/node1
+        - type:
+          text: node1/node2
+        - type:
+          text: node1/node3
+      - type: Node
+        text: node2
+        items:
+        - type:
+          text: node2/node1
+        - type:
+          text: node2/node2
+        - type:
+          text: node2/node3
+      - type: Node
+        text: node3
+      - type: Node
+        text: node4
+      - type: Node
+        text: node5
+      - type: Node
+        text: node6
+  panel1:
+    layout:
+      type: vbox
+    items:
+    - type: table
+      layoutparams:
+        alignh: width
+        expand: 1
+      showheader: true
+      columns:
+      - id: "1"
+        header: col1
+        width: 100
+        minwidth: 32
+        resize: true
+      - id: "2"
+        header: col2
+        width: 100
+        minwidth: 32
+        resize: true
+      - id: "3"
+        header: col3
+        width: 100
+        minwidth: 32
+        resize: true
+        hidden: true
+      - id: "4"
+        header: col4
+        width: 100
+        minwidth: 32
+        resize: true
+        expand: 1
+    - type: chart
+      color: white
+      paddings: 8
+      layoutparams:
+        alignh: width
+        expand: 3
+      title: Chart Title
+      scalex:
+        fontsize: 12
+        margin: 20
+        format: "%v"
+        lines: 6
+        color: blue
+      scaley:
+        fontsize: 12
+        margin: 40
+        format: "%v"
+        lines: 5
+        color: blue
+        rangemin: -15
+        rangemax: -20
+
+# Status bar
+- type: panel
+  paddings: 2
+  borders: 1 0 0 0
+  layoutparams:
+    edge: bottom
+  layout:
+    type: hbox
+    spacing: 2
+    alignv: center
+    autoheight: true
+  items:
+  - type: imagelabel
+    text: status bar
+

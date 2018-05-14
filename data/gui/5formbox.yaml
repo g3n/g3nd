@@ -1,0 +1,314 @@
+#
+# Form test
+#
+consts_:
+    expleft: &expleft 34
+    expright: &expright 50 
+
+form1:
+    type: panel
+    borders: 1
+    paddings: 0
+    width: 400
+    layout:
+        type: vbox
+        spacing: 10
+        autoheight: true
+    items:
+    # Form title row
+    - type: panel
+      borders: 0 0 1 0
+      paddings: 4 
+      margins: 0 0 4 0
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: center
+          autoheight: true
+      items:
+      - type: label
+        text: Form Title
+    # Row container
+    - type: panel
+      name: row1
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Enter first name:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            alignh: left
+            autoheight: true
+        items:
+        - type: edit
+          width: 200
+          placeholder: enter text
+    # Row container
+    - type: panel
+      name: row1
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Enter second name:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            alignh: left
+            autoheight: true
+        items:
+        - type: edit
+          width: 200
+          placeholder: enter more text
+    # Row container
+    - type: panel
+      name: row3
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Check any checkbox:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            alignh: left
+            spacing: 10
+            autoheight: true
+        items:
+        - type: checkbox
+          text: check1
+        - type: checkbox
+          text: check2
+          checked: true
+    # Row container
+    - type: panel
+      name: row4
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Select one radio button:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            spacing: 10
+            alignh: left
+            autoheight: true
+        items:
+        - type: radiobutton
+          text: radio1
+          checked: true
+          group: group1
+        - type: radiobutton
+          text: radio2
+          group: group1
+        - type: radiobutton
+          text: radio3
+          group: group1
+    # Row container
+    - type: panel
+      name: row5
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Select from list:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            alignh: left
+            autoheight: true
+        items:
+        - type: dropdown
+          width: 100
+          items:
+          - type: ImageLabel
+            text: item1
+          - type: ImageLabel
+            text: item2
+          - type: ImageLabel
+            text: item3
+          - type: ImageLabel
+            text: item4
+    # Row container
+    - type: panel
+      name: row5
+      borders: 0
+      paddings: 2
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: width
+          spacing: 0
+          autoheight: true
+      items:
+      # Left field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expleft
+        layout:
+            type: hbox
+            alignh: right
+            autoheight: true
+        items:
+        - type: imagelabel
+          text: "Sets the level:"
+          margins: 0 10 0 0 
+      # Right field container
+      - type: panel
+        borders: 0
+        layoutparams:
+            expand: *expright
+        layout:
+            type: hbox
+            alignh: left
+            autoheight: true
+        items:
+        - type: hslider
+          text: level
+          width: 200
+          value: 0.5
+    # Force last row to be in the bottom
+    - type: panel
+      name: filler
+      layoutparams:
+          expand: 1
+    # Last row container: buttons
+    - type: panel
+      name: row5
+      paddings: 10
+      layoutparams:
+          alignh: width
+      layout:
+          type: hbox
+          alignh: right
+          spacing: 20
+          autoheight: true
+      items:
+      - type: button
+        text: OK
+        width: 80
+      - type: button
+        text: Apply
+        width: 80
+      - type: button
+        text: Cancel
+        width: 80
+
+
+              
