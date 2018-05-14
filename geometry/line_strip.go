@@ -33,8 +33,8 @@ func (t *LineStrip) Initialize(a *app.App) {
 		0.0, -0.5, 0.0, 1.0, 0.0, 0.0,
 	)
 	geom1.AddVBO(gls.NewVBO().
-		AddAttribEx("VertexPosition", 3, 6*gls.FloatSize, 0).
-		AddAttribEx("VertexColor", 3, 6*gls.FloatSize, uint32(3*gls.FloatSize)).
+		AddAttrib("VertexPosition", 3).
+		AddAttrib("VertexColor", 3).
 		SetBuffer(buffer),
 	)
 

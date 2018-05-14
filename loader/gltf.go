@@ -15,6 +15,7 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/g3nd/demos"
 	"github.com/g3n/g3nd/app"
+	"github.com/g3n/g3nd/util"
 )
 
 func init() {
@@ -23,9 +24,27 @@ func init() {
 
 type GltfLoader struct {
 	prevLoaded core.INode
+	selFile    *util.FileSelectButton
 }
 
 func (t *GltfLoader) Initialize(a *app.App) {
+
+	// Creates file selection button
+	t.selFile = util.NewFileSelectButton(a.DirData()+"/gltf", "Select File", 400, 300)
+	t.selFile.SetPosition(10, 10)
+	t.selFile.FS.SetFileFilters("*.gltf", "*.glb")
+	a.GuiPanel().Add(t.selFile)
+	t.selFile.Subscribe("OnSelect", func(evname string, ev interface{}) {
+		fpath := ev.(string)
+		err := t.loadScene(a, fpath)
+		if err == nil {
+			t.selFile.Label.SetText("File: " + filepath.Base(fpath))
+			t.selFile.SetError("")
+		} else {
+			t.selFile.Label.SetText("Select File")
+			t.selFile.SetError(err.Error())
+		}
+	})
 
 	// Adds white directional front light
 	l1 := light.NewDirectional(math32.NewColor("white"), 1.0)
