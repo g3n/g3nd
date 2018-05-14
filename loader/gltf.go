@@ -1,4 +1,4 @@
-package main
+package loader
 
 import (
 	"fmt"
@@ -13,93 +13,95 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/gltf"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/demos"
+	"github.com/g3n/g3nd/app"
 )
 
 func init() {
-	TestMap["loader.gltf"] = &GltfLoader{}
+	demos.Map["loader.gltf"] = &GltfLoader{}
 }
 
 type GltfLoader struct {
 	prevLoaded core.INode
 }
 
-func (t *GltfLoader) Initialize(ctx *Context) {
+func (t *GltfLoader) Initialize(a *app.App) {
 
 	// Adds white directional front light
-	l1 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l1 := light.NewDirectional(math32.NewColor("white"), 1.0)
 	l1.SetPosition(0, 0, 10)
-	ctx.Scene.Add(l1)
+	a.Scene().Add(l1)
 
 	// Adds white directional top light
-	l2 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l2 := light.NewDirectional(math32.NewColor("white"), 1.0)
 	l2.SetPosition(0, 10, 0)
-	ctx.Scene.Add(l2)
+	a.Scene().Add(l2)
 
 	// Adds white directional right light
-	l3 := light.NewDirectional(math32.NewColor(1, 1, 1), 1.0)
+	l3 := light.NewDirectional(math32.NewColor("white"), 1.0)
 	l3.SetPosition(10, 0, 0)
-	ctx.Scene.Add(l3)
+	a.Scene().Add(l3)
 
 	// Adds axis helper
 	axis := graphic.NewAxisHelper(2)
-	ctx.Scene.Add(axis)
+	a.Scene().Add(axis)
 
 	// Label for error message
 	errLabel := gui.NewLabel("")
 	errLabel.SetFontSize(18)
-	ctx.Gui.Add(errLabel)
+	a.Gui().Add(errLabel)
 
-	// Creates file selector
-	fs := NewFileSelect(400, 300)
-	fs.SetVisible(false)
-	err := fs.SetFileFilters("*.gltf", "*.glb")
-	if err != nil {
-		panic(err)
-	}
-	// Loads model when OK is clicked
-	fs.Subscribe("OnOK", func(evname string, ev interface{}) {
-		fpath := fs.Selected()
-		if fpath == "" {
-			fs.SetVisible(false)
-			return
-		}
-		err := t.loadScene(ctx, fpath)
-		if err != nil {
-			errLabel.SetText("ERROR: " + err.Error())
-		} else {
-			errLabel.SetText("")
-		}
-		fs.SetVisible(false)
-	})
-	// Hides file select Cancel is clicked
-	fs.Subscribe("OnCancel", func(evname string, ev interface{}) {
-		fs.SetVisible(false)
-	})
-	ctx.Gui.Add(fs)
-
-	// Adds button to open file selector
-	b := gui.NewButton("Select File")
-	b.SetPosition(10, 10)
-	b.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-		fs.SetPath(ctx.DirData + "/gltf")
-		fs.SetVisible(true)
-	})
-	fs.SetPosition(b.Width()+20, b.Position().Y)
-	ctx.Gui.Add(b)
+	//// Creates file selector
+	//fs := NewFileSelect(400, 300)
+	//fs.SetVisible(false)
+	//err := fs.SetFileFilters("*.gltf", "*.glb")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//// Loads model when OK is clicked
+	//fs.Subscribe("OnOK", func(evname string, ev interface{}) {
+	//	fpath := fs.Selected()
+	//	if fpath == "" {
+	//		fs.SetVisible(false)
+	//		return
+	//	}
+	//	err := t.loadScene(a, fpath)
+	//	if err != nil {
+	//		errLabel.SetText("ERROR: " + err.Error())
+	//	} else {
+	//		errLabel.SetText("")
+	//	}
+	//	fs.SetVisible(false)
+	//})
+	//// Hides file select Cancel is clicked
+	//fs.Subscribe("OnCancel", func(evname string, ev interface{}) {
+	//	fs.SetVisible(false)
+	//})
+	//a.Gui().Add(fs)
+	//
+	//// Adds button to open file selector
+	//b := gui.NewButton("Select File")
+	//b.SetPosition(10, 10)
+	//b.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
+	//	fs.SetPath(ctx.DirData + "/gltf")
+	//	fs.SetVisible(true)
+	//})
+	//fs.SetPosition(b.Width()+20, b.Position().Y)
+	//a.Gui().Add(b)
 
 	// Sets error label position
-	errLabel.SetPosition(b.Width()+20, b.Position().Y)
+	//errLabel.SetPosition(b.Width()+20, b.Position().Y)
 }
 
-func (t *GltfLoader) Render(ctx *Context) {
+func (t *GltfLoader) Render(a *app.App) {
 
 }
 
-func (t *GltfLoader) loadScene(ctx *Context, fpath string) error {
+func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
-		ctx.Scene.Remove(t.prevLoaded)
+		a.Scene().Remove(t.prevLoaded)
 		t.prevLoaded.Dispose()
 		t.prevLoaded = nil
 	}
@@ -138,7 +140,7 @@ func (t *GltfLoader) loadScene(ctx *Context, fpath string) error {
 	//normals := graphic.NewNormalsHelper(box.(graphic.IGraphic), 0.5, &math32.Color{0, 0, 1}, 1)
 	//ctx.Scene.Add(normals)
 
-	ctx.Scene.Add(n)
+	a.Scene().Add(n)
 	t.prevLoaded = n
 	return nil
 }
