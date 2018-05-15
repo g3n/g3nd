@@ -20,7 +20,9 @@ import (
 
 func main() {
 
+	// Creates application and panics if error
 	a := app.Create(demos.Map)
+
 	if a != nil {
 		err := a.Run()
 		if err != nil {
