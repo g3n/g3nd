@@ -8,7 +8,6 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/text"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
@@ -191,10 +190,9 @@ func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCo
 	font.SetPointSize(48)
 	font.SetColor(&math32.Color4{0,0,0,1})
 	width, height := font.MeasureText(filename)
-	canvas := text.NewCanvas(width, height, &math32.Color4{0, 0, 0, 0})
 	aspect := float32(width) / float32(height)
-	canvas.DrawText(0, 0, filename, font)
-	tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
+	img := font.DrawText(filename)
+	tex := texture.NewTexture2DFromRGBA(img)
 	plane_geom := geometry.NewPlane(2.0, 2.0/aspect, 1, 1)
 	plane_mat := material.NewStandard(math32.NewColor("white"))
 	plane_mat.AddTexture(tex)
