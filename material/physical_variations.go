@@ -40,7 +40,7 @@ func (t *PhysicalVariations) Initialize(a *app.App) {
 	a.AmbLight().SetIntensity(0.1)
 
 	// Add directional red light from side
-	t.d1 = light.NewDirectional(&math32.Color{1, 0, 0}, 0.8)
+	t.d1 = light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
 	t.d1.SetPosition(1, 0, 0)
 	a.Scene().Add(t.d1)
 
