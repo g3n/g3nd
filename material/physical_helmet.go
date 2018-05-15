@@ -14,7 +14,7 @@ import (
 	"github.com/g3n/engine/light"
 )
 
-type Physical struct {
+type PhysicalHelmet struct {
 	p1    *util.PointLightMesh
 	p2    *util.PointLightMesh
 	s1    *util.SpotLightMesh
@@ -23,10 +23,10 @@ type Physical struct {
 }
 
 func init() {
-	demos.Map["material.physical"] = &Physical{}
+	demos.Map["material.physical_helmet"] = &PhysicalHelmet{}
 }
 
-func (t *Physical) Initialize(a *app.App) {
+func (t *PhysicalHelmet) Initialize(a *app.App) {
 
 	// Add directional red light from right
 	l1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
@@ -84,6 +84,7 @@ func (t *Physical) Initialize(a *app.App) {
 	}
 
 	pbrMat := material.NewPhysical()
+	pbrMat.SetEmissiveFactor(math32.NewColor("white"))
 	pbrMat.SetBaseColorMap(newTexture(a.DirData()+"/obj/DamagedHelmet_albedo.jpg"))
 	pbrMat.SetMetallicRoughnessMap(newTexture(a.DirData()+"/obj/DamagedHelmet_metalRoughness.jpg"))
 	pbrMat.SetNormalMap(newTexture(a.DirData()+"/obj/DamagedHelmet_normal.jpg"))
@@ -95,7 +96,7 @@ func (t *Physical) Initialize(a *app.App) {
 
 }
 
-func (t *Physical) Render(a *app.App) {
+func (t *PhysicalHelmet) Render(a *app.App) {
 
 	t.p1.SetPosition(float32(math.Cos(t.count)), float32(math.Sin(t.count)), 0)
 	t.p2.SetPosition(0, 1.5*float32(math.Sin(t.count)), 1.5*float32(math.Cos(t.count)))

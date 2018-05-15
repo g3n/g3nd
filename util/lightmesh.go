@@ -28,7 +28,7 @@ func NewPointLightMesh(color *math32.Color) *PointLightMesh {
 	l.Mesh = graphic.NewMesh(geom, mat)
 	l.Mesh.SetVisible(true)
 
-	l.Light = light.NewPoint(color, 2.0)
+	l.Light = light.NewPoint(color, 1.0)
 	l.Light.SetPosition(0, 0, 0)
 	l.Light.SetLinearDecay(1)
 	l.Light.SetQuadraticDecay(1)
