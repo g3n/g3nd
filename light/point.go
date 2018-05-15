@@ -4,18 +4,18 @@ import (
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
-	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
 
 	"math"
+	"github.com/g3n/g3nd/util"
 )
 
 type PointLight struct {
-	vl    *LightMesh
-	hl    *LightMesh
+	vl    *util.PointLightMesh
+	hl    *util.PointLightMesh
 	count float64
 }
 
@@ -82,12 +82,12 @@ func (t *PointLight) Initialize(a *app.App) {
 	a.Scene().Add(axis)
 
 	// Creates vertical point light
-	t.vl = NewLightMesh(&math32.Color{1, 1, 1})
-	t.vl.AddScene(a)
+	t.vl = util.NewPointLightMesh(&math32.Color{1, 1, 1})
+	a.Scene().Add(t.vl.Mesh)
 
 	// Creates horizontal point light
-	t.hl = NewLightMesh(&math32.Color{1, 1, 1})
-	t.hl.AddScene(a)
+	t.hl = util.NewPointLightMesh(&math32.Color{1, 1, 1})
+	a.Scene().Add(t.hl.Mesh)
 
 	// Add controls
 	if a.ControlFolder() == nil {
@@ -106,44 +106,7 @@ func (t *PointLight) Initialize(a *app.App) {
 
 func (t *PointLight) Render(a *app.App) {
 
-	t.vl.Position(0, 1.5*float32(math.Sin(t.count)), 0)
-	t.hl.Position(1.5*float32(math.Sin(t.count)), 1, 0)
+	t.vl.SetPosition(0, 1.5*float32(math.Sin(t.count)), 0)
+	t.hl.SetPosition(1.5*float32(math.Sin(t.count)), 1, 0)
 	t.count += 0.02
-}
-
-type LightMesh struct {
-	Mesh  *graphic.Mesh
-	Light *light.Point
-}
-
-func NewLightMesh(color *math32.Color) *LightMesh {
-
-	l := new(LightMesh)
-
-	geom := geometry.NewSphere(0.05, 32, 32, 0, math.Pi*2, 0, math.Pi)
-	mat := material.NewStandard(color)
-	mat.SetUseLights(0)
-	mat.SetEmissiveColor(color)
-	l.Mesh = graphic.NewMesh(geom, mat)
-	l.Mesh.SetVisible(true)
-
-	l.Light = light.NewPoint(color, 2.0)
-	l.Light.SetPosition(0, 0, 0)
-	l.Light.SetLinearDecay(1)
-	l.Light.SetQuadraticDecay(1)
-	l.Light.SetVisible(true)
-
-	l.Mesh.Add(l.Light)
-
-	return l
-}
-
-func (l *LightMesh) AddScene(a *app.App) {
-
-	a.Scene().Add(l.Mesh)
-}
-
-func (l *LightMesh) Position(x, y, z float32) {
-
-	l.Mesh.SetPosition(x, y, z)
 }
