@@ -29,7 +29,7 @@ func (t *Box) Initialize(a *app.App) {
 	a.Scene().Add(t.box)
 
 	// Add normals helper
-	t.normals = graphic.NewNormalsHelper(t.box, 0.5, &math32.Color{0, 0, 1}, 1)
+	t.normals = graphic.NewNormalsHelper(t.box, 0.5, &math32.Color{0, 0, 1})
 	a.Scene().Add(t.normals)
 
 	// Adds directional light

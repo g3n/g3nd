@@ -62,7 +62,7 @@ func (t *Sphere) Initialize(a *app.App) {
 	a.Scene().Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.sphere1, 0.5, &math32.Color{0, 1, 0}, 1)
+	t.normals = graphic.NewNormalsHelper(t.sphere1, 0.5, &math32.Color{0, 1, 0})
 	a.Scene().Add(t.normals)
 }
 
