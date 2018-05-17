@@ -9,6 +9,7 @@ import (
 	_ "github.com/g3n/g3nd/loader"
 	_ "github.com/g3n/g3nd/material"
 	_ "github.com/g3n/g3nd/other"
+	_ "github.com/g3n/g3nd/physics"
 	_ "github.com/g3n/g3nd/shader"
 	_ "github.com/g3n/g3nd/skybox"
 	_ "github.com/g3n/g3nd/tests"
