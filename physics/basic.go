@@ -5,12 +5,12 @@ import (
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/demos"
 	"github.com/g3n/engine/window"
-	"github.com/g3n/engine/physics"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/geometry"
 	"math"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/light"
+	"github.com/g3n/engine/physics"
 )
 
 func init() {
