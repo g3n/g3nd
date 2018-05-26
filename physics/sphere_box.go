@@ -15,17 +15,17 @@ import (
 )
 
 func init() {
-	demos.Map["physics.basic"] = &PhysicsBasic{}
+	demos.Map["physics.sphere_box"] = &PhysicsSphereBox{}
 }
 
-type PhysicsBasic struct {
+type PhysicsSphereBox struct {
 	sim *physics.Simulation
 	rb  *object.Body
 	rb2 *object.Body
 	rb3 *object.Body
 }
 
-func (t *PhysicsBasic) Initialize(a *app.App) {
+func (t *PhysicsSphereBox) Initialize(a *app.App) {
 
 	// Subscribe to key events
 	a.Window().Subscribe(window.OnKeyRepeat, t.onKey)
@@ -44,42 +44,38 @@ func (t *PhysicsBasic) Initialize(a *app.App) {
 	a.Scene().Add(l2)
 
 	t.sim = physics.NewSimulation(a.Scene())
-	//gravity := physics.NewConstantForceField(&math32.Vector3{0,-9.8,0})
-	// //gravity := physics.NewAttractorForceField(&math32.Vector3{0.1,1,0}, 1)
-	//t.sim.AddForceField(gravity)
 
-	// Creates sphere 1
 	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	cubeGeom := geometry.NewCube(0.2)
 	mat := material.NewPhong(&math32.Color{1, 1, 1})
-	mat.SetWireframe(true)
+	mat.SetTransparent(true)
+	mat.SetOpacity(0.5)
 
-	sphere1 := graphic.NewMesh(sphereGeom, mat)
-	a.Scene().Add(sphere1)
-	t.rb = object.NewBody(sphere1)
-	t.sim.AddBody(t.rb, "Sphere1")
-
-	sphere2 := graphic.NewMesh(sphereGeom, mat)
-	sphere2.SetPosition(2, 0, 0)
-	a.Scene().Add(sphere2)
-	t.rb2 = object.NewBody(sphere2)
-	t.sim.AddBody(t.rb2, "Sphere2")
+	sphere := graphic.NewMesh(sphereGeom, mat)
+	sphere.SetPosition(2, 0, 0)
+	a.Scene().Add(sphere)
+	t.rb2 = object.NewBody(sphere)
+	//t.rb2.SetLinearDamping(0)
+	t.sim.AddBody(t.rb2, "Sphere")
 	t.rb2.SetVelocity(math32.NewVector3(-0.5, 0, 0))
-	t.rb2.SetAngularVelocity(math32.NewVector3(0, 0, 0))
 
-	//cubeGeom := geometry.NewCube(0.2)
-	//cube1 := graphic.NewMesh(cubeGeom, mat)
-	//a.Scene().Add(cube1)
-	//t.rb3 = object.NewBody(cube1)
-	//t.sim.AddBody(t.rb3, "Cube1")
+	cube := graphic.NewMesh(cubeGeom, mat)
+	cube.SetPosition(0, 0, 0)
+	cube.SetRotation(0, math32.Pi*0.25, math32.Pi*0.25)
+	a.Scene().Add(cube)
+	t.rb3 = object.NewBody(cube)
+	//t.rb3.SetLinearDamping(0)
+	t.sim.AddBody(t.rb3, "Cube1")
+	t.rb3.SetVelocity(math32.NewVector3(0.5, 0, 0))
 
 }
 
-func (t *PhysicsBasic) Render(a *app.App) {
+func (t *PhysicsSphereBox) Render(a *app.App) {
 
 	t.sim.Step(float32(a.FrameDelta().Seconds()))
 }
 
-func (t *PhysicsBasic) onKey(evname string, ev interface{}) {
+func (t *PhysicsSphereBox) onKey(evname string, ev interface{}) {
 
 	kev := ev.(*window.KeyEvent)
 	if kev.Action == window.Release {
