@@ -12,6 +12,8 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/physics"
 	"github.com/g3n/engine/physics/object"
+	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/gls"
 )
 
 func init() {
@@ -35,6 +37,16 @@ func (t *PhysicsSpheres) Initialize(a *app.App) {
 	pl.SetPosition(1, 0, 1)
 	a.Scene().Add(pl)
 
+	// Add directional light from top
+	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.3)
+	l2.SetPosition(0, 0.1, 0)
+	a.Scene().Add(l2)
+
+	// Add directional light from top
+	l3 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.3)
+	l3.SetPosition(0.1, 0, 0.1)
+	a.Scene().Add(l3)
+
 	t.sim = physics.NewSimulation(a.Scene())
 	gravity := physics.NewConstantForceField(&math32.Vector3{0,-0.98,0})
 	// //gravity := physics.NewAttractorForceField(&math32.Vector3{0.1,1,0}, 1)
@@ -42,29 +54,63 @@ func (t *PhysicsSpheres) Initialize(a *app.App) {
 
 	// Creates sphere 1
 	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+
+	texfileG := a.DirData() + "/images/ground2.jpg"
+	texG, err := texture.NewTexture2DFromImage(texfileG)
+	texG.SetRepeat(10,10)
+	texG.SetWrapS(gls.REPEAT)
+	texG.SetWrapT(gls.REPEAT)
+	if err != nil {
+		a.Log().Fatal("Error loading texture: %s", err)
+	}
+
 	mat := material.NewPhong(&math32.Color{1, 1, 1})
-	mat.SetWireframe(true)
+	mat.SetTransparent(true)
+	mat.SetOpacity(0.5)
+	mat.AddTexture(texG)
+	//mat.SetWireframe(true)
 
 	//sphere1 := graphic.NewMesh(sphereGeom, mat)
 	//a.Scene().Add(sphere1)
 	//t.rb = object.NewBody(sphere1)
 	//t.sim.AddBody(t.rb, "Sphere1")
 
-
-	floorGeom := geometry.NewBox(0.5, 0.5, 0.5)
+	floorGeom := geometry.NewBox(10, 0.5, 10)
 	floor := graphic.NewMesh(floorGeom, mat)
-	floor.SetPosition(0,-0.2,0)
+	floor.SetPosition(3,-0.2,0)
 	a.Scene().Add(floor)
 	rb3 := object.NewBody(floor)
 	rb3.SetBodyType(object.Static)
 	t.sim.AddBody(rb3, "Floor")
 
-	sphere2 := graphic.NewMesh(sphereGeom, mat)
-	sphere2.SetPosition(0, 1, 0)
+
+	// Creates texture 3
+	texfile := a.DirData() + "/images/uvgrid.jpg"
+	tex3, err := texture.NewTexture2DFromImage(texfile)
+	if err != nil {
+		a.Log().Fatal("Error loading texture: %s", err)
+	}
+	//tex3.SetFlipY(false)
+	// Creates sphere 3
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
+	mat3.AddTexture(tex3)
+
+
+
+	sphere2 := graphic.NewMesh(sphereGeom, mat3)
+	sphere2.SetPosition(0, 1, -0.02)
 	a.Scene().Add(sphere2)
-	rb2 := object.NewBody(sphere2)
-	t.sim.AddBody(rb2, "Sphere2")
-	//rb2.SetVelocity(math32.NewVector3(-0.1, 0, 0))
+	t.sim.AddBody(object.NewBody(sphere2), "Sphere2")
+
+	sphere3 := graphic.NewMesh(sphereGeom, mat3)
+	sphere3.SetPosition(0.05, 1.2, 0.05)
+	a.Scene().Add(sphere3)
+	t.sim.AddBody(object.NewBody(sphere3), "Sphere3")
+
+	sphere4 := graphic.NewMesh(sphereGeom, mat3)
+	sphere4.SetPosition(-0.05, 1.4, 0)
+	a.Scene().Add(sphere4)
+	t.sim.AddBody(object.NewBody(sphere4), "Sphere4")
 }
 
 func (t *PhysicsSpheres) Render(a *app.App) {
