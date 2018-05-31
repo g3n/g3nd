@@ -14,30 +14,20 @@ import (
 	"github.com/g3n/engine/physics/object"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/physics/shape"
-	"time"
 )
 
 func init() {
-	demos.Map["physics.spheres"] = &PhysicsSpheres{}
+	demos.Map["physics.spheres2"] = &PhysicsSpheres2{}
 }
 
-type PhysicsSpheres struct {
-	sim *physics.Simulation
+type PhysicsSpheres2 struct {
 	app *app.App
-
+	sim *physics.Simulation
 	sphereGeom *geometry.Sphere
 	matSphere *material.Standard
-
-	anim *texture.Animator
-	sprite *graphic.Sprite
-
-	attractorOn bool
-	gravity *physics.ConstantForceField
-	attractor *physics.AttractorForceField
 }
 
-func (t *PhysicsSpheres) Initialize(a *app.App) {
+func (t *PhysicsSpheres2) Initialize(a *app.App) {
 
 	t.app = a
 
@@ -49,42 +39,30 @@ func (t *PhysicsSpheres) Initialize(a *app.App) {
 	a.Scene().Add(axis)
 
 	pl := light.NewPoint(math32.NewColor("white"), 1.0)
-	pl.SetPosition(0, 1, 0)
+	pl.SetPosition(1, 0, 1)
 	a.Scene().Add(pl)
 
 	// Add directional light from top
-	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.5)
+	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.3)
 	l2.SetPosition(0, 0.1, 0)
 	a.Scene().Add(l2)
 
-	// Create simulation and force fields
+	// Add directional light from top
+	l3 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.3)
+	l3.SetPosition(0.1, 0, 0.1)
+	a.Scene().Add(l3)
+
 	t.sim = physics.NewSimulation(a.Scene())
-	t.gravity = physics.NewConstantForceField(&math32.Vector3{0,-0.98,0})
-	t.attractor = physics.NewAttractorForceField(&math32.Vector3{0,1,0}, 1)
-	t.sim.AddForceField(t.gravity)
+	gravity := physics.NewConstantForceField(&math32.Vector3{0,-0.98,0})
+	// //gravity := physics.NewAttractorForceField(&math32.Vector3{0.1,1,0}, 1)
+	t.sim.AddForceField(gravity)
 
-	// Create sprite texture and animator
-	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/smoke30.png")
-	if err != nil {
-		a.Log().Fatal("Error loading texture: %s", err)
-	}
-	t.anim = texture.NewAnimator(tex2, 6,5)
-	t.anim.SetDispTime(2 * 16666 * time.Microsecond)
-	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
-	mat2.AddTexture(tex2)
-	mat2.SetOpacity(0.5)
-	mat2.SetTransparent(true)
-	t.sprite = graphic.NewSprite(2, 2, mat2)
-	t.sprite.SetPosition(0, 1, 0)
-	t.sprite.SetVisible(false)
-	a.Scene().Add(t.sprite)
-
-	// Create sphere geometry
+	// Creates sphere 1
 	t.sphereGeom = geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
 
 	texfileG := a.DirData() + "/images/ground2.jpg"
 	texG, err := texture.NewTexture2DFromImage(texfileG)
-	texG.SetRepeat(100,100)
+	texG.SetRepeat(10,10)
 	texG.SetWrapS(gls.REPEAT)
 	texG.SetWrapT(gls.REPEAT)
 	if err != nil {
@@ -95,75 +73,73 @@ func (t *PhysicsSpheres) Initialize(a *app.App) {
 	mat.SetTransparent(true)
 	mat.SetOpacity(0.5)
 	mat.AddTexture(texG)
+	//mat.SetWireframe(true)
 
-	floorGeom := geometry.NewPlane(100, 100, 1, 1)
+	//sphere1 := graphic.NewMesh(sphereGeom, mat)
+	//a.Scene().Add(sphere1)
+	//t.rb = object.NewBody(sphere1)
+	//t.sim.AddBody(t.rb, "Sphere1")
+
+	floorGeom := geometry.NewBox(10, 0.5, 10)
 	floor := graphic.NewMesh(floorGeom, mat)
-	floor.SetPosition(0,0,0)
-	floor.SetRotation(-math32.Pi/2,0,0)
+	floor.SetPosition(3,-0.2,0)
 	a.Scene().Add(floor)
 	floorBody := object.NewBody(floor)
-	floorBody.SetShape(shape.NewPlane())
 	floorBody.SetBodyType(object.Static)
 	t.sim.AddBody(floorBody, "Floor")
 
 
-	// Create sphere texture
+	// Creates texture 3
 	texfile := a.DirData() + "/images/uvgrid.jpg"
 	tex3, err := texture.NewTexture2DFromImage(texfile)
 	if err != nil {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
-
-	// Create sphere material
+	//tex3.SetFlipY(false)
+	// Creates sphere 3
 	t.matSphere = material.NewStandard(&math32.Color{1, 1, 1})
 	t.matSphere.AddTexture(tex3)
+
 
 	sphere2 := graphic.NewMesh(t.sphereGeom, t.matSphere)
 	sphere2.SetPosition(0, 1, -0.02)
 	a.Scene().Add(sphere2)
 	rb2 := object.NewBody(sphere2)
-	rb2.SetShape(shape.NewSphere(0.1))
 	t.sim.AddBody(rb2, "Sphere2")
 
 	sphere3 := graphic.NewMesh(t.sphereGeom, t.matSphere)
 	sphere3.SetPosition(0.05, 1.2, 0.05)
 	a.Scene().Add(sphere3)
 	rb3 := object.NewBody(sphere3)
-	rb3.SetShape(shape.NewSphere(0.1))
 	t.sim.AddBody(rb3, "Sphere3")
 
 	sphere4 := graphic.NewMesh(t.sphereGeom, t.matSphere)
 	sphere4.SetPosition(-0.05, 1.4, 0)
 	a.Scene().Add(sphere4)
 	rb4 := object.NewBody(sphere4)
-	rb4.SetShape(shape.NewSphere(0.1))
 	t.sim.AddBody(rb4, "Sphere4")
 }
 
-func (t *PhysicsSpheres) ThrowBall() {
+func (t *PhysicsSpheres2) ThrowBall() {
 
-	// Obtain throw direction from camera position and target
 	camPos := t.app.Camera().GetCamera().Position()
 	camTarget := t.app.Camera().GetCamera().Target()
 	throwDir := math32.NewVec3().SubVectors(&camTarget, &camPos).SetLength(3)
 
-	// Create sphere rigid body
 	sphere := graphic.NewMesh(t.sphereGeom, t.matSphere)
 	sphere.SetPositionVec(&camPos)
 	t.app.Scene().Add(sphere)
 	rb := object.NewBody(sphere)
-	rb.SetShape(shape.NewSphere(0.1))
 	rb.SetVelocity(throwDir)
-	t.sim.AddBody(rb, "Sphere")
+	t.sim.AddBody(rb, "Sphere4")
 }
 
-func (t *PhysicsSpheres) Render(a *app.App) {
+func (t *PhysicsSpheres2) Render(a *app.App) {
 
 	t.sim.Step(float32(a.FrameDelta().Seconds()))
-	t.anim.Update(time.Now())
 }
 
-func (t *PhysicsSpheres) onKey(evname string, ev interface{}) {
+func (t *PhysicsSpheres2) onKey(evname string, ev interface{}) {
 
 	kev := ev.(*window.KeyEvent)
 	if kev.Action == window.Release {
@@ -178,18 +154,8 @@ func (t *PhysicsSpheres) onKey(evname string, ev interface{}) {
 		t.sim.SetPaused(true)
 	case window.KeySpace:
 		t.ThrowBall()
-	case window.KeyA:
-		if t.attractorOn {
-			t.sim.AddForceField(t.gravity)
-			t.sim.RemoveForceField(t.attractor)
-			t.sprite.SetVisible(false)
-			t.attractorOn = false
-		} else {
-			t.sim.RemoveForceField(t.gravity)
-			t.sim.AddForceField(t.attractor)
-			t.sprite.SetVisible(true)
-			t.attractorOn = true
-		}
+	case window.Key1:
+		// TODO
 	case window.Key2:
 		// TODO
 	}

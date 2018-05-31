@@ -12,6 +12,7 @@ import (
 	"github.com/g3n/engine/physics"
 	"github.com/g3n/engine/physics/object"
 	"math"
+	"github.com/g3n/engine/physics/shape"
 )
 
 func init() {
@@ -56,15 +57,17 @@ func (t *PhysicsBasic) Initialize(a *app.App) {
 	sphere1 := graphic.NewMesh(sphereGeom, mat)
 	a.Scene().Add(sphere1)
 	t.rb = object.NewBody(sphere1)
+	t.rb.SetShape(shape.NewSphere(0.1))  // COMMENT THIS ON BOTH SPHERES TO TEST Convex-Convex collision!
 	t.sim.AddBody(t.rb, "Sphere1")
 
 	sphere2 := graphic.NewMesh(sphereGeom, mat)
-	sphere2.SetPosition(2, 0, 0)
+	sphere2.SetPosition(1, 0, 0)
 	a.Scene().Add(sphere2)
 	t.rb2 = object.NewBody(sphere2)
+	t.rb2.SetShape(shape.NewSphere(0.1)) // COMMENT THIS ON BOTH SPHERES TO TEST Convex-Convex collision!
 	t.sim.AddBody(t.rb2, "Sphere2")
 	t.rb2.SetVelocity(math32.NewVector3(-0.5, 0, 0))
-	t.rb2.SetAngularVelocity(math32.NewVector3(0, 0, 0))
+	t.rb2.SetAngularVelocity(math32.NewVector3(0, 0, 1))
 
 	//cubeGeom := geometry.NewCube(0.2)
 	//cube1 := graphic.NewMesh(cubeGeom, mat)
