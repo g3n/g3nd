@@ -8,10 +8,9 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/texture"
-	"github.com/go-gl/gl/all-core/gl"
-	"math"
 	"github.com/g3n/g3nd/util"
 	"github.com/g3n/engine/light"
+	"github.com/g3n/engine/gls"
 )
 
 type PhysicalHelmet struct {
@@ -19,7 +18,7 @@ type PhysicalHelmet struct {
 	p2    *util.PointLightMesh
 	s1    *util.SpotLightMesh
 	s2    *util.SpotLightMesh
-	count float64
+	count float32
 }
 
 func init() {
@@ -78,8 +77,8 @@ func (t *PhysicalHelmet) Initialize(a *app.App) {
 		if err != nil {
 			a.Log().Fatal("Error loading texture: %s", err)
 		}
-		tex.SetWrapS(gl.MIRRORED_REPEAT)
-		tex.SetWrapT(gl.MIRRORED_REPEAT)
+		tex.SetWrapS(gls.MIRRORED_REPEAT)
+		tex.SetWrapT(gls.MIRRORED_REPEAT)
 		return tex
 	}
 
@@ -98,11 +97,11 @@ func (t *PhysicalHelmet) Initialize(a *app.App) {
 
 func (t *PhysicalHelmet) Render(a *app.App) {
 
-	t.p1.SetPosition(float32(math.Cos(t.count)), float32(math.Sin(t.count)), 0)
-	t.p2.SetPosition(0, 1.5*float32(math.Sin(t.count)), 1.5*float32(math.Cos(t.count)))
+	t.p1.SetPosition(float32(math32.Cos(t.count)), float32(math32.Sin(t.count)), 0)
+	t.p2.SetPosition(0, 1.5*float32(math32.Sin(t.count)), 1.5*float32(math32.Cos(t.count)))
 
-	t.s1.SetPosition(0, 1.5*float32(math.Sin(t.count*1.5)), 1.5*float32(math.Cos(t.count*1.5)))
-	t.s2.SetPosition(1.5*float32(math.Cos(t.count*1.5)), 1.5*float32(math.Sin(t.count*1.5)), 0)
+	t.s1.SetPosition(0, 1.5*float32(math32.Sin(t.count*1.5)), 1.5*float32(math32.Cos(t.count*1.5)))
+	t.s2.SetPosition(1.5*float32(math32.Cos(t.count*1.5)), 1.5*float32(math32.Sin(t.count*1.5)), 0)
 
 	t.count += 0.01
 }
