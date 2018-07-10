@@ -154,6 +154,7 @@ func NewPlayerSphere(a *app.App, filename string, color *math32.Color) *PlayerSp
 	canvas.DrawText(0, 0, filename, font)
 	tex := texture.NewTexture2DFromRGBA(canvas.RGBA)
 	plane_mat := material.NewStandard(math32.NewColor("black"))
+	plane_mat.SetTransparent(true)
 	plane_mat.AddTexture(tex)
 	ps.label = graphic.NewSprite(0.5*aspect, 0.5, plane_mat)
 	ps.label.SetPosition(0, 0.4, 0)
