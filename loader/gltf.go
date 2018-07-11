@@ -2,13 +2,12 @@ package loader
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
-	"strings"
-
 	"github.com/davecgh/go-spew/spew"
 	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/graphic"
+
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/gltf"
@@ -70,46 +69,6 @@ func (t *GltfLoader) Initialize(a *app.App) {
 	errLabel.SetFontSize(18)
 	a.Gui().Add(errLabel)
 
-	//// Creates file selector
-	//fs := NewFileSelect(400, 300)
-	//fs.SetVisible(false)
-	//err := fs.SetFileFilters("*.gltf", "*.glb")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//// Loads model when OK is clicked
-	//fs.Subscribe("OnOK", func(evname string, ev interface{}) {
-	//	fpath := fs.Selected()
-	//	if fpath == "" {
-	//		fs.SetVisible(false)
-	//		return
-	//	}
-	//	err := t.loadScene(a, fpath)
-	//	if err != nil {
-	//		errLabel.SetText("ERROR: " + err.Error())
-	//	} else {
-	//		errLabel.SetText("")
-	//	}
-	//	fs.SetVisible(false)
-	//})
-	//// Hides file select Cancel is clicked
-	//fs.Subscribe("OnCancel", func(evname string, ev interface{}) {
-	//	fs.SetVisible(false)
-	//})
-	//a.Gui().Add(fs)
-	//
-	//// Adds button to open file selector
-	//b := gui.NewButton("Select File")
-	//b.SetPosition(10, 10)
-	//b.Subscribe(gui.OnClick, func(evname string, ev interface{}) {
-	//	fs.SetPath(ctx.DirData + "/gltf")
-	//	fs.SetVisible(true)
-	//})
-	//fs.SetPosition(b.Width()+20, b.Position().Y)
-	//a.Gui().Add(b)
-
-	// Sets error label position
-	//errLabel.SetPosition(b.Width()+20, b.Position().Y)
 }
 
 func (t *GltfLoader) Render(a *app.App) {
@@ -145,11 +104,16 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 
 	spew.Config.Indent = "   "
 	spew.Dump(g.Nodes)
-	//spew.Dump(g.Meshes)
-	//spew.Dump(g.Accessors)
+	spew.Dump(g.Meshes)
+	spew.Dump(g.Accessors)
+
+	defaultSceneIdx := 0
+	if g.Scene != nil {
+		defaultSceneIdx = *g.Scene
+	}
 
 	// Get node
-	n, err := g.NewScene(0)
+	n, err := g.NewScene(defaultSceneIdx)
 	if err != nil {
 		return err
 	}
@@ -162,36 +126,4 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 	a.Scene().Add(n)
 	t.prevLoaded = n
 	return nil
-}
-
-func (t *GltfLoader) fileDropdown(dir string) *gui.DropDown {
-
-	// Open dir
-	f, err := os.Open(dir)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	// Read files from directory
-	files, err := f.Readdir(0)
-	if err != nil {
-		panic(err)
-	}
-	models := make([]string, 0)
-	for _, fi := range files {
-		if fi.IsDir() {
-			continue
-		}
-		if strings.HasSuffix(fi.Name(), ".gltf") {
-			models = append(models, fi.Name())
-		}
-	}
-
-	// Creates DropDown
-	dd := gui.NewDropDown(200, gui.NewImageLabel("Select Model"))
-	for _, fname := range models {
-		dd.Add(gui.NewImageLabel(fname))
-	}
-	return dd
 }
