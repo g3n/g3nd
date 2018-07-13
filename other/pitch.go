@@ -62,8 +62,8 @@ func (t *Pitch) Initialize(a *app.App) {
 	normals.Append(0, 0, 1, 0, 0, 1, 0, 0, 1)
 	indices.Append(0, 1, 2)
 
-	vert_geom.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
-	vert_geom.AddVBO(gls.NewVBO().AddAttrib("VertexNormal", 3).SetBuffer(normals))
+	vert_geom.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(positions))
+	vert_geom.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexNormal, 3).SetBuffer(normals))
 	vert_geom.SetIndices(indices)
 
 	vert_mat := material.NewStandard(&math32.Color{0, 0, 1})

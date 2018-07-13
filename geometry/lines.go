@@ -38,8 +38,8 @@ func (t *Lines) Initialize(a *app.App) {
 		0.0, 0.0, 1.0,
 		0.0, 0.0, 1.0,
 	)
-	geom.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(vertices))
-	geom.AddVBO(gls.NewVBO().AddAttrib("VertexColor", 3).SetBuffer(colors))
+	geom.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(vertices))
+	geom.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexColor, 3).SetBuffer(colors))
 
 	// Creates basic material
 	mat := material.NewBasic()

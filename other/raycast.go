@@ -106,7 +106,7 @@ func (t *Raycast) Initialize(a *app.App) {
 		-1, 1, -1, 1, 1, -1,
 		-1, 2, -1, 1, 2, -1,
 	)
-	geom9.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
+	geom9.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(positions))
 	mat9 := material.NewStandard(&math32.Color{1, 0, 0})
 	mesh9 := graphic.NewLineStrip(geom9, mat9)
 	mesh9.SetPosition(-1.5, 0.5, -0.4)
@@ -125,7 +125,7 @@ func (t *Raycast) Initialize(a *app.App) {
 		0, 0, 0, 0, 0, 1,
 		0.1, 0.1, 0.1, 0.5, 0.5, 0.5,
 	)
-	geom10.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
+	geom10.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(positions))
 	mat10 := material.NewStandard(&math32.Color{0, 0, 1})
 	mesh10 := graphic.NewLines(geom10, mat10)
 	mesh10.SetScale(0.8, 0.8, 0.8)
@@ -141,7 +141,7 @@ func (t *Raycast) Initialize(a *app.App) {
 		z := rand.Float32()
 		positions.Append(x, y, z)
 	}
-	geom11.AddVBO(gls.NewVBO().AddAttrib("VertexPosition", 3).SetBuffer(positions))
+	geom11.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(positions))
 	mat11 := material.NewPoint(&math32.Color{0, 0, 0})
 	mat11.SetSize(1000)
 	mesh11 := graphic.NewPoints(geom11, mat11)
