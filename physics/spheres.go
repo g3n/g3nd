@@ -19,7 +19,7 @@ import (
 )
 
 func init() {
-	demos.Map["physics.spheres"] = &PhysicsSpheres{}
+	demos.Map["physics (experimental).spheres"] = &PhysicsSpheres{}
 }
 
 type PhysicsSpheres struct {

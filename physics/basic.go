@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	demos.Map["physics.basic"] = &PhysicsBasic{}
+	demos.Map["physics (experimental).basic"] = &PhysicsBasic{}
 }
 
 type PhysicsBasic struct {

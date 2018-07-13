@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	demos.Map["physics.sphere_box"] = &PhysicsSphereBox{}
+	demos.Map["physics (experimental).sphere_box"] = &PhysicsSphereBox{}
 }
 
 type PhysicsSphereBox struct {

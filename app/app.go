@@ -69,7 +69,7 @@ func Create(demoMap map[string]IDemo) *App {
 	// Creates standard application object
 	a, err := application.Create(application.Options{
 		Title:       progName,
-		Width:       800,
+		Width:       1000,
 		Height:      600,
 		Fullscreen:  false,
 		LogPrefix:   "G3ND",
@@ -441,7 +441,7 @@ func (app *App) buildGui(demoMap map[string]IDemo) {
 	header.Add(app.control)
 
 	// Test list
-	app.treeTests = gui.NewTree(150, 0)
+	app.treeTests = gui.NewTree(175, 0)
 	app.treeTests.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockLeft})
 	// Sort test names
 	tnames := []string{}
