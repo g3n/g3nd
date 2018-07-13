@@ -15,6 +15,7 @@ import (
 	"github.com/g3n/g3nd/demos"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
+	"github.com/g3n/engine/animation"
 )
 
 func init() {
@@ -24,6 +25,7 @@ func init() {
 type GltfLoader struct {
 	prevLoaded core.INode
 	selFile    *util.FileSelectButton
+	anims      []*animation.Animation
 }
 
 func (t *GltfLoader) Initialize(a *app.App) {
@@ -73,12 +75,17 @@ func (t *GltfLoader) Initialize(a *app.App) {
 
 func (t *GltfLoader) Render(a *app.App) {
 
+	for i, anim := range t.anims {
+		a.Log().Error("Animation %v", i)
+		anim.Update(a.FrameDeltaSeconds())
+	}
 }
 
 func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
+		t.anims = t.anims[:]
 		a.Scene().Remove(t.prevLoaded)
 		t.prevLoaded.Dispose()
 		t.prevLoaded = nil
@@ -112,10 +119,17 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 		defaultSceneIdx = *g.Scene
 	}
 
-	// Get node
+	// Create default scene
 	n, err := g.NewScene(defaultSceneIdx)
 	if err != nil {
 		return err
+	}
+
+	// Create animations
+	for i := range g.Animations {
+		anim, _ := g.NewAnimation(i)
+		anim.SetLoop(true)
+		t.anims = append(t.anims, anim)
 	}
 
 	// Add normals helper
