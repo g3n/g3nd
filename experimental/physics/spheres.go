@@ -10,16 +10,16 @@ import (
 	"math"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/light"
-	"github.com/g3n/engine/physics"
-	"github.com/g3n/engine/physics/object"
+	"github.com/g3n/engine/experimental/physics"
+	"github.com/g3n/engine/experimental/physics/object"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/physics/shape"
+	"github.com/g3n/engine/experimental/physics/shape"
 	"time"
 )
 
 func init() {
-	demos.Map["physics (experimental).spheres"] = &PhysicsSpheres{}
+	demos.Map["physics-experimental.spheres"] = &PhysicsSpheres{}
 }
 
 type PhysicsSpheres struct {
