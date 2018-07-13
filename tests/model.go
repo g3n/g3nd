@@ -39,6 +39,7 @@ func (t *testsModel) Initialize(a *app.App) {
 
 	// Changes the camera position
 	a.Camera().GetCamera().SetPosition(0, 4, 10)
+	a.Camera().GetCamera().LookAt(&math32.Vector3{0,0,0})
 }
 
 // This method will be called at every frame

@@ -34,6 +34,7 @@ func (t *AudioDoppler) Initialize(a *app.App) {
 
 	// Sets camera position
 	a.Camera().GetCamera().SetPosition(0, 4, 12)
+	a.Camera().GetCamera().LookAt(&math32.Vector3{0,0,0})
 
 	// Creates listener and adds it to the current camera
 	listener := audio.NewListener()
