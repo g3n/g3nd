@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/g3n/g3nd/animation"
 	_ "github.com/g3n/g3nd/audio"
 	_ "github.com/g3n/g3nd/geometry"
 	_ "github.com/g3n/g3nd/gui"
