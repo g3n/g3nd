@@ -42,7 +42,7 @@ func (t *Points) Initialize(a *app.App) {
 		0, 0, 1,
 		0, 0, 0,
 	)
-	geom.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(positions))
+	geom.AddVBO(gls.NewVBO(positions).AddAttrib(geometry.VertexPosition, 3))
 	positions = nil // Positions cannot be used after transfering to VBO
 
 	// Creates point material

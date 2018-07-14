@@ -32,10 +32,9 @@ func (t *LineStrip) Initialize(a *app.App) {
 		-0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
 		0.0, -0.5, 0.0, 1.0, 0.0, 0.0,
 	)
-	geom1.AddVBO(gls.NewVBO().
+	geom1.AddVBO(gls.NewVBO(buffer).
 		AddAttrib(geometry.VertexPosition, 3).
-		AddAttrib(geometry.VertexColor, 3).
-		SetBuffer(buffer),
+		AddAttrib(geometry.VertexColor, 3),
 	)
 
 	// Creates basic material
@@ -70,8 +69,8 @@ func (t *LineStrip) Initialize(a *app.App) {
 		0.0, 0.0, 1.0,
 		1.0, 0.0, 0.0,
 	)
-	geom2.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexPosition, 3).SetBuffer(vertices))
-	geom2.AddVBO(gls.NewVBO().AddAttrib(geometry.VertexColor, 3).SetBuffer(colors))
+	geom2.AddVBO(gls.NewVBO(vertices).AddAttrib(geometry.VertexPosition, 3))
+	geom2.AddVBO(gls.NewVBO(colors).AddAttrib(geometry.VertexColor, 3))
 
 	// Creates basic material
 	mat2 := material.NewBasic()
