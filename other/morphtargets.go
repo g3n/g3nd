@@ -53,9 +53,9 @@ func (t *MorphTargets) Initialize(a *app.App) {
 		return false
 	})
 	target1 := geometry.NewGeometry()
-	target1.AddVBO(gls.NewVBO(target1Vertices).AddAttrib(gls.VertexPosition, 3))
+	target1.AddVBO(gls.NewVBO(target1Vertices).AddAttrib(gls.VertexPosition))
 	target2 := geometry.NewGeometry()
-	target2.AddVBO(gls.NewVBO(target2Vertices).AddAttrib(gls.VertexPosition, 3))
+	target2.AddVBO(gls.NewVBO(target2Vertices).AddAttrib(gls.VertexPosition))
 	morphGeom.AddMorphTargets(target1, target2)
 
 	// Create texture
