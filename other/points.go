@@ -58,7 +58,7 @@ func (t *Points2) Initialize(a *app.App) {
 		)
 		positions.AppendVector3(&vertex)
 	}
-	geom.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition, 3))
+	geom.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition))
 
 	t.points = graphic.NewPoints(geom, nil)
 	start := 0
