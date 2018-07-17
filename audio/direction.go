@@ -45,6 +45,7 @@ func (t *AudioDirection) Initialize(a *app.App) {
 
 	// Sets camera position
 	a.Camera().GetCamera().SetPosition(0, 0, 10)
+	a.Camera().GetCamera().LookAt(&math32.Vector3{0,0,0})
 
 	// Creates listener and adds it to the current camera
 	// The listener must have the same initial direction as the camera

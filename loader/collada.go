@@ -60,6 +60,7 @@ func (t *LoaderCollada) Initialize(a *app.App) {
 
 	// Sets camera position
 	a.Camera().GetCamera().SetPosition(0, 4, 10)
+	a.Camera().GetCamera().LookAt(&math32.Vector3{0,0,0})
 
 	// Adds axix helper
 	ah := graphic.NewAxisHelper(1.5)

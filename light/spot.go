@@ -30,6 +30,7 @@ func (t *SpotLight) Initialize(a *app.App) {
 
 	// Sets camera position
 	a.Camera().GetCamera().SetPosition(0, 6, 10)
+	a.Camera().GetCamera().LookAt(&math32.Vector3{0,0,0})
 
 	// Creates base plane
 	geom1 := geometry.NewPlane(6, 6, 16, 16)
