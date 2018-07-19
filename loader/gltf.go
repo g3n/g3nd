@@ -71,6 +71,10 @@ func (t *GltfLoader) Initialize(a *app.App) {
 	errLabel.SetFontSize(18)
 	a.Gui().Add(errLabel)
 
+	fpath := "gltf/DamagedHelmet/glTF/DamagedHelmet.gltf"
+	t.loadScene(a, filepath.Join(a.DirData(), fpath))
+	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
+
 }
 
 func (t *GltfLoader) Render(a *app.App) {
@@ -82,6 +86,9 @@ func (t *GltfLoader) Render(a *app.App) {
 }
 
 func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
+
+	// TODO move camera or scale scene such that it's nicely framed
+	// TODO do this for other loaders as well
 
 	// Remove previous model from the scene
 	if t.prevLoaded != nil {
@@ -133,9 +140,9 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 	}
 
 	// Add normals helper
-	//box := n.GetNode().Children()[0]
-	//normals := graphic.NewNormalsHelper(box.(graphic.IGraphic), 0.5, &math32.Color{0, 0, 1}, 1)
-	//ctx.Scene.Add(normals)
+	//box := n.GetNode().Children()[0].GetNode().Children()[0]
+	//normals := graphic.NewNormalsHelper(box.(graphic.IGraphic), 0.1, &math32.Color{0, 0, 1}, 1)
+	//a.Scene().Add(normals)
 
 	a.Scene().Add(n)
 	t.prevLoaded = n
