@@ -253,7 +253,7 @@ func (app *App) setupScene() {
 	app.Gl().ClearColor(0.6, 0.6, 0.6, 1.0)
 
 	// Reset renderer z-sorting flag
-	app.Renderer().SetSortObjects(true)
+	app.Renderer().SetObjectSorting(true)
 
 	// Adds ambient light to the test scene
 	app.ambLight = light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.5)

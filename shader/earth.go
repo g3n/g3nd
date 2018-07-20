@@ -23,7 +23,6 @@ func init() {
 func (t *Earth) Initialize(a *app.App) {
 
 	t.a = a
-	t.a.Renderer().SetSortObjects(false)
 	a.AmbLight().SetIntensity(1)
 
 	// Create Skybox
@@ -34,6 +33,7 @@ func (t *Earth) Initialize(a *app.App) {
 	if err != nil {
 		panic(err)
 	}
+	skybox.SetRenderOrder(-1) // The skybox should always be rendered first
 	// For each skybox face sets the material to not use lights
 	// and to have emissive color.
 	sbmats := skybox.Materials()
