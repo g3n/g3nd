@@ -49,10 +49,10 @@ func (t *Children) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 5 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 5
-	t.circ1.AddRotationZ(delta)
+	t.circ1.RotateZ(delta)
 	t.circ1.SetPositionX(math32.Sin(float32(t.count)))
 	t.count += delta
 
-	t.circ2.AddRotationZ(2 * delta)
-	t.circ3.AddRotationZ(-4 * delta)
+	t.circ2.RotateZ(2 * delta)
+	t.circ3.RotateZ(-4 * delta)
 }

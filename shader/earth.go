@@ -116,7 +116,7 @@ func (t *Earth) Initialize(a *app.App) {
 
 func (t *Earth) Render(a *app.App) {
 
-	t.sphere.AddRotationY(0.1 * a.FrameDeltaSeconds())
+	t.sphere.RotateY(0.1 * a.FrameDeltaSeconds())
 }
 
 //

@@ -56,6 +56,6 @@ func (t *Sprite) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 5 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 5
-	t.s1.AddRotationZ(-delta)
-	t.s3.AddRotationZ(delta)
+	t.s1.RotateZ(-delta)
+	t.s3.RotateZ(delta)
 }

@@ -73,6 +73,6 @@ func (t *Texplane) Initialize(a *app.App) {
 
 func (t *Texplane) Render(a *app.App) {
 
-	t.plane1.AddRotationY(0.01)
-	t.plane2.AddRotationY(-0.01)
+	t.plane1.RotateY(0.01)
+	t.plane2.RotateY(-0.01)
 }

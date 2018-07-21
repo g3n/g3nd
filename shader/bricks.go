@@ -65,9 +65,9 @@ func (t *ShaderBricks) Initialize(a *app.App) {
 
 func (t *ShaderBricks) Render(a *app.App) {
 
-	t.plane1.AddRotationY(-0.005)
-	t.box1.AddRotationY(0.01)
-	t.sphere1.AddRotationZ(0.01)
+	t.plane1.RotateY(-0.005)
+	t.box1.RotateY(0.01)
+	t.sphere1.RotateZ(0.01)
 }
 
 //

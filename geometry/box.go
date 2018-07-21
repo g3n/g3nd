@@ -41,6 +41,6 @@ func (t *Box) Initialize(a *app.App) {
 func (t *Box) Render(a *app.App) {
 
 	// Rotate the box at 1 rotation each 4 seconds
-	t.box.AddRotationY(a.FrameDeltaSeconds() * 2 * math32.Pi / 4)
+	t.box.RotateY(a.FrameDeltaSeconds() * 2 * math32.Pi / 4)
 	t.normals.Update()
 }

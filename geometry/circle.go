@@ -45,6 +45,6 @@ func (t *Circle) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 5 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 5
-	t.circ1.AddRotationZ(delta)
-	t.circ3.AddRotationZ(-delta)
+	t.circ1.RotateZ(delta)
+	t.circ3.RotateZ(-delta)
 }

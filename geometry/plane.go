@@ -73,7 +73,7 @@ func (t *Plane) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 5 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 5
-	t.plane1.AddRotationY(delta)
-	t.plane2.AddRotationX(delta)
-	t.plane3.AddRotationX(-delta)
+	t.plane1.RotateY(delta)
+	t.plane2.RotateX(delta)
+	t.plane3.RotateX(-delta)
 }

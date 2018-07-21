@@ -85,7 +85,7 @@ func (t *TextureCylinder) Initialize(a *app.App) {
 
 func (t *TextureCylinder) Render(a *app.App) {
 
-	t.mesh1.AddRotationY(0.005)
-	t.mesh2.AddRotationY(-0.004)
-	t.mesh3.AddRotationY(0.003)
+	t.mesh1.RotateY(0.005)
+	t.mesh2.RotateY(-0.004)
+	t.mesh3.RotateY(0.003)
 }

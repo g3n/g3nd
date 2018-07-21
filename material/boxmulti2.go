@@ -85,5 +85,5 @@ func (t *Boxmulti2) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 6 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 6
-	t.box.AddRotationY(delta)
+	t.box.RotateY(delta)
 }

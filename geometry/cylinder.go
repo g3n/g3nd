@@ -74,6 +74,6 @@ func (t *Cylinder) Initialize(a *app.App) {
 
 func (t *Cylinder) Render(a *app.App) {
 
-	t.mesh.AddRotationY(0.005)
+	t.mesh.RotateY(0.005)
 	t.normals.Update()
 }

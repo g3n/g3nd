@@ -144,5 +144,5 @@ func (t *Text1) Render(a *app.App) {
 	canvas.DrawText(0, 0, l1, t.font)
 	// Update material texture
 	t.planeTex.SetFromRGBA(canvas.RGBA)
-	t.planeTime.AddRotationY(0.01)
+	t.planeTime.RotateY(0.01)
 }

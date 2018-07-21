@@ -78,5 +78,5 @@ func (t *Points2) Initialize(a *app.App) {
 func (t *Points2) Render(a *app.App) {
 
 	rps := a.FrameDeltaSeconds() * 2 * math32.Pi
-	t.points.AddRotationY(rps * 0.05)
+	t.points.RotateY(rps * 0.05)
 }

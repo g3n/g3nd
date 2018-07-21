@@ -104,8 +104,8 @@ func (t *Texsphere) Initialize(a *app.App) {
 
 func (t *Texsphere) Render(a *app.App) {
 
-	t.sphere1.AddRotationY(0.01)
-	t.sphere2.AddRotationY(-0.01)
-	t.sphere3.AddRotationY(0.01)
-	t.sphere4.AddRotationY(-0.01)
+	t.sphere1.RotateY(0.01)
+	t.sphere2.RotateY(-0.01)
+	t.sphere3.RotateY(0.01)
+	t.sphere4.RotateY(-0.01)
 }

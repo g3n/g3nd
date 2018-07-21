@@ -113,10 +113,10 @@ func (t *Texbox) Initialize(a *app.App) {
 
 func (t *Texbox) Render(a *app.App) {
 
-	t.box1.AddRotationY(0.01)
-	t.box2.AddRotationY(-0.01)
-	t.box3.AddRotationY(0.01)
-	t.box4.AddRotationY(-0.01)
+	t.box1.RotateY(0.01)
+	t.box2.RotateY(-0.01)
+	t.box3.RotateY(0.01)
+	t.box4.RotateY(-0.01)
 }
 
 func (t *Texbox) onKey(a *app.App, ev interface{}) {

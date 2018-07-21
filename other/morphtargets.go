@@ -98,5 +98,5 @@ func (t *MorphTargets) Render(a *app.App) {
 
 	// Rotate at 1 rotation each 10 seconds
 	delta := a.FrameDeltaSeconds() * 2 * math32.Pi / 10
-	t.morphMesh.AddRotationY(delta)
+	t.morphMesh.RotateY(delta)
 }

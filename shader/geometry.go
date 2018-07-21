@@ -120,9 +120,9 @@ func (t *ShaderGeometry) Initialize(a *app.App) {
 func (t *ShaderGeometry) Render(a *app.App) {
 
 	if t.rotate {
-		t.plane.AddRotationX(0.01)
-		t.box.AddRotationY(0.01)
-		t.sphere.AddRotationZ(0.005)
+		t.plane.RotateX(0.01)
+		t.box.RotateY(0.01)
+		t.sphere.RotateZ(0.005)
 	}
 }
 

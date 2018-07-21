@@ -48,5 +48,5 @@ func (t *testsModel) Render(a *app.App) {
 
 	// Rotate the grid, just for show.
 	rps := a.FrameDeltaSeconds() * 2 * math32.Pi
-	t.grid.AddRotationY(rps * 0.05)
+	t.grid.RotateY(rps * 0.05)
 }

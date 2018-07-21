@@ -68,7 +68,7 @@ func (t *Sphere) Initialize(a *app.App) {
 
 func (t *Sphere) Render(a *app.App) {
 
-	t.sphere1.AddRotationY(0.005)
+	t.sphere1.RotateY(0.005)
 	t.normals.Update()
-	t.sphere2.AddRotationY(-0.005)
+	t.sphere2.RotateY(-0.005)
 }

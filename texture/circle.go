@@ -78,6 +78,6 @@ func (t *Texcircle) Initialize(a *app.App) {
 
 func (t *Texcircle) Render(a *app.App) {
 
-	t.mesh1.AddRotationZ(0.01)
-	t.mesh3.AddRotationZ(-0.01)
+	t.mesh1.RotateZ(0.01)
+	t.mesh3.RotateZ(-0.01)
 }

@@ -81,14 +81,14 @@ func (t *TankTest) Render(a *app.App) {
 		if t.commands[CMD_RIGHT] {
 			angle = -angle
 		}
-		t.model.node.AddRotationY(angle)
+		t.model.node.RotateY(angle)
 		// Rotate the wheel caps
 		for i := 0; i < len(t.model.caps); i++ {
 			wcap := t.model.caps[i]
 			if i%2 == 0 {
-				wcap.AddRotationZ(3 * angle)
+				wcap.RotateZ(3 * angle)
 			} else {
-				wcap.AddRotationZ(-3 * angle)
+				wcap.RotateZ(-3 * angle)
 			}
 		}
 	}
@@ -117,15 +117,15 @@ func (t *TankTest) Render(a *app.App) {
 		t.model.node.SetPositionVec(&position)
 		// Rotate whell caps
 		for _, wcap := range t.model.caps {
-			wcap.AddRotationZ(rot)
+			wcap.RotateZ(rot)
 		}
 	}
 
 	if t.commands[CMD_CANNON_LEFT] {
-		t.model.nodeTop.AddRotationY(0.01)
+		t.model.nodeTop.RotateY(0.01)
 	}
 	if t.commands[CMD_CANNON_RIGHT] {
-		t.model.nodeTop.AddRotationY(-0.01)
+		t.model.nodeTop.RotateY(-0.01)
 	}
 	if t.commands[CMD_CANNON_UP] || t.commands[CMD_CANNON_DOWN] {
 		// Get cannon world direction
@@ -141,12 +141,12 @@ func (t *TankTest) Render(a *app.App) {
 			if elevation <= math32.Pi/4 {
 				return
 			}
-			t.model.meshCannon.AddRotationZ(0.01)
+			t.model.meshCannon.RotateZ(0.01)
 		} else {
 			if elevation >= math32.Pi/2-0.01 {
 				return
 			}
-			t.model.meshCannon.AddRotationZ(-0.01)
+			t.model.meshCannon.RotateZ(-0.01)
 		}
 	}
 }
