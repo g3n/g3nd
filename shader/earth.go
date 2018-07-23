@@ -26,21 +26,11 @@ func (t *Earth) Initialize(a *app.App) {
 	a.AmbLight().SetIntensity(1)
 
 	// Create Skybox
-	skyboxData := graphic.SkyboxData{
+	skybox, err := graphic.NewSkybox(graphic.SkyboxData{
 		a.DirData() + "/images/space/dark-s_", "jpg",
-		[6]string{"px", "nx", "py", "ny", "pz", "nz"}}
-	skybox, err := graphic.NewSkybox(skyboxData)
+		[6]string{"px", "nx", "py", "ny", "pz", "nz"}})
 	if err != nil {
 		panic(err)
-	}
-	skybox.SetRenderOrder(-1) // The skybox should always be rendered first
-	// For each skybox face sets the material to not use lights
-	// and to have emissive color.
-	sbmats := skybox.Materials()
-	for i := 0; i < len(sbmats); i++ {
-		sbmat := skybox.Materials()[i].IMaterial().(*material.Standard)
-		sbmat.SetUseLights(material.UseLightNone)
-		sbmat.SetEmissiveColor(&math32.Color{1, 1, 1})
 	}
 	a.Scene().Add(skybox)
 
@@ -49,50 +39,38 @@ func (t *Earth) Initialize(a *app.App) {
 	dir1.SetPosition(0, 0, 100)
 	a.Scene().Add(dir1)
 
-	// Create day texture
-	texDay, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_clouds_big.jpg")
-	if err != nil {
-		a.Log().Fatal("Error loading texture: %s", err)
-	}
-	texDay.SetFlipY(false)
-
-	// Create specular map texture
-	texSpecular, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_spec_big.jpg")
-	if err != nil {
-		a.Log().Fatal("Error loading texture: %s", err)
-	}
-	texSpecular.SetFlipY(false)
-
-	// Create night texture
-	texNight, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_night_big.jpg")
-	if err != nil {
-		a.Log().Fatal("Error loading texture: %s", err)
-	}
-	texNight.SetFlipY(false)
-
-	// Create bump map texture
-	texBump, err := texture.NewTexture2DFromImage(a.DirData() + "/images/earth_bump_big.jpg")
-	if err != nil {
-		a.Log().Fatal("Error loading texture: %s", err)
-	}
-	texBump.SetFlipY(false)
-
 	// Create custom shader
 	t.a.Renderer().AddShader("shaderEarthVertex", shaderEarthVertex)
 	t.a.Renderer().AddShader("shaderEarthFrag", shaderEarthFrag)
 	t.a.Renderer().AddProgram("shaderEarth", "shaderEarthVertex", "shaderEarthFrag")
+
+	// Helper function to load a texture and handle errors
+	newTexture := func(path string) *texture.Texture2D {
+		tex, err := texture.NewTexture2DFromImage(path)
+		if err != nil {
+			a.Log().Fatal("Error loading texture: %s", err)
+		}
+		tex.SetFlipY(false)
+		return tex
+	}
+
+	// Create earth textures
+	texDay := newTexture(a.DirData() + "/images/earth_clouds_big.jpg")
+	texSpecular := newTexture(a.DirData() + "/images/earth_spec_big.jpg")
+	texNight := newTexture(a.DirData() + "/images/earth_night_big.jpg")
+	//texBump, err := newTexture(a.DirData() + "/images/earth_bump_big.jpg")
 
 	// Create custom material using the custom shader
 	matEarth := NewEarthMaterial(&math32.Color{1, 1, 1})
 	matEarth.SetShininess(20)
 	//matEarth.SetSpecularColor(&math32.Color{0., 1, 1})
 	//matEarth.SetColor(&math32.Color{0.8, 0.8, 0.8})
-
-	// Create sphere
-	geom := geometry.NewSphere(1, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
 	matEarth.AddTexture(texDay)
 	matEarth.AddTexture(texSpecular)
 	matEarth.AddTexture(texNight)
+
+	// Create sphere
+	geom := geometry.NewSphere(1, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
 	t.sphere = graphic.NewMesh(geom, matEarth)
 	a.Scene().Add(t.sphere)
 
