@@ -331,6 +331,7 @@ func (app *App) setupScene() {
 		} else {
 			app.SetCamera(app.CameraOrtho())
 		}
+		app.OnWindowResize()
 		// Recreates orbit camera control
 		app.Orbit().Dispose()
 		app.SetOrbit(control.NewOrbitControl(app.Camera(), app.Window()))
