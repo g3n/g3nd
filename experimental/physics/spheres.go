@@ -14,7 +14,7 @@ import (
 	"github.com/g3n/engine/experimental/physics/object"
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/experimental/physics/shape"
+	"github.com/g3n/engine/experimental/collision/shape"
 	"time"
 )
 

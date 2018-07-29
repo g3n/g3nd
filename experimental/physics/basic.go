@@ -12,7 +12,7 @@ import (
 	"github.com/g3n/engine/experimental/physics"
 	"github.com/g3n/engine/experimental/physics/object"
 	"math"
-	"github.com/g3n/engine/experimental/physics/shape"
+	"github.com/g3n/engine/experimental/collision/shape"
 )
 
 func init() {
