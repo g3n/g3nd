@@ -242,6 +242,11 @@ func (app *App) setupScene() {
 	// Cancel next events and clear all window subscriptions
 	app.Window().CancelDispatch()
 	app.Window().ClearSubscriptions()
+	app.GuiPanel().ClearSubscriptions()
+
+	// Reset current cursor and clear all custom cursors
+	app.Window().Manager().DisposeAllCursors()
+	app.Window().SetStandardCursor(window.ArrowCursor)
 
 	// Dispose of all test scene children
 	app.Scene().DisposeChildren(true)
