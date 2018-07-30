@@ -25,7 +25,7 @@ func (t *CustomCursors) Initialize(a *app.App) {
 	a.GuiPanel().Add(instructions)
 
 	var err error
-	t.cursors[0], err = a.Window().Manager().CreateCursor(a.DirData() + "/images/gopher_cursor2.png", 0, 0)
+	t.cursors[0], err = a.Window().Manager().CreateCursor(a.DirData() + "/images/gopher_cursor.png", 0, 0)
 	t.cursors[1], err = a.Window().Manager().CreateCursor(a.DirData() + "/images/gauntlet_cursor.png", 0, 0)
 	if err != nil {
 		a.Log().Fatal("Error creating cursor: %s", err)
