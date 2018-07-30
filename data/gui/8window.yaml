@@ -5,7 +5,7 @@ type: window
 width: 600
 height: 400
 title: Window Title
-resizeborders: top right bottom
+resizeborders: true
 layout:
   type: dock
 items:
