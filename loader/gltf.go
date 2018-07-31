@@ -79,8 +79,7 @@ func (t *GltfLoader) Initialize(a *app.App) {
 
 func (t *GltfLoader) Render(a *app.App) {
 
-	for i, anim := range t.anims {
-		a.Log().Error("Animation %v", i)
+	for _, anim := range t.anims {
 		anim.Update(a.FrameDeltaSeconds())
 	}
 }
