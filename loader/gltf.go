@@ -72,6 +72,8 @@ func (t *GltfLoader) Initialize(a *app.App) {
 	a.Gui().Add(errLabel)
 
 	fpath := "gltf/DamagedHelmet/glTF/DamagedHelmet.gltf"
+	//fpath := "gltf/2-Complex/13-RiggedSimple/glTF/RiggedSimple.gltf"
+	//fpath := "gltf/gltf-sketchfab/decorated_ring/scene.gltf"
 	t.loadScene(a, filepath.Join(a.DirData(), fpath))
 	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 
@@ -108,7 +110,7 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 	} else if ext == ".glb" {
 		g, err = gltf.ParseBin(fpath)
 	} else {
-		return fmt.Errorf("Unrecognized file extension:%s", ext)
+		return fmt.Errorf("unrecognized file extension:%s", ext)
 	}
 
 	if err != nil {
@@ -126,14 +128,28 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 	}
 
 	// Create default scene
-	n, err := g.NewScene(defaultSceneIdx)
+	n, err := g.LoadScene(defaultSceneIdx)
 	if err != nil {
 		return err
 	}
 
+	// Scale scene to fit screen
+	//bbox := n.BoundingBox()
+	//var scale math32.Vector3
+	//bbox.Size(&scale)
+	//largest := math32.Abs(scale.X)
+	//if math32.Abs(scale.Y) > largest {
+	//	largest = math32.Abs(scale.Y)
+	//	if math32.Abs(scale.Z) > scale.Y{
+	//		largest = math32.Abs(scale.Z)
+	//	}
+	//}
+	//largest = 1/largest
+	//n.GetNode().SetScale(largest, largest, largest)
+
 	// Create animations
 	for i := range g.Animations {
-		anim, _ := g.NewAnimation(i)
+		anim, _ := g.LoadAnimation(i)
 		anim.SetLoop(true)
 		t.anims = append(t.anims, anim)
 	}
