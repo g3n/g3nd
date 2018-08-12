@@ -3,7 +3,6 @@ package loader
 import (
 	"fmt"
 	"path/filepath"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/graphic"
 
@@ -71,9 +70,8 @@ func (t *GltfLoader) Initialize(a *app.App) {
 	errLabel.SetFontSize(18)
 	a.Gui().Add(errLabel)
 
-	fpath := "gltf/DamagedHelmet/glTF/DamagedHelmet.gltf"
-	//fpath := "gltf/2-Complex/13-RiggedSimple/glTF/RiggedSimple.gltf"
-	//fpath := "gltf/gltf-sketchfab/decorated_ring/scene.gltf"
+	//fpath := "gltf/DamagedHelmet/glTF/DamagedHelmet.gltf"
+	fpath := "gltf/CesiumMan/glTF/CesiumMan.gltf"
 	t.loadScene(a, filepath.Join(a.DirData(), fpath))
 	t.selFile.Label.SetText("File: " + filepath.Base(fpath))
 
@@ -117,10 +115,10 @@ func (t *GltfLoader) loadScene(a *app.App, fpath string) error {
 		return err
 	}
 
-	spew.Config.Indent = "   "
-	spew.Dump(g.Nodes)
-	spew.Dump(g.Meshes)
-	spew.Dump(g.Accessors)
+	//spew.Config.Indent = "   "
+	//spew.Dump(g.Nodes)
+	//spew.Dump(g.Meshes)
+	//spew.Dump(g.Accessors)
 
 	defaultSceneIdx := 0
 	if g.Scene != nil {
