@@ -12,14 +12,14 @@ import (
 	"math"
 )
 
+func init() {
+	demos.Map["geometry.sphere"] = &Sphere{}
+}
+
 type Sphere struct {
 	sphere1 *graphic.Mesh
 	sphere2 *graphic.Mesh
 	normals *graphic.NormalsHelper
-}
-
-func init() {
-	demos.Map["geometry.sphere"] = &Sphere{}
 }
 
 func (t *Sphere) Initialize(a *app.App) {

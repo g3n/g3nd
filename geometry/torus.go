@@ -12,13 +12,13 @@ import (
 	"math"
 )
 
+func init() {
+	demos.Map["geometry.torus"] = &Torus{}
+}
+
 type Torus struct {
 	torus1  *graphic.Mesh
 	normals *graphic.NormalsHelper
-}
-
-func init() {
-	demos.Map["geometry.torus"] = &Torus{}
 }
 
 func (t *Torus) Initialize(a *app.App) {

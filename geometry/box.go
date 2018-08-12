@@ -10,13 +10,13 @@ import (
 	"github.com/g3n/g3nd/demos"
 )
 
+func init() {
+	demos.Map["geometry.box"] = &Box{}
+}
+
 type Box struct {
 	box     *graphic.Mesh
 	normals *graphic.NormalsHelper
-}
-
-func init() {
-	demos.Map["geometry.box"] = &Box{}
 }
 
 func (t *Box) Initialize(a *app.App) {

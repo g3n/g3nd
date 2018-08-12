@@ -8,15 +8,15 @@ import (
 	"github.com/g3n/g3nd/demos"
 )
 
+func init() {
+	demos.Map["geometry.sprite"] = &Sprite{}
+}
+
 type Sprite struct {
 	s1 *graphic.Sprite
 	s2 *graphic.Sprite
 	s3 *graphic.Sprite
 	s4 *graphic.Sprite
-}
-
-func init() {
-	demos.Map["geometry.sprite"] = &Sprite{}
 }
 
 func (t *Sprite) Initialize(a *app.App) {
