@@ -17,13 +17,17 @@ Please verify that the engine dependencies are in place before installing.
 # Installation
 
 The following command will download G3ND, the engine, and third party Go packages on which it depends.
-It will also compile and install the packages and the `g3nd` binary. Make sure your GOPATH is set correctly.
+It will also compile and install the packages and the `g3nd` binary.
 
 ## Install without Modules (Before Go 1.11)
+
+Make sure your GOPATH is set correctly.
 
 `go get -u github.com/g3n/g3nd`
 
 ## Install with Modules (Go 1.11 or higher)
+
+GOPATH is not used with Go Modules.
 
     git clone https://github.com/g3n/g3nd
     cd g3nd
