@@ -19,7 +19,15 @@ Please verify that the engine dependencies are in place before installing.
 The following command will download G3ND, the engine, and third party Go packages on which it depends.
 It will also compile and install the packages and the `g3nd` binary. Make sure your GOPATH is set correctly.
 
+## Install without Modules (Before Go 1.11)
+
 `go get -u github.com/g3n/g3nd`
+
+## Install with Modules (Go 1.11 or higher)
+
+    git clone https://github.com/g3n/g3nd
+    cd g3nd
+    go install 
 
 Note: G3ND comes with a data directory with media files including images, textures, models and audio files.
 Currently this directory has aproximately 50MB. The download and compilation may take some time.
