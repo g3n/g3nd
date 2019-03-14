@@ -37,7 +37,9 @@ Note: G3ND comes with a data directory with media files including images, textur
 Currently this directory has aproximately 50MB. The download and compilation may take some time.
 To see what is going on you can alternatively supply the verbose flag:
 
-`go get -u -v github.com/g3n/g3nd`
+`go get -u -v github.com/g3n/g3nd ;# without go modules`
+
+`go get -u -v ;# with go modules, within g3nd directory`
 
 # Running
 
