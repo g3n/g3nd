@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/g3n/g3nd/demos/animation"
-	//_ "github.com/g3n/g3nd/demos/audio"
+	_ "github.com/g3n/g3nd/demos/audio"
 	_ "github.com/g3n/g3nd/demos/experimental/physics"
 	_ "github.com/g3n/g3nd/demos/geometry"
 	_ "github.com/g3n/g3nd/demos/gui"
