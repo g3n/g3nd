@@ -263,7 +263,18 @@ func (a *App) checkDirData(dirDataName string) string {
 		return path
 	}
 
-	// Shows error message and aborts
+	// If the data directory hasn't been found, manually scan the $GOPATH directories
+	rawPaths := os.Getenv("GOPATH")
+	paths := strings.Split(rawPaths, ":")
+	for _, j := range paths {
+		// Checks data path
+		path = filepath.Join(j, "src", "github.com", "g3n", "g3nd", dirDataName)
+		if _, err := os.Stat(path); err == nil {
+			return path
+		}
+	}
+
+	// Show error message and aborts
 	a.log.Fatal("Data directory NOT FOUND")
 	return ""
 }
