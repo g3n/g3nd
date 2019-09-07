@@ -18,8 +18,6 @@ import (
 	"github.com/g3n/g3nd/app"
 )
 
-var TEST = 1.2
-
 func main() {
 
 	// Create and run application
