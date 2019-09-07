@@ -93,7 +93,7 @@ type FileSelect struct {
 func NewFileSelect(width, height float32) *FileSelect {
 
 	fs := new(FileSelect)
-	fs.Panel.Initialize(width, height)
+	fs.Panel.Initialize(fs, width, height)
 	fs.SetBorders(1, 1, 1, 1)
 	fs.SetPaddings(4, 4, 4, 4)
 	fs.SetColor(math32.NewColor("white"))

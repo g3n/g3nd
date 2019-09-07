@@ -1,33 +1,27 @@
 package main
 
 import (
-	_ "github.com/g3n/g3nd/animation"
-	_ "github.com/g3n/g3nd/audio"
-	_ "github.com/g3n/g3nd/geometry"
-	_ "github.com/g3n/g3nd/gui"
-	_ "github.com/g3n/g3nd/helper"
-	_ "github.com/g3n/g3nd/light"
-	_ "github.com/g3n/g3nd/loader"
-	_ "github.com/g3n/g3nd/material"
-	_ "github.com/g3n/g3nd/other"
-	_ "github.com/g3n/g3nd/experimental/physics"
-	_ "github.com/g3n/g3nd/shader"
-	_ "github.com/g3n/g3nd/tests"
-	_ "github.com/g3n/g3nd/texture"
+	_ "github.com/g3n/g3nd/demos/animation"
+	//_ "github.com/g3n/g3nd/demos/audio"
+	_ "github.com/g3n/g3nd/demos/experimental/physics"
+	_ "github.com/g3n/g3nd/demos/geometry"
+	_ "github.com/g3n/g3nd/demos/gui"
+	_ "github.com/g3n/g3nd/demos/helper"
+	_ "github.com/g3n/g3nd/demos/light"
+	_ "github.com/g3n/g3nd/demos/loader"
+	_ "github.com/g3n/g3nd/demos/material"
+	_ "github.com/g3n/g3nd/demos/other"
+	_ "github.com/g3n/g3nd/demos/shader"
+	_ "github.com/g3n/g3nd/demos/tests"
+	_ "github.com/g3n/g3nd/demos/texture"
 
 	"github.com/g3n/g3nd/app"
-	"github.com/g3n/g3nd/demos"
 )
+
+var TEST = 1.2
 
 func main() {
 
-	// Creates application and panics if error
-	a := app.Create(demos.Map)
-
-	if a != nil {
-		err := a.Run()
-		if err != nil {
-			panic(err)
-		}
-	}
+	// Create and run application
+	app.Create().Run()
 }

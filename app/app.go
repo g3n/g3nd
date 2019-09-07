@@ -3,88 +3,150 @@ package app
 import (
 	"flag"
 	"fmt"
+	"github.com/g3n/engine/audio/al"
+	"github.com/g3n/engine/util"
+	"github.com/kardianos/osext"
 	"os"
 	"path/filepath"
+	"runtime/pprof"
+	"runtime/trace"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/g3n/engine/audio/al"
+	"github.com/g3n/engine/app"
+	"github.com/g3n/engine/camera"
 	"github.com/g3n/engine/camera/control"
+	"github.com/g3n/engine/core"
+	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/util/application"
+	"github.com/g3n/engine/renderer"
 	"github.com/g3n/engine/util/logger"
 	"github.com/g3n/engine/util/stats"
 	"github.com/g3n/engine/window"
-	"github.com/kardianos/osext"
 )
 
 // App contains the application state
 type App struct {
-	*application.Application                    // Embedded standard application object
-	log                      *logger.Logger     // Application logger
-	currentDemo              IDemo              // current test object
-	dirData                  string             // full path of data directory
-	labelFPS                 *gui.Label         // header FPS label
-	treeTests                *gui.Tree          // tree with test names
-	stats                    *stats.Stats       // statistics object
-	statsTable               *stats.StatsTable  // statistics table panel
-	control                  *gui.ControlFolder // Pointer to gui control panel
-	ambLight                 *light.Ambient     // Scene default ambient light
-	finalizers               []func()           // List of demo finalizers functions
+	*app.Application                  // Embedded standard application object
+	log              *logger.Logger   // Application logger
+	currentDemo      IDemo            // Current demo
+	dirData          string           // Full path of the data directory
+	scene            *core.Node       // Scene rendered
+	demoScene        *core.Node       // Scene populated by individual demos
+	ambLight         *light.Ambient   // Scene ambient light
+	frameRater       *util.FrameRater // Render loop frame rater
+
+	// GUI
+	mainPanel  *gui.Panel
+	demoPanel  *gui.Panel
+	labelFPS   *gui.Label         // header FPS label
+	treeTests  *gui.Tree          // tree with test names
+	stats      *stats.Stats       // statistics object
+	statsTable *stats.StatsTable  // statistics table panel
+	control    *gui.ControlFolder // Pointer to gui control panel
+
+	// Cameras and orbit control
+	camPersp *camera.Perspective   // Perspective camera
+	camOrtho *camera.Orthographic  // Orthographic camera
+	camera   camera.ICamera        // Current camera
+	orbit    *control.OrbitControl // Camera orbit controller
 }
 
-// IDemo is the interface that must be satisfied for all demo objects
+// IDemo is the interface that must be satisfied by all demos.
 type IDemo interface {
-	Initialize(*App) // Called once to initialize the demo
-	Render(*App)     // Called at each frame for animations
+	Start(*App)                 // Called once at the start of the demo
+	Update(*App, time.Duration) // Called every frame
+	Cleanup(*App)               // Called once at the end of the demo
 }
+
+// DemoMap maps the demo name string to its object
+// Individual demos sets the keys of this map
+var DemoMap = map[string]IDemo{}
 
 // Command line options
-// The standard application object may add other command line options
 var (
-	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
+	// TODO uncomment and implement usage of the following flags
+	//oFullScreen   = flag.Bool("fullscreen", false, "Starts application with full screen")
+	//oSwapInterval = flag.Int("swapinterval", -1, "Sets the swap buffers interval to this value")
 	oHideFPS     = flag.Bool("hidefps", false, "Do now show calculated FPS in the GUI")
 	oUpdateFPS   = flag.Uint("updatefps", 1000, "Time interval in milliseconds to update the FPS in the GUI")
+	oTargetFPS   = flag.Uint("targetfps", 60, "Sets the frame rate in frames per second")
+	oNoglErrors  = flag.Bool("noglerrors", false, "Do not check OpenGL errors at each call (may increase FPS)")
+	oCpuProfile  = flag.String("cpuprofile", "", "Activate cpu profiling writing profile to the specified file")
+	oExecTrace   = flag.String("exectrace", "", "Activate execution tracer writing data to the specified file")
+	oNogui       = flag.Bool("nogui", false, "Do not show the GUI, only the specified demo")
 	oLogs        = flag.String("logs", "", "Set log levels for packages. Ex: gui:debug,gls:info")
 	oStats       = flag.Bool("stats", false, "Shows statistics control panel in the GUI")
 	oRenderStats = flag.Bool("renderstats", false, "Shows gui renderer statistics in the console")
 )
 
+// usage shows the usage of command line flags
+func usage() {
+	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", progName, vmajor, vminor)
+	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", execName)
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 const (
-	progName = "G3N Demo"
+	progName = "G3N Demo" // TODO set title (create pair of files for build tags)
 	execName = "g3nd"
 	vmajor   = 0
-	vminor   = 5
+	vminor   = 6
 )
 
 // Create creates the G3ND application using the specified map of demos
-func Create(demoMap map[string]IDemo) *App {
+func Create() *App {
 
-	// Sets the application usage
-	flag.Usage = usage
+	a := new(App)
+	a.Application = app.App()
 
-	// Creates standard application object
-	a, err := application.Create(application.Options{
-		Title:       progName,
-		Width:       1000,
-		Height:      600,
-		Fullscreen:  false,
-		LogPrefix:   "G3ND",
-		LogLevel:    logger.DEBUG,
-		TargetFPS:   60,
-		EnableFlags: true,
-	})
-	if err != nil {
-		panic(err)
-	}
-	app := new(App)
-	app.Application = a
-	app.log = app.Log()
-	app.log.Info("%s v%d.%d starting", progName, vmajor, vminor)
-	app.stats = stats.NewStats(app.Gl())
+	// Creates application logger
+	a.log = logger.New("G3ND", nil)
+	a.log.AddWriter(logger.NewConsole(false))
+	a.log.SetFormat(logger.FTIME | logger.FMICROS)
+	a.log.SetLevel(logger.DEBUG)
+
+	a.log.Info("%s v%d.%d starting", progName, vmajor, vminor)
+
+	a.stats = stats.NewStats(a.Gls())
+
+	// Log OpenGL version
+	glVersion := a.Gls().GetString(gls.VERSION)
+	a.log.Info("OpenGL version: %s", glVersion)
+
+	// Set OpenGL error checking based on flag
+	a.Gls().SetCheckErrors(!*oNoglErrors)
+
+	// Create scenes
+	a.demoScene = core.NewNode() // demoScene will be cleared before a new demo is started
+	a.scene = core.NewNode()
+	a.scene.Add(a.demoScene)
+
+	// Create perspective camera
+	width, height := a.GetSize()
+	aspect := float32(width) / float32(height)
+	a.camPersp = camera.NewPerspective(65, aspect, 0.01, 1000)
+	a.camera = a.camPersp // Default camera is perspective
+
+	// Create orthographic camera
+	a.camOrtho = camera.NewOrthographic(-2, 2, 2, -2, 0.01, 1000)
+
+	// Add camera to scene (important for audio demos)
+	a.scene.Add(a.camera.GetCamera())
+
+	// Create and add ambient light to scene
+	a.ambLight = light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.5)
+	a.scene.Add(a.ambLight)
+
+	// Create frame rater
+	a.frameRater = util.NewFrameRater(*oTargetFPS)
+
+	flag.Usage = usage // Sets the application usage
+	flag.Parse()       // Parse command line flags
 
 	// Apply log levels to engine package loggers
 	if *oLogs != "" {
@@ -92,7 +154,7 @@ func Create(demoMap map[string]IDemo) *App {
 		for i := 0; i < len(logs); i++ {
 			parts := strings.Split(logs[i], ":")
 			if len(parts) != 2 {
-				app.log.Error("Invalid logs level string")
+				a.log.Error("Invalid logs level string")
 				continue
 			}
 			pack := strings.ToUpper(parts[0])
@@ -100,426 +162,78 @@ func Create(demoMap map[string]IDemo) *App {
 			path := "G3N/" + pack
 			packlog := logger.Find(path)
 			if packlog == nil {
-				app.log.Error("No logger for package:%s", pack)
+				a.log.Error("No logger for package:%s", pack)
 				continue
 			}
 			err := packlog.SetLevelByName(level)
 			if err != nil {
-				app.log.Error("%s", err)
+				a.log.Error("%s", err)
 			}
-			app.log.Info("Set log level:%s for package:%s", level, pack)
+			a.log.Info("Set log level:%s for package:%s", level, pack)
 		}
 	}
 
-	// Check for data directory and aborts if not found
-	app.dirData = app.checkDirData("data")
-	app.log.Info("Using data directory:%s", app.dirData)
+	// Check for data directory and abort if not found
+	a.dirData = a.checkDirData("data")
+	a.log.Info("Using data directory:%s", a.dirData)
 
-	// Open default audio device
-	err = app.OpenDefaultAudioDevice()
-	if err != nil {
-		app.log.Error("%v", err)
+	// Create demoPanel to house GUI elements created by the demos
+	a.demoPanel = gui.NewPanel(0, 0)
+	a.demoPanel.SetColor4(&gui.StyleDefault().Scroller.BgColor)
+	a.demoPanel.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
+
+	// Build user interface
+	if *oNogui {
+		a.scene.Add(a.demoPanel)
+	} else {
+		a.buildGui(DemoMap)
 	}
 
-	// Builds user interface
-	if *oNogui == false {
-		app.buildGui(demoMap)
-	}
+	// Sets the default window resize event handler
+	a.Subscribe(window.OnWindowSize, func(evname string, ev interface{}) { a.OnWindowResize() })
+	a.OnWindowResize()
+
+	// Subscribe to key events
+	a.Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
+		kev := ev.(*window.KeyEvent)
+		if kev.Key == window.KeyEscape { // ESC terminates the program
+			a.Exit()
+		} else if kev.Key == window.KeyF11 { // F11 toggles full screen
+			//a.Window().SetFullScreen(!a.Window().FullScreen()) // TODO
+		} else if kev.Key == window.KeyS && kev.Mods == window.ModAlt { // Ctr-S prints statistics in the console
+			a.logStats()
+		}
+	})
 
 	// Setup scene
-	app.setupScene()
+	a.setupScene()
 
 	// If name of test supplied in the command line
-	// sets it as the current test and initialize it.
+	// set it as the current test and initialize it.
 	if len(flag.Args()) > 0 {
 		tname := flag.Args()[0]
-		for name, test := range demoMap {
-			if name == tname {
-				app.currentDemo = test
-				app.currentDemo.Initialize(app)
-				break
-			}
+		a.log.Info("ARGS")
+		test, ok := DemoMap[tname]
+		if ok {
+			a.log.Info("Start")
+			a.currentDemo = test
+			a.currentDemo.Start(a)
 		}
-		if app.currentDemo == nil {
-			app.log.Error("Invalid demo name")
+		if a.currentDemo == nil {
+			a.log.Error("Invalid demo name")
 			usage()
 			return nil
 		}
 	}
 
-	// Subscribe to before render events to call current test Render method
-	app.Subscribe(application.OnBeforeRender, func(evname string, ev interface{}) {
-		if app.currentDemo != nil {
-			app.currentDemo.Render(app)
-		}
-	})
-
-	// Subscribe to after render events to update the FPS
-	app.Subscribe(application.OnAfterRender, func(evname string, ev interface{}) {
-		// Update statistics
-		if app.stats.Update(time.Second) {
-			if app.statsTable != nil {
-				app.statsTable.Update(app.stats)
-			}
-		}
-		// Update render stats
-		if *oRenderStats {
-			stats := app.Renderer().Stats()
-			if stats.Panels > 0 {
-				app.log.Debug("render stats:%+v", stats)
-			}
-		}
-		// Update FPS
-		app.updateFPS()
-	})
-	return app
-}
-
-// GuiPanel returns the current gui panel for demos to add elements to.
-func (app *App) GuiPanel() *gui.Panel {
-
-	if *oNogui {
-		return &app.Gui().Panel
-	}
-	return app.Panel3D().GetPanel()
-}
-
-// DirData returns the base directory for data
-func (app *App) DirData() string {
-
-	return app.dirData
-}
-
-// ControlFolder returns the application control folder
-func (app *App) ControlFolder() *gui.ControlFolder {
-
-	return app.control
-}
-
-// AmbLight returns the default scene ambient light
-func (app *App) AmbLight() *light.Ambient {
-
-	return app.ambLight
-}
-
-// AddFinalizer adds a function which will be executed before another demo is started
-func (app *App) AddFinalizer(f func()) {
-
-	app.finalizers = append(app.finalizers, f)
-}
-
-// UpdateFPS updates the fps value in the window title or header label
-func (app *App) updateFPS() {
-
-	if *oHideFPS {
-		return
-	}
-
-	// Get the FPS and potential FPS from the frameRater
-	fps, pfps, ok := app.FrameRater().FPS(time.Duration(*oUpdateFPS) * time.Millisecond)
-	if !ok {
-		return
-	}
-
-	// Shows the values in the window title or header label
-	msg := fmt.Sprintf("%3.1f / %3.1f", fps, pfps)
-	if *oNogui {
-		app.Window().SetTitle(msg)
-	} else {
-		app.labelFPS.SetText(msg)
-	}
-}
-
-// setupScene resets the current scene for executing a new (or first) test
-func (app *App) setupScene() {
-
-	// Execute demo finalizers functions and clear finalizers list
-	for i := 0; i < len(app.finalizers); i++ {
-		app.finalizers[i]()
-	}
-	app.finalizers = app.finalizers[0:0]
-
-	// Cancel next events and clear all window subscriptions
-	app.Window().CancelDispatch()
-	app.Window().ClearSubscriptions()
-	app.GuiPanel().ClearSubscriptions()
-
-	// Reset current cursor and clear all custom cursors
-	app.Window().Manager().DisposeAllCursors()
-	app.Window().SetStandardCursor(window.ArrowCursor)
-
-	// Dispose of all test scene children
-	app.Scene().DisposeChildren(true)
-	if app.Panel3D() != nil {
-		app.Panel3D().GetPanel().DisposeChildren(true)
-	}
-
-	// Sets default background color
-	app.Gl().ClearColor(0.6, 0.6, 0.6, 1.0)
-
-	// Reset renderer z-sorting flag
-	app.Renderer().SetObjectSorting(true)
-
-	// Adds ambient light to the test scene
-	app.ambLight = light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.5)
-	app.Scene().Add(app.ambLight)
-
-	// Sets perspective camera position
-	width, height := app.Window().Size()
-	aspect := float32(width) / float32(height)
-	app.CameraPersp().SetPosition(0, 0, 5)
-	app.CameraPersp().LookAt(&math32.Vector3{0, 0, 0})
-	app.CameraPersp().SetAspect(aspect)
-
-	// Sets orthographic camera
-	app.CameraOrtho().SetPosition(0, 0, 3)
-	app.CameraOrtho().LookAt(&math32.Vector3{0, 0, 0})
-	app.CameraOrtho().SetZoom(1.0)
-
-	// Default camera is perspective
-	app.SetCamera(app.CameraPersp())
-	// Adds camera to scene (important for audio demos)
-	app.Scene().Add(app.Camera().GetCamera())
-
-	// Subscribe to window key events
-	app.Window().Subscribe(window.OnKeyDown, func(evname string, ev interface{}) {
-		kev := ev.(*window.KeyEvent)
-		// ESC terminates program
-		if kev.Keycode == window.KeyEscape {
-			app.Quit()
-			return
-		}
-		// Alt F11 toggles full screen
-		if kev.Keycode == window.KeyF11 && kev.Mods == window.ModAlt {
-			app.Window().SetFullScreen(!app.Window().FullScreen())
-			return
-		}
-		// Ctr-Alt-S prints statistics in the console
-		if kev.Keycode == window.KeyS && kev.Mods == window.ModControl|window.ModAlt {
-			app.logStats()
-		}
-	})
-
-	// Subscribe to window resize events
-	app.Window().Subscribe(window.OnWindowSize, func(evname string, ev interface{}) {
-		app.OnWindowResize()
-	})
-
-	// Because all windows events were cleared
-	// We need to inform the gui root panel to subscribe again.
-	app.Gui().SubscribeWin()
-
-	// Recreates the orbit camera control
-	// It is important to do this after the root panel subscription
-	// to avoid GUI events being propagated to the orbit control.
-	app.SetOrbit(control.NewOrbitControl(app.Camera(), app.Window()))
-
-	// If audio active, resets global listener parameters
-	al.Listener3f(al.Position, 0, 0, 0)
-	al.Listener3f(al.Velocity, 0, 0, 0)
-	al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
-
-	// If no gui control folder, nothing more to do
-	if app.control == nil {
-		return
-	}
-
-	// Remove all controls and adds default ones
-	app.control.Clear()
-
-	// Adds camera selection
-	cb := app.control.AddCheckBox("Perspective camera")
-	cb.SetValue(true)
-	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		if cb.Value() {
-			app.SetCamera(app.CameraPersp())
-		} else {
-			app.SetCamera(app.CameraOrtho())
-		}
-		app.OnWindowResize()
-		// Recreates orbit camera control
-		app.Orbit().Dispose()
-		app.SetOrbit(control.NewOrbitControl(app.Camera(), app.Window()))
-	})
-
-	// Adds ambient light slider
-	s1 := app.control.AddSlider("Ambient light:", 2.0, app.ambLight.Intensity())
-	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		app.ambLight.SetIntensity(s1.Value())
-	})
-}
-
-// buildGui builds the tester GUI
-func (app *App) buildGui(demoMap map[string]IDemo) {
-
-	// Create dock layout for the tester root panel
-	dl := gui.NewDockLayout()
-	app.Gui().SetLayout(dl)
-
-	// Add transparent panel at the center to contain demos
-	center := gui.NewPanel(0, 0)
-	center.SetRenderable(false)
-	center.SetColor4(&gui.StyleDefault().Scroller.BgColor)
-	center.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockCenter})
-	app.Gui().Add(center)
-	app.SetPanel3D(center)
-
-	// Adds header after the gui central panel to ensure that the control folder
-	// stays over the gui panel when opened.
-	headerColor := math32.Color4{13.0/256.0, 41.0/256.0, 62.0/256.0, 1}
-	lightTextColor := math32.Color4{0.8, 0.8, 0.8, 1}
-	header := gui.NewPanel(600, 40)
-	header.SetBorders(0, 0, 1, 0)
-	header.SetPaddings(4, 4, 4, 4)
-	header.SetColor4(&headerColor)
-	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
-
-	// Horizontal box layout for the header
-	hbox := gui.NewHBoxLayout()
-	header.SetLayout(hbox)
-	app.Gui().Add(header)
-
-	// Add an optional image to header
-	logo, err := gui.NewImage(app.dirData + "/images/g3n_logo_32.png")
-	if err == nil {
-		logo.SetContentAspectWidth(32)
-		header.Add(logo)
-	}
-
-	// Header title
-	const fontSize = 20
-	title := gui.NewLabel(" ")
-	title.SetFontSize(fontSize)
-	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-	title.SetText(fmt.Sprintf("%s v%d.%d", progName, vmajor, vminor))
-	title.SetColor4(&lightTextColor)
-	header.Add(title)
-	// FPS
-	if !*oHideFPS {
-		l1 := gui.NewLabel(" ")
-		l1.SetFontSize(fontSize)
-		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-		l1.SetText("  FPS: ")
-		l1.SetColor4(&lightTextColor)
-		header.Add(l1)
-		// FPS value
-		app.labelFPS = gui.NewLabel(" ")
-		app.labelFPS.SetFontSize(fontSize)
-		app.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
-		app.labelFPS.SetColor4(&lightTextColor)
-		header.Add(app.labelFPS)
-	}
-
-	// New styles for control folder
-	styles := gui.StyleDefault().ControlFolder
-	styles.Folder.Normal.BgColor = headerColor
-	styles.Folder.Over.BgColor = headerColor
-	styles.Folder.Normal.FgColor = lightTextColor
-	styles.Folder.Over.FgColor = lightTextColor
-
-	// Adds statistics table control folder if requested
-	if *oStats {
-		// Adds spacer to right justify the control folder in the header
-		spacer := gui.NewPanel(0, 0)
-		spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1.2})
-		header.Add(spacer)
-
-		// Creates control folder for statistics table
-		statsControlFolder := gui.NewControlFolder("Stats", 100)
-		statsControlFolder.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
-		statsControlFolder.SetStyles(&styles)
-		header.Add(statsControlFolder)
-
-		// Adds stats table in the control folder
-		app.statsTable = stats.NewStatsTable(220, 200, app.Gl())
-		statsControlFolder.AddPanel(app.statsTable)
-	}
-
-	// Adds spacer to right justify the control folder in the header
-	spacer := gui.NewPanel(0, 0)
-	spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1})
-	header.Add(spacer)
-
-	// Adds control folder in the header
-	app.control = gui.NewControlFolder("Controls", 100)
-	app.control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
-	app.control.SetStyles(&styles)
-	header.Add(app.control)
-
-	// Test list
-	app.treeTests = gui.NewTree(175, 0)
-	app.treeTests.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockLeft})
-	// Sort test names
-	tnames := []string{}
-	nodes := make(map[string]*gui.TreeNode)
-	for name := range demoMap {
-		tnames = append(tnames, name)
-	}
-	sort.Strings(tnames)
-	// Add items to the list
-	for _, name := range tnames {
-		parts := strings.Split(name, ".")
-		if len(parts) > 1 {
-			category := parts[0]
-			node := nodes[category]
-			if node == nil {
-				node = app.treeTests.AddNode(category)
-				nodes[category] = node
-			}
-			labelText := strings.Join(parts[1:], ".")
-			item := gui.NewLabel(labelText)
-			item.SetUserData(demoMap[name])
-			node.Add(item)
-		} else {
-			item := gui.NewLabel(name)
-			item.SetUserData(demoMap[name])
-			app.treeTests.Add(item)
-		}
-	}
-	app.treeTests.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
-		sel := app.treeTests.Selected()
-		if sel == nil {
-			return
-		}
-		label, ok := sel.(*gui.Label)
-		if ok {
-			app.setupScene()
-			test := label.GetNode().UserData().(IDemo)
-			test.Initialize(app)
-			app.currentDemo = test
-		}
-	})
-	app.Gui().Add(app.treeTests)
-}
-
-// logStats generate log with current statistics
-func (app *App) logStats() {
-
-	const statsFormat = `
-         Shaders: %d
-            Vaos: %d
-         Buffers: %d
-        Textures: %d
-  Uniforms/frame: %d
-Draw calls/frame: %d
- CGO calls/frame: %d
-`
-	app.log.Info(statsFormat,
-		app.stats.Glstats.Shaders,
-		app.stats.Glstats.Vaos,
-		app.stats.Glstats.Buffers,
-		app.stats.Glstats.Textures,
-		app.stats.Unisets,
-		app.stats.Drawcalls,
-		app.stats.Cgocalls,
-	)
+	return a
 }
 
 // checkDirData try to find and return the complete data directory path.
 // Aborts if not found
-func (app *App) checkDirData(dirDataName string) string {
+func (a *App) checkDirData(dirDataName string) string {
 
-	// Checks first if data directory is in the current directory
+	// Check first if data directory is in the current directory
 	if _, err := os.Stat(dirDataName); err == nil {
 		dirData, err := filepath.Abs(dirDataName)
 		if err != nil {
@@ -550,15 +264,425 @@ func (app *App) checkDirData(dirDataName string) string {
 	}
 
 	// Shows error message and aborts
-	app.log.Fatal("Data directory NOT FOUND")
+	a.log.Fatal("Data directory NOT FOUND")
 	return ""
 }
 
-// usage shows the application usage
-func usage() {
+// logStats generate log with current statistics
+func (a *App) logStats() {
 
-	fmt.Fprintf(os.Stderr, "%s v%d.%d\n", progName, vmajor, vminor)
-	fmt.Fprintf(os.Stderr, "usage: %s [options] [<test>] \n", execName)
-	flag.PrintDefaults()
-	os.Exit(2)
+	const statsFormat = `
+         Shaders: %d
+            Vaos: %d
+         Buffers: %d
+        Textures: %d
+  Uniforms/frame: %d
+Draw calls/frame: %d
+ CGO calls/frame: %d
+`
+	a.log.Info(statsFormat,
+		a.stats.Glstats.Shaders,
+		a.stats.Glstats.Vaos,
+		a.stats.Glstats.Buffers,
+		a.stats.Glstats.Textures,
+		a.stats.Unisets,
+		a.stats.Drawcalls,
+		a.stats.Cgocalls,
+	)
+}
+
+// buildGui builds the tester GUI
+func (a *App) buildGui(demoMap map[string]IDemo) {
+
+	// Create dock layout for the tester root panel
+	dl := gui.NewDockLayout()
+	width, height := a.GetSize()
+	a.mainPanel = gui.NewPanel(float32(width), float32(height))
+	a.mainPanel.SetRenderable(false)
+	a.mainPanel.SetEnabled(false)
+	a.mainPanel.SetLayout(dl)
+	a.scene.Add(a.mainPanel)
+	gui.Manager().Set(a.mainPanel)
+
+	// Add transparent panel at the center to contain demos
+	a.mainPanel.Add(a.demoPanel)
+
+	// Adds header after the gui central panel to ensure that the control folder
+	// stays over the gui panel when opened.
+	headerColor := math32.Color4{13.0 / 256.0, 41.0 / 256.0, 62.0 / 256.0, 1}
+	lightTextColor := math32.Color4{0.8, 0.8, 0.8, 1}
+	header := gui.NewPanel(600, 40)
+	header.SetBorders(0, 0, 1, 0)
+	header.SetPaddings(4, 4, 4, 4)
+	header.SetColor4(&headerColor)
+	header.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockTop})
+
+	// Horizontal box layout for the header
+	hbox := gui.NewHBoxLayout()
+	header.SetLayout(hbox)
+	a.mainPanel.Add(header)
+
+	// Add an optional image to header
+	logo, err := gui.NewImage(a.dirData + "/images/g3n_logo_32.png")
+	if err == nil {
+		logo.SetContentAspectWidth(32)
+		header.Add(logo)
+	}
+
+	// Header title
+	const fontSize = 20
+	title := gui.NewLabel(" ")
+	title.SetFontSize(fontSize)
+	title.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
+	title.SetText(fmt.Sprintf("%s v%d.%d", progName, vmajor, vminor))
+	title.SetColor4(&lightTextColor)
+	header.Add(title)
+	// FPS
+	if !*oHideFPS {
+		l1 := gui.NewLabel(" ")
+		l1.SetFontSize(fontSize)
+		l1.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
+		l1.SetText("  FPS: ")
+		l1.SetColor4(&lightTextColor)
+		header.Add(l1)
+		// FPS value
+		a.labelFPS = gui.NewLabel(" ")
+		a.labelFPS.SetFontSize(fontSize)
+		a.labelFPS.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignCenter})
+		a.labelFPS.SetColor4(&lightTextColor)
+		header.Add(a.labelFPS)
+	}
+
+	// New styles for control folder
+	styles := gui.StyleDefault().ControlFolder
+	styles.Folder.Normal.BgColor = headerColor
+	styles.Folder.Over.BgColor = headerColor
+	styles.Folder.Normal.FgColor = lightTextColor
+	styles.Folder.Over.FgColor = lightTextColor
+
+	// Adds statistics table control folder if requested
+	if *oStats {
+		// Adds spacer to right justify the control folder in the header
+		spacer := gui.NewPanel(0, 0)
+		spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1.2})
+		header.Add(spacer)
+
+		// Creates control folder for statistics table
+		statsControlFolder := gui.NewControlFolder("Stats", 100)
+		statsControlFolder.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
+		statsControlFolder.SetStyles(&styles)
+		header.Add(statsControlFolder)
+
+		// Adds stats table in the control folder
+		a.statsTable = stats.NewStatsTable(220, 200, a.Gls())
+		statsControlFolder.AddPanel(a.statsTable)
+	}
+
+	// Adds spacer to right justify the control folder in the header
+	spacer := gui.NewPanel(0, 0)
+	spacer.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom, Expand: 1})
+	header.Add(spacer)
+
+	// Adds control folder in the header
+	a.control = gui.NewControlFolder("Controls", 100)
+	a.control.SetLayoutParams(&gui.HBoxLayoutParams{AlignV: gui.AlignBottom})
+	a.control.SetStyles(&styles)
+	header.Add(a.control)
+
+	// Test list
+	a.treeTests = gui.NewTree(175, 0)
+
+	// TODO This does not persist - have to change style / but better yet is to improve GUI so that individual style changes can be performed this way
+	//a.treeTests.SetBorders(0, 1, 1, 1)
+
+	a.treeTests.SetLayoutParams(&gui.DockLayoutParams{Edge: gui.DockLeft})
+	// Sort test names
+	tnames := []string{}
+	nodes := make(map[string]*gui.TreeNode)
+	for name := range demoMap {
+		tnames = append(tnames, name)
+	}
+	sort.Strings(tnames)
+	// Add items to the list
+	for _, name := range tnames {
+		parts := strings.Split(name, ".")
+		if len(parts) > 1 {
+			category := parts[0]
+			node := nodes[category]
+			if node == nil {
+				node = a.treeTests.AddNode(category)
+				nodes[category] = node
+			}
+			labelText := strings.Join(parts[1:], ".")
+			item := gui.NewLabel(labelText)
+			item.SetUserData(demoMap[name])
+			node.Add(item)
+		} else {
+			item := gui.NewLabel(name)
+			item.SetUserData(demoMap[name])
+			a.treeTests.Add(item)
+		}
+	}
+	a.treeTests.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		sel := a.treeTests.Selected()
+		if sel == nil {
+			return
+		}
+		label, ok := sel.(*gui.Label)
+		if ok {
+			a.setupScene()
+			test := label.GetNode().UserData().(IDemo)
+			test.Start(a)
+			a.currentDemo = test
+		}
+	})
+	a.mainPanel.Add(a.treeTests)
+}
+
+// setupScene resets the current scene for executing a new (or first) test
+func (a *App) setupScene() {
+
+	// If there was a previous demo running, execute its Cleanup() method
+	if a.currentDemo != nil {
+		a.currentDemo.Cleanup(a)
+	}
+
+	// Destroy all objects in demo scene and GUI
+	a.demoScene.DisposeChildren(true)
+	a.demoPanel.DisposeChildren(true)
+
+	// By default set the demo panel as not renderable (so it doesn't show) and not enabled (so it doesn't capture events)
+	a.demoPanel.SetRenderable(false)
+	a.demoPanel.SetEnabled(false)
+
+	// Clear subscriptions with ID (every subscribe called by demos should use the app address as ID so we can unsubscribe here)
+	a.demoPanel.UnsubscribeAllID(a)
+	a.UnsubscribeAllID(a)
+
+	// Clear all custom cursors and reset current cursor
+	a.DisposeAllCustomCursors()
+	a.SetCursor(window.ArrowCursor)
+
+	// Set default background color
+	a.Gls().ClearColor(0.6, 0.6, 0.6, 1.0)
+
+	// Reset renderer z-sorting flag
+	a.Renderer().SetObjectSorting(true)
+
+	// Reset ambient light
+	a.ambLight.SetColor(&math32.Color{1.0, 1.0, 1.0})
+	a.ambLight.SetIntensity(0.5)
+
+	// Reset perspective camera
+	width, height := a.GetSize()
+	aspect := float32(width) / float32(height)
+	a.camPersp.SetPosition(0, 0, 5)
+	a.camPersp.LookAt(&math32.Vector3{0, 0, 0})
+	a.camPersp.SetAspect(aspect)
+	a.camera = a.camPersp // Default camera is perspective
+
+	// Reset orthographic camera
+	a.camOrtho.SetPosition(0, 0, 500)
+	a.camOrtho.LookAt(&math32.Vector3{0, 0, 0})
+	a.camOrtho.SetZoom(1.0)
+
+	// Recreate the orbit camera control
+	if a.orbit != nil {
+		a.orbit.Dispose()
+	}
+	a.orbit = control.NewOrbitControl(a.camera)
+
+	// If audio active, resets global listener parameters
+	al.Listener3f(al.Position, 0, 0, 0)
+	al.Listener3f(al.Velocity, 0, 0, 0)
+	al.Listenerfv(al.Orientation, []float32{0, 0, -1, 0, 1, 0})
+
+	// If no gui control folder, nothing more to do
+	if a.control == nil {
+		return
+	}
+
+	// Remove all controls and adds default ones
+	a.control.Clear()
+
+	// Adds camera selection
+	cb := a.control.AddCheckBox("Perspective camera")
+	cb.SetValue(true)
+	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if cb.Value() {
+			a.camera = a.camPersp
+		} else {
+			a.camera = a.camOrtho
+		}
+		a.OnWindowResize()
+		// Recreates orbit camera control
+		a.orbit.Dispose()
+		a.orbit = control.NewOrbitControl(a.camera)
+	})
+
+	// Adds ambient light slider
+	s1 := a.control.AddSlider("Ambient light:", 2.0, a.ambLight.Intensity())
+	s1.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		a.ambLight.SetIntensity(s1.Value())
+	})
+}
+
+// DemoPanel returns the current gui panel for demos to add elements to.
+func (a *App) DemoPanel() *gui.Panel {
+
+	return a.demoPanel
+}
+
+// DirData returns the base directory for data
+func (a *App) DirData() string {
+
+	return a.dirData
+}
+
+// ControlFolder returns the application control folder
+func (a *App) ControlFolder() *gui.ControlFolder {
+
+	return a.control
+}
+
+// AmbLight returns the default scene ambient light
+func (a *App) AmbLight() *light.Ambient {
+
+	return a.ambLight
+}
+
+// Log returns the application logger
+func (a *App) Log() *logger.Logger {
+
+	return a.log
+}
+
+// Scene returns the current application 3D scene
+func (a *App) Scene() *core.Node {
+
+	return a.demoScene
+}
+
+// Camera returns the current application camera
+func (a *App) Camera() camera.ICamera {
+
+	return a.camera
+}
+
+// Orbit returns the current camera orbit control
+func (a *App) Orbit() *control.OrbitControl {
+
+	return a.orbit
+}
+
+// OnWindowResize is default handler for window resize events.
+func (a *App) OnWindowResize() {
+
+	// Get framebuffer size and set the viewport accordingly
+	width, height := a.GetFramebufferSize()
+	a.Gls().Viewport(0, 0, int32(width), int32(height))
+
+	// Set perspective camera aspect ratio
+	a.camera.SetAspect(float32(width) / float32(height)) // TODO if set aspect of both cameras here every time then might not need to call this method when clicking camera checkbox
+
+	if *oNogui {
+		a.demoPanel.SetSize(float32(width), float32(height))
+	} else {
+		a.mainPanel.SetSize(float32(width), float32(height))
+	}
+}
+
+// Run runs the application render loop
+func (a *App) Run() {
+
+	// Start profiling if requested
+	if *oCpuProfile != "" {
+		f, err := os.Create(*oCpuProfile)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+		err = pprof.StartCPUProfile(f)
+		if err != nil {
+			panic(err)
+		}
+		defer pprof.StopCPUProfile()
+		a.log.Info("Started writing CPU profile to: %s", *oCpuProfile)
+	}
+
+	// Start execution trace if requested
+	if *oExecTrace != "" {
+		f, err := os.Create(*oExecTrace)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+		err = trace.Start(f)
+		if err != nil {
+			panic(err)
+		}
+		defer trace.Stop()
+		a.log.Info("Started writing execution trace to: %s", *oExecTrace)
+	}
+
+	a.Application.Run(a.Update)
+}
+
+func (a *App) Update(rend *renderer.Renderer, deltaTime time.Duration) {
+
+	// Start measuring this frame
+	a.frameRater.Start()
+
+	// Clear the color, depth, and stencil buffers
+	a.Gls().Clear(gls.COLOR_BUFFER_BIT | gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT) // TODO maybe do inside renderer, and allow customization
+
+	// Update the current running demo if any
+	if a.currentDemo != nil {
+		a.currentDemo.Update(a, deltaTime)
+	}
+
+	// Render scene
+	err := rend.Render(a.scene, a.camera)
+	if err != nil {
+		panic(err)
+	}
+
+	// Update GUI timers
+	gui.Manager().TimerManager.ProcessTimers()
+
+	// Update statistics
+	if a.stats.Update(time.Second) {
+		if a.statsTable != nil {
+			a.statsTable.Update(a.stats)
+		}
+	}
+
+	// Update render stats
+	if *oRenderStats {
+		stats := a.Renderer().Stats()
+		if stats.Panels > 0 {
+			a.log.Debug("render stats:%+v", stats)
+		}
+	}
+
+	// Control and update FPS
+	a.frameRater.Wait()
+	a.updateFPS()
+}
+
+// UpdateFPS updates the fps value in the window title or header label
+func (a *App) updateFPS() {
+
+	if *oHideFPS {
+		return
+	}
+
+	// Get the FPS and potential FPS from the frameRater
+	fps, pfps, ok := a.frameRater.FPS(time.Duration(*oUpdateFPS) * time.Millisecond)
+	if !ok {
+		return
+	}
+
+	// Show the FPS in the header label
+	a.labelFPS.SetText(fmt.Sprintf("%3.1f / %3.1f", fps, pfps))
 }
