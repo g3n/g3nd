@@ -1,17 +1,16 @@
-# G3ND - G3N Game Engine Demo Program
+# G3ND - G3N Game Engine Demo
 
-G3ND is a demo/test program for the [G3N](https://github.com/g3n/engine) 3D game engine.
-It demonstrates the main features of the engine and contains some basic tests.
-It can be used to learn the game engine API by examining the source code of the demo programs.
-It's very easy to create a new demo as the main program takes care of a lot of initializations and housekeeping.
+G3ND is the demo for the [G3N](https://github.com/g3n/engine) 3D game engine.
+It demonstrates and exercises the main features of the engine. Browsing and reading through the source code of the [demos](https://github.com/g3n/g3nd/tree/master/demos) is a great way to learn how to use the engine.
+It's very easy to create a new demo as the main program takes care of initializing common objects and components.
 
 <p align="center">
   <img style="float: right;" src="https://raw.githubusercontent.com/g3n/g3nd/master/data/images/g3nd_screenshots.png" alt="G3ND In Action"/>
 </p>
 
-# Dependencies for installation
+# Dependencies
 
-G3ND only depends on the [G3N](https://github.com/g3n/engine) game engine and so has the same dependencies as the engine itself.
+G3ND only depends on [G3N](https://github.com/g3n/engine) and so has the same dependencies as the engine itself.
 Please verify that the engine dependencies are in place before installing.
 
 # Installation
