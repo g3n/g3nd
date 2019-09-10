@@ -11,7 +11,7 @@ It's very easy to create a new demo as the main program takes care of initializi
 # Dependencies
 
 G3ND only depends on [G3N](https://github.com/g3n/engine) and so has the same dependencies as the engine itself.
-Please verify that the engine dependencies are in place before installing.
+Please verify that the [engine dependencies](https://github.com/g3n/engine#dependencies) are in place before installing.
 
 # Installation
 
