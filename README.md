@@ -15,8 +15,8 @@ Please verify that the [engine dependencies](https://github.com/g3n/engine#depen
 
 # Installation
 
-The following commands will download G3ND, the engine, and other Go packages on which the engine depends.
-It will also compile and install the packages and the generate `g3nd` binary.
+The following set of commands will download, compile, and install G3ND, the engine, and other Go packages on which the engine depends.
+It will also generate the `g3nd` binary.
 
 ```
 git clone https://github.com/g3n/g3nd
