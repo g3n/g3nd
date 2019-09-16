@@ -16,7 +16,6 @@ import (
 
 	"github.com/g3n/engine/app"
 	"github.com/g3n/engine/camera"
-	"github.com/g3n/engine/camera/control"
 	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/gui"
@@ -48,11 +47,9 @@ type App struct {
 	statsTable *stats.StatsTable  // statistics table panel
 	control    *gui.ControlFolder // Pointer to gui control panel
 
-	// Cameras and orbit control
-	camPersp *camera.Perspective   // Perspective camera
-	camOrtho *camera.Orthographic  // Orthographic camera
-	camera   camera.ICamera        // Current camera
-	orbit    *control.OrbitControl // Camera orbit controller
+	// Camera and orbit control
+	camera *camera.Camera       // Camera
+	orbit  *camera.OrbitControl // Orbit control
 }
 
 // IDemo is the interface that must be satisfied by all demos.
@@ -126,17 +123,12 @@ func Create() *App {
 	a.scene = core.NewNode()
 	a.scene.Add(a.demoScene)
 
-	// Create perspective camera
+	// Create camera and orbit control
 	width, height := a.GetSize()
 	aspect := float32(width) / float32(height)
-	a.camPersp = camera.NewPerspective(65, aspect, 0.01, 1000)
-	a.camera = a.camPersp // Default camera is perspective
-
-	// Create orthographic camera
-	a.camOrtho = camera.NewOrthographic(-2, 2, 2, -2, 0.01, 1000)
-
-	// Add camera to scene (important for audio demos)
-	a.scene.Add(a.camera.GetCamera())
+	a.camera = camera.New(aspect)
+	a.scene.Add(a.camera) // Add camera to scene (important for audio demos)
+	a.orbit = camera.NewOrbitControl(a.camera)
 
 	// Create and add ambient light to scene
 	a.ambLight = light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.5)
@@ -484,24 +476,12 @@ func (a *App) setupScene() {
 	a.ambLight.SetColor(&math32.Color{1.0, 1.0, 1.0})
 	a.ambLight.SetIntensity(0.5)
 
-	// Reset perspective camera
-	width, height := a.GetSize()
-	aspect := float32(width) / float32(height)
-	a.camPersp.SetPosition(0, 0, 5)
-	a.camPersp.LookAt(&math32.Vector3{0, 0, 0})
-	a.camPersp.SetAspect(aspect)
-	a.camera = a.camPersp // Default camera is perspective
-
-	// Reset orthographic camera
-	a.camOrtho.SetPosition(0, 0, 500)
-	a.camOrtho.LookAt(&math32.Vector3{0, 0, 0})
-	a.camOrtho.SetZoom(1.0)
-
-	// Recreate the orbit camera control
-	if a.orbit != nil {
-		a.orbit.Dispose()
-	}
-	a.orbit = control.NewOrbitControl(a.camera)
+	// Reset camera
+	a.camera.SetPosition(0, 0, 5)
+	a.camera.UpdateSize(5)
+	a.camera.LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
+	a.camera.SetProjection(camera.Perspective)
+	a.orbit.Reset()
 
 	// If audio active, resets global listener parameters
 	al.Listener3f(al.Position, 0, 0, 0)
@@ -517,18 +497,13 @@ func (a *App) setupScene() {
 	a.control.Clear()
 
 	// Adds camera selection
-	cb := a.control.AddCheckBox("Perspective camera")
-	cb.SetValue(true)
+	cb := a.control.AddCheckBox("Perspective camera").SetValue(true)
 	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		if cb.Value() {
-			a.camera = a.camPersp
+			a.camera.SetProjection(camera.Perspective)
 		} else {
-			a.camera = a.camOrtho
+			a.camera.SetProjection(camera.Orthographic)
 		}
-		a.OnWindowResize()
-		// Recreates orbit camera control
-		a.orbit.Dispose()
-		a.orbit = control.NewOrbitControl(a.camera)
 	})
 
 	// Adds ambient light slider
@@ -575,13 +550,13 @@ func (a *App) Scene() *core.Node {
 }
 
 // Camera returns the current application camera
-func (a *App) Camera() camera.ICamera {
+func (a *App) Camera() *camera.Camera {
 
 	return a.camera
 }
 
 // Orbit returns the current camera orbit control
-func (a *App) Orbit() *control.OrbitControl {
+func (a *App) Orbit() *camera.OrbitControl {
 
 	return a.orbit
 }
@@ -593,8 +568,8 @@ func (a *App) OnWindowResize() {
 	width, height := a.GetFramebufferSize()
 	a.Gls().Viewport(0, 0, int32(width), int32(height))
 
-	// Set perspective camera aspect ratio
-	a.camera.SetAspect(float32(width) / float32(height)) // TODO if set aspect of both cameras here every time then might not need to call this method when clicking camera checkbox
+	// Set camera aspect ratio
+	a.camera.SetAspect(float32(width) / float32(height))
 
 	if *oNogui {
 		a.demoPanel.SetSize(float32(width), float32(height))

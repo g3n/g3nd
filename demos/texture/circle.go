@@ -8,6 +8,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -72,7 +73,7 @@ func (t *Texcircle) Start(a *app.App) {
 	a.Scene().Add(t.mesh3)
 
 	// Show axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 }
 

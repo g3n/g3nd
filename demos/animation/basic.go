@@ -8,6 +8,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"time"
 
 	"github.com/g3n/g3nd/app"
@@ -24,7 +25,7 @@ type AnimationBasic struct {
 // Start is called once at the start of the demo.
 func (t *AnimationBasic) Start(a *app.App) {
 
-	ah := graphic.NewAxisHelper(1.0)
+	ah := util.NewAxisHelper(1.0)
 	a.Scene().Add(ah)
 
 	// Adds white directional front light

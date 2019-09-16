@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -15,7 +15,7 @@ type AxisHelper struct{}
 // Start is called once at the start of the demo.
 func (t *AxisHelper) Start(a *app.App) {
 
-	ah := graphic.NewAxisHelper(1.0)
+	ah := util.NewAxisHelper(1.0)
 	a.Scene().Add(ah)
 }
 

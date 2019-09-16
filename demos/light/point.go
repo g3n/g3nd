@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	eutil "github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 
@@ -79,7 +80,7 @@ func (t *PointLight) Start(a *app.App) {
 	pback.SetPosition(0, 0, -2)
 	a.Scene().Add(pback)
 
-	axis := graphic.NewAxisHelper(1)
+	axis := eutil.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	// Creates vertical point light

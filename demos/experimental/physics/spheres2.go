@@ -10,6 +10,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"math"
@@ -36,7 +37,7 @@ func (t *PhysicsSpheres2) Start(a *app.App) {
 	a.Subscribe(window.OnKeyRepeat, t.onKey)
 	a.Subscribe(window.OnKeyDown, t.onKey)
 
-	axis := graphic.NewAxisHelper(1)
+	axis := util.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	pl := light.NewPoint(math32.NewColor("white"), 1.0)
@@ -121,8 +122,8 @@ func (t *PhysicsSpheres2) Start(a *app.App) {
 
 func (t *PhysicsSpheres2) ThrowBall() {
 
-	camPos := t.app.Camera().GetCamera().Position()
-	camTarget := t.app.Camera().GetCamera().Target()
+	camPos := t.app.Camera().Position()
+	camTarget := t.app.Orbit().Target()
 	throwDir := math32.NewVec3().SubVectors(&camTarget, &camPos).SetLength(3)
 
 	sphere := graphic.NewMesh(t.sphereGeom, t.matSphere)

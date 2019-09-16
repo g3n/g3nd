@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 
@@ -19,7 +20,7 @@ func init() {
 type Sphere struct {
 	sphere1 *graphic.Mesh
 	sphere2 *graphic.Mesh
-	normals *graphic.NormalsHelper
+	normals *util.NormalsHelper
 }
 
 // Start is called once at the start of the demo.
@@ -59,11 +60,11 @@ func (t *Sphere) Start(a *app.App) {
 	a.Scene().Add(t.sphere2)
 
 	// Add axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.sphere1, 0.5, &math32.Color{0, 1, 0}, 1)
+	t.normals = util.NewNormalsHelper(t.sphere1, 0.5, &math32.Color{0, 1, 0}, 1)
 	a.Scene().Add(t.normals)
 }
 

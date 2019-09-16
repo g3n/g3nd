@@ -1,6 +1,7 @@
 package geometry
 
 import (
+	"github.com/g3n/engine/util"
 	"math"
 	"time"
 
@@ -18,7 +19,7 @@ func init() {
 
 type Cylinder struct {
 	mesh    *graphic.Mesh
-	normals *graphic.NormalsHelper
+	normals *util.NormalsHelper
 }
 
 // Start is called once at the start of the demo.
@@ -65,11 +66,11 @@ func (t *Cylinder) Start(a *app.App) {
 	a.Scene().Add(mesh3)
 
 	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.mesh, 0.5, &math32.Color{0, 1, 0}, 1)
+	t.normals = util.NewNormalsHelper(t.mesh, 0.5, &math32.Color{0, 1, 0}, 1)
 	a.Scene().Add(t.normals)
 }
 

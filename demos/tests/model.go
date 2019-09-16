@@ -2,8 +2,8 @@
 package tests
 
 import (
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -19,7 +19,7 @@ func init() {
 // By convention and to avoid conflict with other demo/tests name it
 // using your test category and name.
 type testsModel struct {
-	grid *graphic.GridHelper // Pointer to a GridHelper created in 'Start'
+	grid *util.GridHelper // Pointer to a GridHelper created in 'Start'
 }
 
 // This method will be called once when the test is selected from the G3ND list.
@@ -30,16 +30,16 @@ type testsModel struct {
 func (t *testsModel) Start(a *app.App) {
 
 	// Show axis helper
-	ah := graphic.NewAxisHelper(1.0)
+	ah := util.NewAxisHelper(1.0)
 	a.Scene().Add(ah)
 
 	// Creates a grid helper and saves its pointer in the test state
-	t.grid = graphic.NewGridHelper(50, 1, &math32.Color{0.4, 0.4, 0.4})
+	t.grid = util.NewGridHelper(50, 1, &math32.Color{0.4, 0.4, 0.4})
 	a.Scene().Add(t.grid)
 
 	// Changes the camera position
-	a.Camera().GetCamera().SetPosition(0, 4, 10)
-	a.Camera().GetCamera().LookAt(&math32.Vector3{0, 0, 0})
+	a.Camera().SetPosition(0, 4, 10)
+	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 }
 
 // This method will be called at every frame

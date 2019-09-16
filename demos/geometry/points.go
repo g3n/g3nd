@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -20,7 +21,7 @@ type Points struct{}
 func (t *Points) Start(a *app.App) {
 
 	// Adds axis helper to the scene
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Creates geometry

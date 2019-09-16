@@ -167,7 +167,7 @@ func (t *PhysicalVariations) Update(a *app.App, deltaTime time.Duration) {
 
 	// Adjust transparency of sprites according to camera angle
 	var camPos math32.Vector3
-	a.Camera().GetCamera().WorldPosition(&camPos)
+	a.Camera().WorldPosition(&camPos)
 	camPos.Normalize()
 
 	X := camPos.Dot(&math32.Vector3{1, 0, 0})

@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"math"
 	"time"
@@ -17,7 +18,7 @@ func init() {
 
 type Torus struct {
 	torus1  *graphic.Mesh
-	normals *graphic.NormalsHelper
+	normals *util.NormalsHelper
 }
 
 // Start is called once at the start of the demo.
@@ -70,11 +71,11 @@ func (t *Torus) Start(a *app.App) {
 	a.Scene().Add(torus4)
 
 	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Adds normals helper
-	t.normals = graphic.NewNormalsHelper(t.torus1, 0.5, &math32.Color{0, 1, 0}, 1)
+	t.normals = util.NewNormalsHelper(t.torus1, 0.5, &math32.Color{0, 1, 0}, 1)
 	a.Scene().Add(t.normals)
 }
 

@@ -11,6 +11,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -32,11 +33,11 @@ type AudioDirection struct {
 func (t *AudioDirection) Start(a *app.App) {
 
 	// Show axis helper
-	ah := graphic.NewAxisHelper(1.0)
+	ah := util.NewAxisHelper(1.0)
 	a.Scene().Add(ah)
 
 	// Show grid helper
-	grid := graphic.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
+	grid := util.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
 	a.Scene().Add(grid)
 
 	// Add directional white light
@@ -45,13 +46,14 @@ func (t *AudioDirection) Start(a *app.App) {
 	a.Scene().Add(l1)
 
 	// Sets camera position
-	a.Camera().GetCamera().SetPosition(0, 0, 10)
-	a.Camera().GetCamera().LookAt(&math32.Vector3{0, 0, 0})
+	a.Camera().SetPosition(0, 0, 10)
+	a.Camera().UpdateSize(10)
+	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 
 	// Creates listener and adds it to the current camera
 	// The listener must have the same initial direction as the camera
 	listener := audio.NewListener()
-	cam := a.Camera().GetCamera()
+	cam := a.Camera()
 	cdir := cam.Direction()
 	listener.SetDirectionVec(&cdir)
 	cam.Add(listener)

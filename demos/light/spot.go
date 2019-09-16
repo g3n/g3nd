@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	eutil "github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
 	"time"
@@ -26,12 +27,12 @@ type SpotLight struct {
 func (t *SpotLight) Start(a *app.App) {
 
 	// Adds axis helper
-	axis := graphic.NewAxisHelper(1)
+	axis := eutil.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	// Sets camera position
-	a.Camera().GetCamera().SetPosition(0, 6, 10)
-	a.Camera().GetCamera().LookAt(&math32.Vector3{0, 0, 0})
+	a.Camera().SetPosition(0, 6, 10)
+	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 
 	// Creates base plane
 	geom1 := geometry.NewPlane(6, 6, 16, 16)

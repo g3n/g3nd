@@ -8,6 +8,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -81,13 +82,15 @@ func (t *Pitch) Start(a *app.App) {
 
 	a.Scene().Add(t.base)
 
-	cam := a.Camera().GetCamera()
+	cam := a.Camera()
 	cam.SetPosition(-3, 3, 3)
+	pos := cam.Position()
+	cam.UpdateSize(pos.Length())
 	spos := a.Scene().Position()
-	cam.LookAt(&spos)
+	cam.LookAt(&spos, &math32.Vector3{0, 1, 0})
 
 	// Show axis helper
-	axis := graphic.NewAxisHelper(3)
+	axis := util.NewAxisHelper(3)
 	a.Scene().Add(axis)
 }
 

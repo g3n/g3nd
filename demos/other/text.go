@@ -9,6 +9,7 @@ import (
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/text"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -132,7 +133,7 @@ func (t *Text1) Start(a *app.App) {
 	t.planeTime = mesh5
 	a.Scene().Add(mesh5)
 
-	axis := graphic.NewAxisHelper(1)
+	axis := util.NewAxisHelper(1)
 	a.Scene().Add(axis)
 }
 

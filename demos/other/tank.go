@@ -1,6 +1,7 @@
 package other
 
 import (
+	"github.com/g3n/engine/camera"
 	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
@@ -9,6 +10,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -42,7 +44,7 @@ type TankTest struct {
 func (t *TankTest) Start(a *app.App) {
 
 	t.a = a
-	a.Orbit().EnableKeys = false
+	a.Orbit().SetEnabled(^camera.OrbitKeys)
 
 	// Add directional white light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
@@ -50,12 +52,14 @@ func (t *TankTest) Start(a *app.App) {
 	a.Scene().Add(l1)
 
 	// Show grid helper
-	grid := graphic.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
+	grid := util.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
 	a.Scene().Add(grid)
 
 	// Sets camera position
-	a.Camera().GetCamera().SetPosition(0, 4, 10)
-	a.Camera().GetCamera().LookAt(&math32.Vector3{0, 0, 0})
+	a.Camera().SetPosition(0, 4, 10)
+	pos := a.Camera().Position()
+	a.Camera().UpdateSize(pos.Length())
+	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 
 	// Add help label
 	label1 := gui.NewLabel("Use ASDW to drive tank\nUse JKLI to move cannon")

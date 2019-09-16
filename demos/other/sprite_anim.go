@@ -5,6 +5,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 
 	"time"
@@ -27,7 +28,7 @@ func (t *SpriteAnim) Start(a *app.App) {
 	t.anims = make([]*texture.Animator, 0)
 
 	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Creates texture 1 and animator

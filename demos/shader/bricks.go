@@ -7,6 +7,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -31,7 +32,7 @@ func (t *ShaderBricks) Start(a *app.App) {
 	a.Scene().Add(dir1)
 
 	// Add axis helper
-	axis := graphic.NewAxisHelper(1)
+	axis := util.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	// Create custom shader

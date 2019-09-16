@@ -22,9 +22,8 @@ type Blending struct {
 // Start is called once at the start of the demo.
 func (t *Blending) Start(a *app.App) {
 
-	// TODO orthographic camera doesn't work in this demo
-
-	a.Camera().GetCamera().SetPositionZ(600)
+	a.Camera().SetPositionZ(600)
+	a.Camera().UpdateSize(600)
 	a.AmbLight().SetIntensity(2)
 
 	// Creates checker board textures for background

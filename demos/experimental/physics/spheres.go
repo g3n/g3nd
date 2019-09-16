@@ -11,6 +11,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"math"
@@ -48,7 +49,7 @@ func (t *PhysicsSpheres) Start(a *app.App) {
 	//a.Camera().GetCamera().SetPosition
 	// LookAt
 
-	axis := graphic.NewAxisHelper(1)
+	axis := util.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	pl := light.NewPoint(math32.NewColor("white"), 1.0)
@@ -145,8 +146,8 @@ func (t *PhysicsSpheres) Start(a *app.App) {
 func (t *PhysicsSpheres) ThrowBall() {
 
 	// Obtain throw direction from camera position and target
-	camPos := t.app.Camera().GetCamera().Position()
-	camTarget := t.app.Camera().GetCamera().Target()
+	camPos := t.app.Camera().Position()
+	camTarget := t.app.Orbit().Target()
 	throwDir := math32.NewVec3().SubVectors(&camTarget, &camPos).SetLength(3)
 
 	// Create sphere rigid body

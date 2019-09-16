@@ -7,6 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -88,7 +89,7 @@ func (t *Earth) Start(a *app.App) {
 	a.Scene().Add(sun)
 
 	// Add axis helper
-	axis := graphic.NewAxisHelper(5)
+	axis := util.NewAxisHelper(5)
 	a.Scene().Add(axis)
 
 	//// Create circular sphere section (uncomment to try it out)

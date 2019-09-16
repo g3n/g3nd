@@ -4,6 +4,7 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -22,7 +23,7 @@ type Sprite struct {
 // Start is called once at the start of the demo.
 func (t *Sprite) Start(a *app.App) {
 
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Sprite 1

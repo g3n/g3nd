@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/g3n/engine/core"
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/obj"
 	"github.com/g3n/engine/math32"
+	eutil "github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
 )
@@ -57,7 +57,7 @@ func (t *LoaderObj) Start(a *app.App) {
 	a.Scene().Add(l3)
 
 	// Adds axis helper
-	axis := graphic.NewAxisHelper(2)
+	axis := eutil.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	fpath := "obj/cubemultitex.obj"

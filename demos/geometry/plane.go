@@ -6,6 +6,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -39,7 +40,7 @@ func (t *Plane) Start(a *app.App) {
 	a.Scene().Add(l3)
 
 	// Adds axis helper
-	ah := graphic.NewAxisHelper(1.0)
+	ah := util.NewAxisHelper(1.0)
 	a.Scene().Add(ah)
 
 	// Adds square plane, double sided at left

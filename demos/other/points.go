@@ -7,6 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
 
@@ -26,7 +27,7 @@ func (t *Points2) Start(a *app.App) {
 
 	a.Gls().ClearColor(0, 0, 0, 1)
 
-	axis := graphic.NewAxisHelper(2)
+	axis := util.NewAxisHelper(2)
 	a.Scene().Add(axis)
 
 	// Load textures for the sprites

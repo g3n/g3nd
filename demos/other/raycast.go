@@ -1,13 +1,14 @@
 package other
 
 import (
-	"github.com/g3n/engine/core"
+	"github.com/g3n/engine/experimental/collision"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -20,13 +21,13 @@ func init() {
 }
 
 type Raycast struct {
-	rc *core.Raycaster
+	rc *collision.Raycaster
 }
 
 // Start is called once at the start of the demo.
 func (t *Raycast) Start(a *app.App) {
 
-	axis := graphic.NewAxisHelper(1)
+	axis := util.NewAxisHelper(1)
 	a.Scene().Add(axis)
 
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
@@ -150,7 +151,7 @@ func (t *Raycast) Start(a *app.App) {
 	a.Scene().Add(mesh11)
 
 	// Creates the raycaster
-	t.rc = core.NewRaycaster(&math32.Vector3{}, &math32.Vector3{})
+	t.rc = collision.NewRaycaster(&math32.Vector3{}, &math32.Vector3{})
 	t.rc.LinePrecision = 0.05
 	t.rc.PointPrecision = 0.05
 
@@ -169,7 +170,7 @@ func (t *Raycast) onMouse(a *app.App, ev interface{}) {
 	y := -2*(mev.Ypos/float32(height)) + 1
 
 	// Set the raycaster from the current camera and mouse coordinates
-	a.Camera().SetRaycaster(t.rc, x, y)
+	t.rc.SetFromCamera(a.Camera(), x, y)
 	//fmt.Printf("rc:%+v\n", t.rc.Ray)
 
 	// Checks intersection with all objects in the scene
