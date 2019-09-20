@@ -34,51 +34,27 @@ func (t *SpotLight) Start(a *app.App) {
 	a.Camera().SetPosition(0, 6, 10)
 	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 
-	// Creates base plane
-	geom1 := geometry.NewPlane(6, 6, 16, 16)
-	mat1 := material.NewStandard(&math32.Color{1, 1, 1})
-	mat1.SetSide(material.SideDouble)
-	plane1 := graphic.NewMesh(geom1, mat1)
-	plane1.SetRotationX(math32.Pi / 2)
-	a.Scene().Add(plane1)
-
-	// Creates left plane
-	geom2 := geometry.NewPlane(6, 6, 16, 16)
-	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
-	mat2.SetSide(material.SideFront)
-	plane2 := graphic.NewMesh(geom2, mat2)
-	plane2.SetRotationY(math32.Pi / 2)
-	plane2.SetPosition(-3, 3, 0)
-	a.Scene().Add(plane2)
-
-	// Creates right plane
-	geom3 := geometry.NewPlane(6, 6, 16, 16)
-	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
-	mat3.SetSide(material.SideFront)
-	mat3.SetSpecularColor(&math32.Color{1, 1, 1})
-	plane3 := graphic.NewMesh(geom3, mat3)
-	plane3.SetRotationY(-math32.Pi / 2)
-	plane3.SetPosition(3, 3, 0)
-	a.Scene().Add(plane3)
+	// Create box
+	boxGeom := geometry.NewCube(10)
+	boxMat := material.NewStandard(&math32.Color{1, 1, 1})
+	boxMat.SetSide(material.SideBack)
+	a.Scene().Add(graphic.NewMesh(boxGeom, boxMat))
 
 	// Creates red spot light
 	t.spot1 = util.NewSpotLightMesh(&math32.Color{1, 0, 0})
-	t.spot1.Mesh.SetPosition(-1, 3, 1)
+	t.spot1.Mesh.SetPosition(-1, 1, 1)
 	a.Scene().Add(t.spot1)
 
 	// Creates green spot light
 	t.spot2 = util.NewSpotLightMesh(&math32.Color{0, 1, 0})
-	t.spot2.Mesh.SetPosition(1, 3, -1)
+	t.spot2.Mesh.SetPosition(1, 1, -1)
 	a.Scene().Add(t.spot2.Mesh)
 
 	// Creates blue spot light
 	t.spot3 = util.NewSpotLightMesh(&math32.Color{0, 0, 1})
-	t.spot3.Mesh.SetPosition(0, 3, 0)
+	t.spot3.Mesh.SetPosition(0, 1, 0)
 	a.Scene().Add(t.spot3.Mesh)
 
-	// Subscribe to key events
-	//	app.Gl.Subscribe(gls.OnKeyDown, t.onKey)
-	//
 	// Add controls
 	if a.ControlFolder() == nil {
 		return
