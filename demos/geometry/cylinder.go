@@ -45,6 +45,7 @@ func (t *Cylinder) Start(a *app.App) {
 	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
+	mat1.SetUseLights(material.UseLightNone)
 	t.mesh = graphic.NewMesh(geom1, mat1)
 	t.mesh.SetPosition(-2, 0, 0)
 	a.Scene().Add(t.mesh)
