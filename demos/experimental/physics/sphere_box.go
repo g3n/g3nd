@@ -49,7 +49,7 @@ func (t *PhysicsSphereBox) Start(a *app.App) {
 
 	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
 	cubeGeom := geometry.NewCube(0.2)
-	mat := material.NewPhong(&math32.Color{1, 1, 1})
+	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetTransparent(true)
 	mat.SetOpacity(0.5)
 

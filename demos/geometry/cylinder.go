@@ -42,7 +42,7 @@ func (t *Cylinder) Start(a *app.App) {
 
 	// Left cylinder
 	geom1 := geometry.NewCylinder(0.8, 0.8, 2, 16, 2, 0, 2*math.Pi, true, true)
-	mat1 := material.NewPhong(&math32.Color{0, 1, 0})
+	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
 	t.mesh = graphic.NewMesh(geom1, mat1)
@@ -51,7 +51,7 @@ func (t *Cylinder) Start(a *app.App) {
 
 	// Middle cylinder
 	geom2 := geometry.NewCylinder(0.8, 0.8, 2, 32, 16, 0, 2*math.Pi, false, true)
-	mat2 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom2, mat2)
 	mesh.SetPosition(0, 0, 0)

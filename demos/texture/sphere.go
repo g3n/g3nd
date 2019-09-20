@@ -64,7 +64,7 @@ func (t *Texsphere) Start(a *app.App) {
 	tex2.SetFlipY(false)
 	// Creates sphere 2
 	geom2 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
-	mat2 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.AddTexture(tex2)
 	t.sphere2 = graphic.NewMesh(geom2, mat2)
 	t.sphere2.SetPosition(1.1, 1.1, 0)
@@ -93,7 +93,7 @@ func (t *Texsphere) Start(a *app.App) {
 	}
 	// Creates sphere 4
 	geom4 := geometry.NewSphere(1, 32, 32, 0, math.Pi, 0, math.Pi/2)
-	mat4 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat4 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat4.AddTexture(tex4)
 	mat4.SetSide(material.SideDouble)
 	t.sphere4 = graphic.NewMesh(geom4, mat4)

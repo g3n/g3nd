@@ -36,7 +36,7 @@ func (t *SpotLight) Start(a *app.App) {
 
 	// Creates base plane
 	geom1 := geometry.NewPlane(6, 6, 16, 16)
-	mat1 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat1 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat1.SetSide(material.SideDouble)
 	plane1 := graphic.NewMesh(geom1, mat1)
 	plane1.SetRotationX(math32.Pi / 2)
@@ -44,7 +44,7 @@ func (t *SpotLight) Start(a *app.App) {
 
 	// Creates left plane
 	geom2 := geometry.NewPlane(6, 6, 16, 16)
-	mat2 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideFront)
 	plane2 := graphic.NewMesh(geom2, mat2)
 	plane2.SetRotationY(math32.Pi / 2)
@@ -53,7 +53,7 @@ func (t *SpotLight) Start(a *app.App) {
 
 	// Creates right plane
 	geom3 := geometry.NewPlane(6, 6, 16, 16)
-	mat3 := material.NewPhong(&math32.Color{1, 1, 1})
+	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.SetSide(material.SideFront)
 	mat3.SetSpecularColor(&math32.Color{1, 1, 1})
 	plane3 := graphic.NewMesh(geom3, mat3)

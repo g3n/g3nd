@@ -62,11 +62,11 @@ func (t *Blending) Start(a *app.App) {
 		blending string
 		value    material.Blending
 	}{
-		{"NoBlending", material.BlendingNone},
-		{"NormalBlending", material.BlendingNormal},
-		{"AdditiveBlending", material.BlendingAdditive},
-		{"SubtractiveBlending", material.BlendingSubtractive},
-		{"MultiplyBlending", material.BlendingMultiply},
+		{"NoBlending", material.BlendNone},
+		{"NormalBlending", material.BlendNormal},
+		{"AdditiveBlending", material.BlendAdditive},
+		{"SubtractiveBlending", material.BlendSubtractive},
+		{"MultiplyBlending", material.BlendMultiply},
 	}
 
 	// This geometry will be shared by several meshes
@@ -77,7 +77,7 @@ func (t *Blending) Start(a *app.App) {
 	// Internal function go generate a row of images
 	var addImageRow = func(tex *texture.Texture2D, y int) {
 		for i := 0; i < len(blendings); i++ {
-			material := material.NewPhong(&math32.Color{1, 1, 1})
+			material := material.NewStandard(&math32.Color{1, 1, 1})
 			material.SetOpacity(1)
 			material.SetTransparent(true)
 			material.AddTexture(tex)

@@ -238,8 +238,8 @@ func (t *TankTest) newTankModel() *TankModel {
 	}
 
 	// Create the tank wheels and add them to the group
-	matWheel := material.NewPhong(WHEEL_COLOR)
-	matCap := material.NewPhong(CAP_COLOR)
+	matWheel := material.NewStandard(WHEEL_COLOR)
+	matCap := material.NewStandard(CAP_COLOR)
 	matCap.AddTexture(tex)
 	//defer matWheel.Dispose()
 	//defer matCap.Dispose()
@@ -285,7 +285,7 @@ func (t *TankTest) newTankModel() *TankModel {
 	// Creates the wheel tracks
 	for i := 0; i < 2; i++ {
 		geomTrack := geometry.NewBox(WHEEL_RADIUS*6, WHEEL_WIDTH+EPS, TRACK_HEIGHT)
-		matTrack := material.NewPhong(TRACK_COLOR)
+		matTrack := material.NewStandard(TRACK_COLOR)
 		meshTrack := graphic.NewMesh(geomTrack, matTrack)
 		var zdir float32 = 1.0
 		if i%2 == 0 {
@@ -298,7 +298,7 @@ func (t *TankTest) newTankModel() *TankModel {
 
 	// Creates the tank base chassis and adds it to the group
 	geomBase := geometry.NewBox(BASE_LENGTH, BASE_WIDTH, BASE_HEIGHT)
-	matBase := material.NewPhong(BASE_COLOR)
+	matBase := material.NewStandard(BASE_COLOR)
 	model.meshBase = graphic.NewMesh(geomBase, matBase)
 	model.meshBase.SetPosition(
 		0,
@@ -313,15 +313,15 @@ func (t *TankTest) newTankModel() *TankModel {
 
 	// Create the turret mesh and add it to the top group
 	geomTurret := geometry.NewCylinder(TUR_TOP_RADIUS, TUR_BOTTOM_RADIUS, TUR_HEIGHT, 32, 32, 0, 2*math32.Pi, true, true)
-	matTurret := material.NewPhong(TUR_COLOR)
+	matTurret := material.NewStandard(TUR_COLOR)
 	meshTurret := graphic.NewMesh(geomTurret, matTurret)
 	meshTurret.SetPositionY(model.meshBase.Position().Y + TUR_HEIGHT/2)
 	model.nodeTop.Add(meshTurret)
 
 	// Create the cannon geometry
 	geomCannon := geometry.NewCylinder(CANNON_TOP_RADIUS, CANNON_BOTTOM_RADIUS, CANNON_LENGTH, 20, 20, 0, 2*math32.Pi, true, true)
-	matCannon := material.NewPhong(CANNON_COLOR)
-	matCannonTop := material.NewPhong(CANNON_TOP_COLOR)
+	matCannon := material.NewStandard(CANNON_COLOR)
+	matCannonTop := material.NewStandard(CANNON_TOP_COLOR)
 	model.meshCannon = graphic.NewMesh(geomCannon, nil)
 	model.meshCannon.AddGroupMaterial(matCannon, 0)
 	model.meshCannon.AddGroupMaterial(matCannonTop, 1)

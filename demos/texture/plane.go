@@ -65,7 +65,7 @@ func (t *Texplane) Start(a *app.App) {
 	}
 	// Creates plane2
 	plane2_geom := geometry.NewPlane(2, 2, 1, 1)
-	plane2_mat := material.NewPhong(&math32.Color{1, 1, 1})
+	plane2_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane2_mat.SetSide(material.SideDouble)
 	plane2_mat.AddTexture(tex2)
 	t.plane2 = graphic.NewMesh(plane2_geom, plane2_mat)

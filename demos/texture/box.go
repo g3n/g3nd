@@ -22,9 +22,9 @@ type Texbox struct {
 	tex2 *texture.Texture2D
 	tex3 *texture.Texture2D
 	mat1 *material.Standard
-	mat2 *material.Phong
+	mat2 *material.Standard
 	mat3 *material.Standard
-	mat4 *material.Phong
+	mat4 *material.Standard
 	box1 *graphic.Mesh
 	box2 *graphic.Mesh
 	box3 *graphic.Mesh
@@ -76,7 +76,7 @@ func (t *Texbox) Start(a *app.App) {
 	t.tex2 = tex2
 	// Creates box 2
 	geom2 := geometry.NewSegmentedCube(1.5, 16)
-	t.mat2 = material.NewPhong(&math32.Color{1, 1, 1})
+	t.mat2 = material.NewStandard(&math32.Color{1, 1, 1})
 	t.mat2.AddTexture(t.tex2)
 	t.box2 = graphic.NewMesh(geom2, t.mat2)
 	t.box2.SetPosition(1.5, 1, 0)
@@ -100,7 +100,7 @@ func (t *Texbox) Start(a *app.App) {
 
 	// Creates box 4
 	geom4 := geometry.NewSegmentedCube(1.5, 16)
-	t.mat4 = material.NewPhong(&math32.Color{1, 1, 1})
+	t.mat4 = material.NewStandard(&math32.Color{1, 1, 1})
 	t.mat4.AddTexture(t.tex2.Incref())
 	t.mat4.AddTexture(t.tex3.Incref())
 	t.box4 = graphic.NewMesh(geom4, t.mat4)

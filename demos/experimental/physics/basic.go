@@ -53,7 +53,7 @@ func (t *PhysicsBasic) Start(a *app.App) {
 
 	// Creates sphere 1
 	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
-	mat := material.NewPhong(&math32.Color{1, 1, 1})
+	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetWireframe(true)
 
 	sphere1 := graphic.NewMesh(sphereGeom, mat)

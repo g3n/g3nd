@@ -63,9 +63,10 @@ func (t *Points2) Start(a *app.App) {
 	for _, tex := range sprites {
 		mat := material.NewPoint(&math32.Color{1, 1, 1})
 		mat.SetTransparent(true)
+		mat.SetOpacity(0.6)
 		mat.AddTexture(tex)
-		mat.SetSize(1000)
-		mat.SetBlending(material.BlendingAdditive)
+		mat.SetSize(60)
+		mat.SetBlending(material.BlendAdditive)
 		mat.SetDepthMask(false)
 		t.points.AddMaterial(t.points, mat, start, count)
 		start += count

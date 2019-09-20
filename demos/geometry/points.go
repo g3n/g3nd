@@ -49,7 +49,7 @@ func (t *Points) Start(a *app.App) {
 
 	// Creates point material
 	mat := material.NewPoint(&math32.Color{0, 0, 0})
-	mat.SetSize(2000)
+	mat.SetSize(50)
 
 	// Creates points mesh
 	mesh := graphic.NewPoints(geom, mat)

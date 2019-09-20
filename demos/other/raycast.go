@@ -44,7 +44,7 @@ func (t *Raycast) Start(a *app.App) {
 
 	// Box
 	geom2 := geometry.NewCube(1)
-	mat2 := material.NewPhong(&math32.Color{1, 0, 0})
+	mat2 := material.NewStandard(&math32.Color{1, 0, 0})
 	mat2.SetSide(material.SideFront)
 	mesh2 := graphic.NewMesh(geom2, mat2)
 	mesh2.SetPosition(1.2, 0, 0)
@@ -59,7 +59,7 @@ func (t *Raycast) Start(a *app.App) {
 
 	// Open ended cylinder
 	geom4 := geometry.NewCylinder(0.5, 0.5, 1, 16, 1, 0, 2*math32.Pi, false, false)
-	mat4 := material.NewPhong(&math32.Color{1, 1, 0})
+	mat4 := material.NewStandard(&math32.Color{1, 1, 0})
 	mat4.SetSide(material.SideDouble)
 	mesh4 := graphic.NewMesh(geom4, mat4)
 	mesh4.SetPosition(0, -1.2, -0.5)
@@ -84,7 +84,7 @@ func (t *Raycast) Start(a *app.App) {
 
 	// Cone (Cylinder)
 	geom7 := geometry.NewCylinder(0, 0.5, 1, 16, 16, 0, 2*math32.Pi, true, true)
-	mat7 := material.NewPhong(&math32.Color{0.8, 0.7, 0.3})
+	mat7 := material.NewStandard(&math32.Color{0.8, 0.7, 0.3})
 	mat7.SetSide(material.SideFront)
 	mat7.SetOpacity(0.6)
 	mat7.SetTransparent(true)
@@ -145,7 +145,7 @@ func (t *Raycast) Start(a *app.App) {
 	}
 	geom11.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition))
 	mat11 := material.NewPoint(&math32.Color{0, 0, 0})
-	mat11.SetSize(1000)
+	mat11.SetSize(50)
 	mesh11 := graphic.NewPoints(geom11, mat11)
 	mesh11.SetPosition(-2, -1, 0)
 	a.Scene().Add(mesh11)

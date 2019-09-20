@@ -75,7 +75,7 @@ func (t *AnimationMorphTargets) Start(a *app.App) {
 	tex1.SetWrapT(gls.REPEAT)
 	tex1.SetRepeat(2, 2)
 
-	mat := material.NewPhong(&math32.Color{0, 0, 1})
+	mat := material.NewStandard(&math32.Color{0, 0, 1})
 	mat.AddTexture(tex1)
 	t.morphMesh = graphic.NewMesh(t.morphGeom, mat)
 	a.Scene().Add(t.morphMesh)

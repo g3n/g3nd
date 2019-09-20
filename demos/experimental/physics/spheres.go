@@ -95,7 +95,7 @@ func (t *PhysicsSpheres) Start(a *app.App) {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
 
-	mat := material.NewPhong(&math32.Color{1, 1, 1})
+	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetTransparent(true)
 	mat.SetOpacity(0.5)
 	mat.AddTexture(texG)
