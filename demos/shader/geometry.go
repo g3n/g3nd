@@ -57,7 +57,7 @@ func (t *ShaderGeometry) Start(a *app.App) {
 	mat := newNormalsMaterial()
 
 	// Adds rectangular plane
-	planeGeom := geometry.NewPlane(1, 1, 1, 1)
+	planeGeom := geometry.NewPlane(1, 1)
 	mat.Incref()
 	t.plane = graphic.NewMesh(planeGeom, mat)
 	t.plane.SetPosition(-2.2, 0, 0)
@@ -71,7 +71,7 @@ func (t *ShaderGeometry) Start(a *app.App) {
 	a.Scene().Add(t.box)
 
 	// Adds sphere
-	sphereGeom := geometry.NewSphere(0.8, 4, 4, 0, math32.Pi*2, 0, math32.Pi)
+	sphereGeom := geometry.NewSphere(0.8, 4, 4)
 	mat.Incref()
 	t.sphere = graphic.NewMesh(sphereGeom, mat)
 	t.sphere.SetPosition(2.2, 0, 0)

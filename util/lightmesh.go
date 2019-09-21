@@ -1,12 +1,11 @@
 package util
 
 import (
+	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
-	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/geometry"
-	"math"
 	"github.com/g3n/engine/material"
+	"github.com/g3n/engine/math32"
 )
 
 //
@@ -21,7 +20,7 @@ func NewPointLightMesh(color *math32.Color) *PointLightMesh {
 
 	l := new(PointLightMesh)
 
-	geom := geometry.NewSphere(0.05, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	geom := geometry.NewSphere(0.05, 16, 8)
 	mat := material.NewStandard(color)
 	mat.SetUseLights(0)
 	mat.SetEmissiveColor(color)
@@ -51,7 +50,7 @@ func NewSpotLightMesh(color *math32.Color) *SpotLightMesh {
 
 	l := new(SpotLightMesh)
 
-	geom := geometry.NewCylinder(0, 0.3, 0.5, 16, 16, 0, 2*math32.Pi, true, true)
+	geom := geometry.NewCone(0.3, 0.5, 16, 1, true)
 	mat1 := material.NewStandard(color)
 	mat2 := material.NewStandard(color)
 	mat2.SetEmissiveColor(color)

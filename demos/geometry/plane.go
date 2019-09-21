@@ -44,7 +44,7 @@ func (t *Plane) Start(a *app.App) {
 	a.Scene().Add(ah)
 
 	// Adds square plane, double sided at left
-	plane1_geom := geometry.NewPlane(1, 1, 1, 1)
+	plane1_geom := geometry.NewPlane(1, 1)
 	plane1_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane1_mat.SetWireframe(false)
 	plane1_mat.SetSide(material.SideDouble)
@@ -53,7 +53,7 @@ func (t *Plane) Start(a *app.App) {
 	a.Scene().Add(t.plane1)
 
 	// Adds rectangular plane, single sided at center
-	plane2_geom := geometry.NewPlane(0.5, 1, 1, 1)
+	plane2_geom := geometry.NewPlane(0.5, 1)
 	plane2_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane2_mat.SetWireframe(false)
 	plane2_mat.SetSide(material.SideFront)
@@ -61,7 +61,7 @@ func (t *Plane) Start(a *app.App) {
 	a.Scene().Add(t.plane2)
 
 	// Adds rectangular plane, single side at right
-	plane3_geom := geometry.NewPlane(0.5, 1, 1, 1)
+	plane3_geom := geometry.NewPlane(0.5, 1)
 	plane3_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane3_mat.SetWireframe(false)
 	plane3_mat.SetSide(material.SideBack)

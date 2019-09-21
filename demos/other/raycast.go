@@ -35,7 +35,7 @@ func (t *Raycast) Start(a *app.App) {
 	a.Scene().Add(l1)
 
 	// Plane
-	geom1 := geometry.NewPlane(1.5, 1, 1, 1)
+	geom1 := geometry.NewPlane(1.5, 1)
 	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetSide(material.SideFront)
 	mesh1 := graphic.NewMesh(geom1, mat1)
@@ -51,22 +51,22 @@ func (t *Raycast) Start(a *app.App) {
 	a.Scene().Add(mesh2)
 
 	// Sphere
-	geom3 := geometry.NewSphere(0.5, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
+	geom3 := geometry.NewSphere(0.5, 16, 16)
 	mat3 := material.NewStandard(&math32.Color{0, 1, 1})
 	mesh3 := graphic.NewMesh(geom3, mat3)
 	mesh3.SetPosition(0, 1, -1)
 	a.Scene().Add(mesh3)
 
 	// Open ended cylinder
-	geom4 := geometry.NewCylinder(0.5, 0.5, 1, 16, 1, 0, 2*math32.Pi, false, false)
+	geom4 := geometry.NewCylinder(0.5, 1, 16, 1, false, false)
 	mat4 := material.NewStandard(&math32.Color{1, 1, 0})
 	mat4.SetSide(material.SideDouble)
 	mesh4 := graphic.NewMesh(geom4, mat4)
 	mesh4.SetPosition(0, -1.2, -0.5)
 	a.Scene().Add(mesh4)
 
-	// Circle
-	geom5 := geometry.NewCircle(0.6, 5)
+	// Disk
+	geom5 := geometry.NewDisk(0.6, 5)
 	mat5 := material.NewStandard(&math32.Color{0.5, 0.5, 0.9})
 	mat5.SetSide(material.SideDouble)
 	mesh5 := graphic.NewMesh(geom5, mat5)
@@ -82,8 +82,8 @@ func (t *Raycast) Start(a *app.App) {
 	mesh6.SetPosition(1.5, -1.2, -1)
 	a.Scene().Add(mesh6)
 
-	// Cone (Cylinder)
-	geom7 := geometry.NewCylinder(0, 0.5, 1, 16, 16, 0, 2*math32.Pi, true, true)
+	// Cone (ConeCylinder)
+	geom7 := geometry.NewCone(0.5, 1, 16, 1, true)
 	mat7 := material.NewStandard(&math32.Color{0.8, 0.7, 0.3})
 	mat7.SetSide(material.SideFront)
 	mat7.SetOpacity(0.6)

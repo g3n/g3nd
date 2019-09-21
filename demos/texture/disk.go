@@ -14,24 +14,24 @@ import (
 )
 
 func init() {
-	app.DemoMap["texture.circle"] = &Texcircle{}
+	app.DemoMap["texture.disk"] = &TexDisk{}
 }
 
-type Texcircle struct {
+type TexDisk struct {
 	mesh1 *graphic.Mesh
 	mesh2 *graphic.Mesh
 	mesh3 *graphic.Mesh
 }
 
 // Start is called once at the start of the demo.
-func (t *Texcircle) Start(a *app.App) {
+func (t *TexDisk) Start(a *app.App) {
 
 	// Adds white directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
 	dir1.SetPosition(0, 0, 10)
 	a.Scene().Add(dir1)
 
-	geom1 := geometry.NewCircle(1, 3)
+	geom1 := geometry.NewDisk(1, 3)
 	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(false)
 	tex1 := texture.NewBoard(32, 32, math32.NewColor("white"), math32.NewColor("black"), math32.NewColor("black"), math32.NewColor("white"), 0.8)
@@ -45,7 +45,7 @@ func (t *Texcircle) Start(a *app.App) {
 	t.mesh1.SetPositionZ(0)
 	a.Scene().Add(t.mesh1)
 
-	geom2 := geometry.NewCircle(1, 50)
+	geom2 := geometry.NewDisk(1, 50)
 	mat2 := material.NewStandard(&math32.Color{0.5, 0.5, 0.5})
 	tex2, err := texture.NewTexture2DFromImage(a.DirData() + "/images/tiger1.jpg")
 	if err != nil {
@@ -59,7 +59,7 @@ func (t *Texcircle) Start(a *app.App) {
 	t.mesh2.SetPositionZ(-0.5)
 	a.Scene().Add(t.mesh2)
 
-	geom3 := geometry.NewCircle(1, 5)
+	geom3 := geometry.NewDisk(1, 5)
 	mat3 := material.NewStandard(&math32.Color{1, 0, 0})
 	tex3 := texture.NewBoard(32, 32, math32.NewColor("white"), math32.NewColor("black"), math32.NewColor("black"), math32.NewColor("white"), 0.6)
 	tex3.SetWrapS(gls.REPEAT)
@@ -78,7 +78,7 @@ func (t *Texcircle) Start(a *app.App) {
 }
 
 // Update is called every frame.
-func (t *Texcircle) Update(a *app.App, deltaTime time.Duration) {
+func (t *TexDisk) Update(a *app.App, deltaTime time.Duration) {
 
 	// TODO use deltaTime
 	t.mesh1.RotateZ(0.01)
@@ -86,4 +86,4 @@ func (t *Texcircle) Update(a *app.App, deltaTime time.Duration) {
 }
 
 // Cleanup is called once at the end of the demo.
-func (t *Texcircle) Cleanup(a *app.App) {}
+func (t *TexDisk) Cleanup(a *app.App) {}

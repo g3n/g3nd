@@ -181,7 +181,7 @@ func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCo
 
 	// Creates cone geometry and orients it so the cone base is pointed
 	// in the +Z direction
-	geom := geometry.NewCylinder(0, 1, 1, 32, 16, 0, 2*math32.Pi, true, true)
+	geom := geometry.NewCone(1, 1, 32, 1, true)
 	geom.ApplyMatrix(math32.NewMatrix4().MakeRotationX(-math32.Pi / 2))
 	pc.direction.Set(0, 0, 1)
 
@@ -201,7 +201,7 @@ func NewPlayerCone(app *app.App, filename string, color *math32.Color) *PlayerCo
 	aspect := float32(width) / float32(height)
 	img := font.DrawText(filename)
 	tex := texture.NewTexture2DFromRGBA(img)
-	plane_geom := geometry.NewPlane(2.0, 2.0/aspect, 1, 1)
+	plane_geom := geometry.NewPlane(2.0, 2.0/aspect)
 	plane_mat := material.NewStandard(math32.NewColor("white"))
 	plane_mat.AddTexture(tex)
 	plane_mat.SetTransparent(true)

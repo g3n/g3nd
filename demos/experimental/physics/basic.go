@@ -12,7 +12,6 @@ import (
 	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"math"
 	"time"
 )
 
@@ -52,7 +51,7 @@ func (t *PhysicsBasic) Start(a *app.App) {
 	//t.sim.AddForceField(gravity)
 
 	// Creates sphere 1
-	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	sphereGeom := geometry.NewSphere(0.1, 16, 8)
 	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetWireframe(true)
 

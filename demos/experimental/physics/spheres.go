@@ -14,7 +14,6 @@ import (
 	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"math"
 	"time"
 )
 
@@ -26,7 +25,7 @@ type PhysicsSpheres struct {
 	sim *physics.Simulation
 	app *app.App
 
-	sphereGeom *geometry.Sphere
+	sphereGeom *geometry.Geometry
 	matSphere  *material.Standard
 
 	anim   *texture.Animator
@@ -84,7 +83,7 @@ func (t *PhysicsSpheres) Start(a *app.App) {
 	a.Scene().Add(t.sprite)
 
 	// Create sphere geometry
-	t.sphereGeom = geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	t.sphereGeom = geometry.NewSphere(0.1, 16, 8)
 
 	texfileG := a.DirData() + "/images/ground2.jpg"
 	texG, err := texture.NewTexture2DFromImage(texfileG)
@@ -100,7 +99,7 @@ func (t *PhysicsSpheres) Start(a *app.App) {
 	mat.SetOpacity(0.5)
 	mat.AddTexture(texG)
 
-	floorGeom := geometry.NewPlane(100, 100, 1, 1)
+	floorGeom := geometry.NewPlane(100, 100)
 	floor := graphic.NewMesh(floorGeom, mat)
 	floor.SetPosition(0, 0, 0)
 	floor.SetRotation(-math32.Pi/2, 0, 0)

@@ -48,7 +48,7 @@ func (t *Texsphere) Start(a *app.App) {
 	tex1.SetWrapT(gls.REPEAT)
 	tex1.SetRepeat(2, 2)
 	// Creates sphere 1
-	geom1 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	geom1 := geometry.NewSphere(1, 32, 32)
 	mat1 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat1.AddTexture(tex1)
 	t.sphere1 = graphic.NewMesh(geom1, mat1)
@@ -63,7 +63,7 @@ func (t *Texsphere) Start(a *app.App) {
 	}
 	tex2.SetFlipY(false)
 	// Creates sphere 2
-	geom2 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	geom2 := geometry.NewSphere(1, 32, 32)
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.AddTexture(tex2)
 	t.sphere2 = graphic.NewMesh(geom2, mat2)
@@ -78,7 +78,7 @@ func (t *Texsphere) Start(a *app.App) {
 	}
 	tex3.SetFlipY(false)
 	// Creates sphere 3
-	geom3 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	geom3 := geometry.NewSphere(1, 32, 32)
 	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.AddTexture(tex3)
 	t.sphere3 = graphic.NewMesh(geom3, mat3)
@@ -92,7 +92,7 @@ func (t *Texsphere) Start(a *app.App) {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
 	// Creates sphere 4
-	geom4 := geometry.NewSphere(1, 32, 32, 0, math.Pi, 0, math.Pi/2)
+	geom4 := geometry.NewSphereSector(1, 32, 32, 0, math.Pi, 0, math.Pi/2)
 	mat4 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat4.AddTexture(tex4)
 	mat4.SetSide(material.SideDouble)

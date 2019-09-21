@@ -49,7 +49,7 @@ func (t *Texplane) Start(a *app.App) {
 		a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 	// Creates plane 1
-	plane1_geom := geometry.NewPlane(2, 2, 1, 1)
+	plane1_geom := geometry.NewPlane(2, 2)
 	plane1_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane1_mat.SetSide(material.SideDouble)
 	plane1_mat.AddTexture(tex1)
@@ -64,7 +64,7 @@ func (t *Texplane) Start(a *app.App) {
 		a.Log().Fatal("Error:%s loading texture:%s", err, texfile)
 	}
 	// Creates plane2
-	plane2_geom := geometry.NewPlane(2, 2, 1, 1)
+	plane2_geom := geometry.NewPlane(2, 2)
 	plane2_mat := material.NewStandard(&math32.Color{1, 1, 1})
 	plane2_mat.SetSide(material.SideDouble)
 	plane2_mat.AddTexture(tex2)

@@ -248,7 +248,7 @@ func (t *TankTest) newTankModel() *TankModel {
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 2; j++ {
 			// Creates wheel mesh
-			geomWheel := geometry.NewCylinder(WHEEL_RADIUS, WHEEL_RADIUS, WHEEL_WIDTH+EPS, 20, 20, 0, 2*math32.Pi, true, true)
+			geomWheel := geometry.NewCylinder(WHEEL_RADIUS, WHEEL_WIDTH+EPS, 20, 20, true, true)
 			meshWheel := graphic.NewMesh(geomWheel, matWheel)
 			var zdir float32 = 1.0
 			if j%2 == 0 {
@@ -263,7 +263,7 @@ func (t *TankTest) newTankModel() *TankModel {
 			model.node.Add(meshWheel)
 
 			// Creates wheel cap
-			geomCap := geometry.NewCircle(CAP_RADIUS, 20)
+			geomCap := geometry.NewDisk(CAP_RADIUS, 20)
 			meshCap := graphic.NewMesh(geomCap, matCap)
 			meshCap.SetPositionX(-(BASE_LENGTH / 2) + WHEEL_RADIUS + 0.2 + float32(i)*(WHEEL_RADIUS*2))
 			meshCap.SetPositionY(WHEEL_RADIUS)
@@ -312,14 +312,14 @@ func (t *TankTest) newTankModel() *TankModel {
 	model.nodeTop = core.NewNode()
 
 	// Create the turret mesh and add it to the top group
-	geomTurret := geometry.NewCylinder(TUR_TOP_RADIUS, TUR_BOTTOM_RADIUS, TUR_HEIGHT, 32, 32, 0, 2*math32.Pi, true, true)
+	geomTurret := geometry.NewCylinder(TUR_BOTTOM_RADIUS, TUR_HEIGHT, 32, 32, true, true)
 	matTurret := material.NewStandard(TUR_COLOR)
 	meshTurret := graphic.NewMesh(geomTurret, matTurret)
 	meshTurret.SetPositionY(model.meshBase.Position().Y + TUR_HEIGHT/2)
 	model.nodeTop.Add(meshTurret)
 
 	// Create the cannon geometry
-	geomCannon := geometry.NewCylinder(CANNON_TOP_RADIUS, CANNON_BOTTOM_RADIUS, CANNON_LENGTH, 20, 20, 0, 2*math32.Pi, true, true)
+	geomCannon := geometry.NewTruncatedCone(CANNON_TOP_RADIUS, CANNON_BOTTOM_RADIUS, CANNON_LENGTH, 20, 20, true, true)
 	matCannon := material.NewStandard(CANNON_COLOR)
 	matCannonTop := material.NewStandard(CANNON_TOP_COLOR)
 	model.meshCannon = graphic.NewMesh(geomCannon, nil)

@@ -24,21 +24,21 @@ type Children struct {
 func (t *Children) Start(a *app.App) {
 
 	t.circ1 = graphic.NewMesh(
-		geometry.NewCircle(0.5, 3),
+		geometry.NewDisk(0.5, 3),
 		material.NewStandard(&math32.Color{0, 1, 0}),
 	)
 	t.circ1.SetPositionX(0)
 	a.Scene().Add(t.circ1)
 
 	t.circ2 = graphic.NewMesh(
-		geometry.NewCircle(0.3, 5),
+		geometry.NewDisk(0.3, 5),
 		material.NewStandard(&math32.Color{0, 0, 1}),
 	)
 	t.circ2.SetPositionX(1.4)
 	t.circ1.Add(t.circ2)
 
 	t.circ3 = graphic.NewMesh(
-		geometry.NewCircle(0.2, 6),
+		geometry.NewDisk(0.2, 6),
 		material.NewStandard(&math32.Color{1, 0, 0}),
 	)
 	t.circ3.SetPositionX(0.6)

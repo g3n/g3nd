@@ -72,7 +72,7 @@ func (t *Earth) Start(a *app.App) {
 	matEarth.AddTexture(texNight)
 
 	// Create sphere
-	geom := geometry.NewSphere(1, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
+	geom := geometry.NewSphere(1, 32, 16)
 	t.sphere = graphic.NewMesh(geom, matEarth)
 	a.Scene().Add(t.sphere)
 

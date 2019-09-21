@@ -9,8 +9,6 @@ import (
 	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
 	"time"
-
-	"math"
 )
 
 func init() {
@@ -42,7 +40,7 @@ func (t *Sphere) Start(a *app.App) {
 	a.Scene().Add(l3)
 
 	// Creates sphere 1
-	geom1 := geometry.NewSphere(1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	geom1 := geometry.NewSphere(1, 16, 8)
 	mat1 := material.NewStandard(&math32.Color{0, 0, 0.6})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
@@ -51,7 +49,7 @@ func (t *Sphere) Start(a *app.App) {
 	a.Scene().Add(t.sphere1)
 
 	// Creates sphere 2
-	geom2 := geometry.NewSphere(1, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	geom2 := geometry.NewSphere(1, 32, 16)
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetWireframe(false)
 	mat2.SetSide(material.SideDouble)

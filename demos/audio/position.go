@@ -151,7 +151,7 @@ func NewPlayerSphere(a *app.App, filename string, color *math32.Color) *PlayerSp
 	ps.player = player
 
 	// Creates sphere
-	geom := geometry.NewSphere(0.2, 32, 32, 0, math32.Pi*2, 0, math32.Pi)
+	geom := geometry.NewSphere(0.2, 32, 16)
 	mat := material.NewStandard(color)
 	mat.SetUseLights(material.UseLightNone)
 	mat.SetEmissiveColor(color)

@@ -33,7 +33,7 @@ func (t *MorphTargets) Start(a *app.App) {
 	a.Scene().Add(dir1)
 
 	// Create base geometry
-	geom := geometry.NewSphere(1, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
+	geom := geometry.NewSphere(1, 32, 16)
 	morphGeom := geometry.NewMorphGeometry(geom.GetGeometry())
 
 	var target1Vertices, target2Vertices math32.ArrayF32

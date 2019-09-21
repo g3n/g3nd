@@ -28,7 +28,7 @@ type PointLight struct {
 func (t *PointLight) Start(a *app.App) {
 
 	// Create spheres
-	sphereGeom := geometry.NewSphere(0.5, 32, 16, 0, math.Pi*2, 0, math.Pi)
+	sphereGeom := geometry.NewSphere(0.5, 32, 16)
 	sphere1 := graphic.NewMesh(sphereGeom, material.NewStandard(&math32.Color{0, 0, 0.6}))
 	sphere1.SetPositionX(1)
 	a.Scene().Add(sphere1)

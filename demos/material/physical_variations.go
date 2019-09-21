@@ -77,7 +77,7 @@ func (t *PhysicalVariations) Start(a *app.App) {
 	a.Scene().Add(t.s2)
 
 	// Spheres
-	sphereGeometry := geometry.NewSphere(0.4, 32, 32, 0, math.Pi*2, 0, math.Pi)
+	sphereGeometry := geometry.NewSphere(0.4, 32, 16)
 
 	sideNum := 6
 	offset := (float32(sideNum)+1)/2.0 - 0.5

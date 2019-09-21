@@ -13,7 +13,6 @@ import (
 	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"math"
 	"time"
 )
 
@@ -24,7 +23,7 @@ func init() {
 type PhysicsSpheres2 struct {
 	app        *app.App
 	sim        *physics.Simulation
-	sphereGeom *geometry.Sphere
+	sphereGeom *geometry.Geometry
 	matSphere  *material.Standard
 }
 
@@ -60,7 +59,7 @@ func (t *PhysicsSpheres2) Start(a *app.App) {
 	t.sim.AddForceField(gravity)
 
 	// Creates sphere 1
-	t.sphereGeom = geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	t.sphereGeom = geometry.NewSphere(0.1, 16, 8)
 
 	texfileG := a.DirData() + "/images/ground2.jpg"
 	texG, err := texture.NewTexture2DFromImage(texfileG)

@@ -2,7 +2,6 @@ package geometry
 
 import (
 	"github.com/g3n/engine/util"
-	"math"
 	"time"
 
 	"github.com/g3n/engine/geometry"
@@ -14,16 +13,16 @@ import (
 )
 
 func init() {
-	app.DemoMap["geometry.cylinder"] = &Cylinder{}
+	app.DemoMap["geometry.cone-cylinder"] = &ConeCylinder{}
 }
 
-type Cylinder struct {
+type ConeCylinder struct {
 	mesh    *graphic.Mesh
 	normals *util.NormalsHelper
 }
 
 // Start is called once at the start of the demo.
-func (t *Cylinder) Start(a *app.App) {
+func (t *ConeCylinder) Start(a *app.App) {
 
 	// Add directional red light from right
 	l1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
@@ -41,7 +40,7 @@ func (t *Cylinder) Start(a *app.App) {
 	a.Scene().Add(l3)
 
 	// Left cylinder
-	geom1 := geometry.NewCylinder(0.8, 0.8, 2, 16, 2, 0, 2*math.Pi, true, true)
+	geom1 := geometry.NewCylinder(0.8, 2, 16, 2, true, true)
 	mat1 := material.NewStandard(&math32.Color{0, 1, 0})
 	mat1.SetWireframe(true)
 	mat1.SetSide(material.SideDouble)
@@ -51,7 +50,7 @@ func (t *Cylinder) Start(a *app.App) {
 	a.Scene().Add(t.mesh)
 
 	// Middle cylinder
-	geom2 := geometry.NewCylinder(0.8, 0.8, 2, 32, 16, 0, 2*math.Pi, false, true)
+	geom2 := geometry.NewCylinder(0.8, 2, 32, 16, false, true)
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom2, mat2)
@@ -59,7 +58,7 @@ func (t *Cylinder) Start(a *app.App) {
 	a.Scene().Add(mesh)
 
 	// Right cylinder
-	geom3 := geometry.NewCylinder(0.4, 0.8, 2, 32, 1, 0, 2*math.Pi, false, true)
+	geom3 := geometry.NewTruncatedCone(0.4, 0.8, 2, 32, 1, false, true)
 	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.SetSide(material.SideDouble)
 	mesh3 := graphic.NewMesh(geom3, mat3)
@@ -76,11 +75,11 @@ func (t *Cylinder) Start(a *app.App) {
 }
 
 // Update is called every frame.
-func (t *Cylinder) Update(a *app.App, deltaTime time.Duration) {
+func (t *ConeCylinder) Update(a *app.App, deltaTime time.Duration) {
 
 	t.mesh.RotateY(0.005)
 	t.normals.Update()
 }
 
 // Cleanup is called once at the end of the demo.
-func (t *Cylinder) Cleanup(a *app.App) {}
+func (t *ConeCylinder) Cleanup(a *app.App) {}

@@ -85,7 +85,7 @@ func (t *Text1) Start(a *app.App) {
 	canvas.DrawText(0, 150, "BIGGER", font)
 	// Plane
 	tex1 := texture.NewTexture2DFromRGBA(canvas.RGBA)
-	geom2 := geometry.NewPlane(3, 2, 1, 1)
+	geom2 := geometry.NewPlane(3, 2)
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.AddTexture(tex1)
 	mesh2 := graphic.NewMesh(geom2, mat2)
@@ -124,7 +124,7 @@ func (t *Text1) Start(a *app.App) {
 	canvas = text.NewCanvas(256, 64, &math32.Color4{1, 1, 1, 1})
 	canvas.DrawText(0, 0, "", font)
 	t.planeTex = texture.NewTexture2DFromRGBA(canvas.RGBA)
-	geom5 := geometry.NewPlane(2, 0.5, 1, 1)
+	geom5 := geometry.NewPlane(2, 0.5)
 	mat5 := material.NewStandard(&math32.Color{0.5, 0.8, 1})
 	mat5.SetSide(material.SideDouble)
 	mat5.AddTexture(t.planeTex)

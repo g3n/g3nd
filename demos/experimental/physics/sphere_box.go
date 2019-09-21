@@ -11,7 +11,6 @@ import (
 	"github.com/g3n/engine/util"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"math"
 	"time"
 )
 
@@ -47,7 +46,7 @@ func (t *PhysicsSphereBox) Start(a *app.App) {
 
 	t.sim = physics.NewSimulation(a.Scene())
 
-	sphereGeom := geometry.NewSphere(0.1, 16, 16, 0, math.Pi*2, 0, math.Pi)
+	sphereGeom := geometry.NewSphere(0.1, 16, 8)
 	cubeGeom := geometry.NewCube(0.2)
 	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetTransparent(true)

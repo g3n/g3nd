@@ -50,7 +50,7 @@ func (t *Pitch) Start(a *app.App) {
 	a.Scene().Add(l1)
 
 	// Creates plane base mesh
-	base_geom := geometry.NewCircle(1, 3)
+	base_geom := geometry.NewDisk(1, 3)
 	base_mat := material.NewStandard(&math32.Color{0, 1, 0})
 	base_mat.SetWireframe(false)
 	base_mat.SetSide(material.SideDouble)

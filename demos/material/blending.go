@@ -38,7 +38,7 @@ func (t *Blending) Start(a *app.App) {
 	matbg := material.NewStandard(&math32.Color{1, 1, 1})
 	matbg.SetPolygonOffset(1, 1)
 	matbg.AddTexture(t.texbg)
-	geombg := geometry.NewPlane(4000, 3000, 1, 1)
+	geombg := geometry.NewPlane(4000, 3000)
 	meshbg := graphic.NewMesh(geombg, matbg)
 	meshbg.SetPosition(0, 0, -1)
 	a.Scene().Add(meshbg)
@@ -71,7 +71,7 @@ func (t *Blending) Start(a *app.App) {
 
 	// This geometry will be shared by several meshes
 	// For each mesh which uses this geometry we need to increment its refcount
-	geo1 := geometry.NewPlane(100, 100, 1, 1)
+	geo1 := geometry.NewPlane(100, 100)
 	defer geo1.Dispose()
 
 	// Internal function go generate a row of images

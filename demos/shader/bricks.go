@@ -41,7 +41,7 @@ func (t *ShaderBricks) Start(a *app.App) {
 	a.Renderer().AddProgram("shaderBricks", "shaderBricksVertex", "shaderBricksFrag")
 
 	// Creates plane 1
-	geom1 := geometry.NewPlane(2, 2, 4, 4)
+	geom1 := geometry.NewPlane(2, 2)
 	mat1 := NewBricksMaterial(&math32.Color{0.8, 0.2, 0.1})
 	mat1.SetSide(material.SideDouble)
 	mat1.SetShininess(10)
@@ -51,14 +51,14 @@ func (t *ShaderBricks) Start(a *app.App) {
 	a.Scene().Add(t.plane1)
 
 	// Creates box1
-	geom2 := geometry.NewSegmentedBox(2, 2, 1, 2, 2, 2)
+	geom2 := geometry.NewBox(2, 2, 1)
 	mat2 := NewBricksMaterial(&math32.Color{0.2, 0.4, 0.8})
 	t.box1 = graphic.NewMesh(geom2, mat2)
 	t.box1.SetPosition(1.2, 1, 0)
 	a.Scene().Add(t.box1)
 
 	// Creates sphere 1
-	geom3 := geometry.NewSphere(1, 16, 16, 0, math32.Pi*2, 0, math32.Pi)
+	geom3 := geometry.NewSphere(1, 32, 16)
 	mat3 := NewBricksMaterial(&math32.Color{0.5, 0.6, 0.7})
 	t.sphere1 = graphic.NewMesh(geom3, mat3)
 	t.sphere1.SetPosition(0, -1.2, 0)

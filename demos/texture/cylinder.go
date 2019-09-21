@@ -9,22 +9,21 @@ import (
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/util"
 	"github.com/g3n/g3nd/app"
-	"math"
 	"time"
 )
 
 func init() {
-	app.DemoMap["texture.cylinder"] = &TextureCylinder{}
+	app.DemoMap["texture.cone-cylinder"] = &TexConeCylinder{}
 }
 
-type TextureCylinder struct {
+type TexConeCylinder struct {
 	mesh1 *graphic.Mesh
 	mesh2 *graphic.Mesh
 	mesh3 *graphic.Mesh
 }
 
 // Start is called once at the start of the demo.
-func (t *TextureCylinder) Start(a *app.App) {
+func (t *TexConeCylinder) Start(a *app.App) {
 
 	// Add directional red light from right
 	l1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
@@ -46,7 +45,7 @@ func (t *TextureCylinder) Start(a *app.App) {
 	if err != nil {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	geom1 := geometry.NewCylinder(0.8, 0.8, 2, 16, 2, 0, 2*math.Pi, true, true)
+	geom1 := geometry.NewCylinder(0.8, 2, 16, 2, true, true)
 	mat1 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat1.SetSide(material.SideDouble)
 	mat1.AddTexture(tex)
@@ -59,7 +58,7 @@ func (t *TextureCylinder) Start(a *app.App) {
 	if err != nil {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	geom2 := geometry.NewCylinder(0.8, 0.8, 2, 32, 16, 0, 2*math.Pi, false, true)
+	geom2 := geometry.NewCylinder(0.8, 2, 32, 16, false, true)
 	mat2 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat2.SetSide(material.SideDouble)
 	mat2.AddTexture(tex)
@@ -72,7 +71,7 @@ func (t *TextureCylinder) Start(a *app.App) {
 	if err != nil {
 		a.Log().Fatal("Error loading texture: %s", err)
 	}
-	geom3 := geometry.NewCylinder(0.4, 0.8, 2, 32, 1, 0, 2*math.Pi, false, true)
+	geom3 := geometry.NewTruncatedCone(0.4, 0.8, 2, 32, 1, false, true)
 	mat3 := material.NewStandard(&math32.Color{1, 1, 1})
 	mat3.SetSide(material.SideDouble)
 	mat3.AddTexture(tex)
@@ -86,7 +85,7 @@ func (t *TextureCylinder) Start(a *app.App) {
 }
 
 // Update is called every frame.
-func (t *TextureCylinder) Update(a *app.App, deltaTime time.Duration) {
+func (t *TexConeCylinder) Update(a *app.App, deltaTime time.Duration) {
 
 	// TODO Use deltaTime
 	t.mesh1.RotateY(0.005)
@@ -95,4 +94,4 @@ func (t *TextureCylinder) Update(a *app.App, deltaTime time.Duration) {
 }
 
 // Cleanup is called once at the end of the demo.
-func (t *TextureCylinder) Cleanup(a *app.App) {}
+func (t *TexConeCylinder) Cleanup(a *app.App) {}
