@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -88,9 +88,9 @@ func (t *Earth) Start(a *app.App) {
 	sun.SetPositionZ(20)
 	a.Scene().Add(sun)
 
-	// Add axis helper
-	axis := util.NewAxisHelper(5)
-	a.Scene().Add(axis)
+	// Add axes helper
+	axes := helper.NewAxes(5)
+	a.Scene().Add(axes)
 
 	//// Create circular sphere section (uncomment to try it out)
 	//geomRad := geometry.NewSphere(1.001, 32, 32, 0, 2 * math32.Pi, 0, 0.03 * math32.Pi)

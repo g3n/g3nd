@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -31,9 +31,9 @@ func (t *ShaderBricks) Start(a *app.App) {
 	dir1.SetPosition(0, 0, 100)
 	a.Scene().Add(dir1)
 
-	// Add axis helper
-	axis := util.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Add axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Create custom shader
 	a.Renderer().AddShader("shaderBricksVertex", shaderBricksVertex)

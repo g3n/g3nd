@@ -8,7 +8,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"math"
 	"time"
@@ -100,8 +100,9 @@ func (t *Texsphere) Start(a *app.App) {
 	t.sphere4.SetPosition(1.1, -1.1, 0)
 	a.Scene().Add(t.sphere4)
 
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 }
 
 // Update is called every frame.

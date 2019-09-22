@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -79,9 +79,9 @@ func (t *TexConeCylinder) Start(a *app.App) {
 	t.mesh3.SetPosition(2, 0, 0)
 	a.Scene().Add(t.mesh3)
 
-	// Adds axis helper
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 }
 
 // Update is called every frame.

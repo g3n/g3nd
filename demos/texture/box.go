@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -34,8 +34,9 @@ type Texbox struct {
 // Start is called once at the start of the demo.
 func (t *Texbox) Start(a *app.App) {
 
-	axis := util.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Adds white directional front light
 	dir1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)

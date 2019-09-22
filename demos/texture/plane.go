@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -24,8 +24,9 @@ type Texplane struct {
 // Start is called once at the start of the demo.
 func (t *Texplane) Start(a *app.App) {
 
-	axis := util.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Adds red directional right light
 	dir1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)

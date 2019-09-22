@@ -6,7 +6,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -27,9 +27,9 @@ func (t *Boxmulti) Start(a *app.App) {
 	l1.SetPosition(0, 0, 1)
 	a.Scene().Add(l1)
 
-	// Axis helper
-	axis := util.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Creates box geometry
 	geom := geometry.NewCube(1)

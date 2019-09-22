@@ -6,7 +6,7 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	eutil "github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 
@@ -42,9 +42,9 @@ func (t *PointLight) Start(a *app.App) {
 	boxMat.SetSide(material.SideBack)
 	a.Scene().Add(graphic.NewMesh(boxGeom, boxMat))
 
-	// Create axis helper
-	axis := eutil.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Create vertical point light
 	t.vl = util.NewPointLightMesh(&math32.Color{1, 1, 1})

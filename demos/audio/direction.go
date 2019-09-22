@@ -11,7 +11,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -32,12 +32,12 @@ type AudioDirection struct {
 // Start is called once at the start of the demo.
 func (t *AudioDirection) Start(a *app.App) {
 
-	// Show axis helper
-	ah := util.NewAxisHelper(1.0)
-	a.Scene().Add(ah)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Show grid helper
-	grid := util.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
+	grid := helper.NewGrid(100, 1, &math32.Color{0.4, 0.4, 0.4})
 	a.Scene().Add(grid)
 
 	// Add directional white light

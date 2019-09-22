@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 
@@ -27,8 +27,9 @@ func (t *Points2) Start(a *app.App) {
 
 	a.Gls().ClearColor(0, 0, 0, 1)
 
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 
 	// Load textures for the sprites
 	spnames := []string{"snowflake1.png", "snowflake2.png", "snowflake3.png", "snowflake4.png", "snowflake5.png"}

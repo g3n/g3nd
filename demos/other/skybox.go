@@ -2,7 +2,7 @@ package other
 
 import (
 	"github.com/g3n/engine/graphic"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -25,9 +25,9 @@ func (t *Skybox) Start(a *app.App) {
 	}
 	a.Scene().Add(skybox)
 
-	// Add axis helper
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 }
 
 // Update is called every frame.

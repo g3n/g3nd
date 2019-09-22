@@ -8,7 +8,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -89,9 +89,9 @@ func (t *Pitch) Start(a *app.App) {
 	spos := a.Scene().Position()
 	cam.LookAt(&spos, &math32.Vector3{0, 1, 0})
 
-	// Show axis helper
-	axis := util.NewAxisHelper(3)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(3)
+	a.Scene().Add(axes)
 }
 
 func (t *Pitch) onKey(evname string, ev interface{}) { // TODO use keystate?

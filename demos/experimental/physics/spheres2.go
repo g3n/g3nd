@@ -10,7 +10,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -36,8 +36,9 @@ func (t *PhysicsSpheres2) Start(a *app.App) {
 	a.Subscribe(window.OnKeyRepeat, t.onKey)
 	a.Subscribe(window.OnKeyDown, t.onKey)
 
-	axis := util.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	pl := light.NewPoint(math32.NewColor("white"), 1.0)
 	pl.SetPosition(1, 0, 1)

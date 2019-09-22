@@ -1,7 +1,6 @@
 package geometry
 
 import (
-	"github.com/g3n/engine/util"
 	"time"
 
 	"github.com/g3n/engine/geometry"
@@ -9,6 +8,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 )
 
@@ -18,7 +18,7 @@ func init() {
 
 type ConeCylinder struct {
 	mesh    *graphic.Mesh
-	normals *util.NormalsHelper
+	normals *helper.Normals
 }
 
 // Start is called once at the start of the demo.
@@ -65,12 +65,12 @@ func (t *ConeCylinder) Start(a *app.App) {
 	mesh3.SetPosition(2, 0, 0)
 	a.Scene().Add(mesh3)
 
-	// Adds axis helper
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 
 	// Adds normals helper
-	t.normals = util.NewNormalsHelper(t.mesh, 0.5, &math32.Color{0, 1, 0}, 1)
+	t.normals = helper.NewNormals(t.mesh, 0.5, &math32.Color{0, 1, 0}, 1)
 	a.Scene().Add(t.normals)
 }
 

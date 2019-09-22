@@ -7,7 +7,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -28,9 +28,9 @@ func (t *Boxmulti2) Start(a *app.App) {
 	l1.SetPosition(0, 0, 1)
 	a.Scene().Add(l1)
 
-	// Axis helper
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 
 	// Creates textures
 	tex0, err := texture.NewTexture2DFromImage(a.DirData() + "/images/checkerboard.jpg")

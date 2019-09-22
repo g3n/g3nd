@@ -9,7 +9,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/collada"
 	"github.com/g3n/engine/math32"
-	eutil "github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
 )
@@ -63,9 +63,9 @@ func (t *LoaderCollada) Start(a *app.App) {
 	a.Camera().SetPosition(0, 4, 10)
 	a.Camera().LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 
-	// Adds axix helper
-	ah := eutil.NewAxisHelper(1.5)
-	a.Scene().Add(ah)
+	// Create axes helper
+	axes := helper.NewAxes(1.5)
+	a.Scene().Add(axes)
 
 	// Loads default model
 	fpath := filepath.Join(a.DirData(), "collada/scene.dae")

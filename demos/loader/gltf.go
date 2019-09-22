@@ -2,16 +2,16 @@ package loader
 
 import (
 	"fmt"
-	"github.com/g3n/engine/core"
 	"path/filepath"
 	"time"
 
 	"github.com/g3n/engine/animation"
+	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/loader/gltf"
 	"github.com/g3n/engine/math32"
-	eutil "github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
 )
@@ -61,9 +61,9 @@ func (t *GltfLoader) Start(a *app.App) {
 	l3.SetPosition(10, 0, 0)
 	a.Scene().Add(l3)
 
-	// Adds axis helper
-	axis := eutil.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 
 	// Label for error message
 	errLabel := gui.NewLabel("")

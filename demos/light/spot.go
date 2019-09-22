@@ -6,7 +6,7 @@ import (
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	eutil "github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
 	"time"
@@ -26,9 +26,9 @@ type SpotLight struct {
 // Start is called once at the start of the demo.
 func (t *SpotLight) Start(a *app.App) {
 
-	// Adds axis helper
-	axis := eutil.NewAxisHelper(1)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(1)
+	a.Scene().Add(axes)
 
 	// Sets camera position
 	a.Camera().SetPosition(0, 6, 10)

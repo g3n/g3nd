@@ -10,7 +10,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
 	"time"
@@ -52,7 +52,7 @@ func (t *TankTest) Start(a *app.App) {
 	a.Scene().Add(l1)
 
 	// Show grid helper
-	grid := util.NewGridHelper(100, 1, &math32.Color{0.4, 0.4, 0.4})
+	grid := helper.NewGrid(100, 1, &math32.Color{0.4, 0.4, 0.4})
 	a.Scene().Add(grid)
 
 	// Sets camera position

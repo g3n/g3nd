@@ -6,7 +6,7 @@ import (
 	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"time"
 )
@@ -17,7 +17,7 @@ func init() {
 
 type Box struct {
 	box     *graphic.Mesh
-	normals *util.NormalsHelper
+	normals *helper.Normals
 }
 
 // Start is called once at the start of the demo.
@@ -31,7 +31,7 @@ func (t *Box) Start(a *app.App) {
 	a.Scene().Add(t.box)
 
 	// Add normals helper
-	t.normals = util.NewNormalsHelper(t.box, 0.5, &math32.Color{0, 0, 1}, 1)
+	t.normals = helper.NewNormals(t.box, 0.5, &math32.Color{0, 0, 1}, 1)
 	a.Scene().Add(t.normals)
 
 	// Adds directional light

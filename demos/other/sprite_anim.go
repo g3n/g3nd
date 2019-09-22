@@ -5,7 +5,7 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/texture"
-	"github.com/g3n/engine/util"
+	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 
 	"time"
@@ -27,9 +27,9 @@ func (t *SpriteAnim) Start(a *app.App) {
 	// Initialize list of animators
 	t.anims = make([]*texture.Animator, 0)
 
-	// Adds axis helper
-	axis := util.NewAxisHelper(2)
-	a.Scene().Add(axis)
+	// Create axes helper
+	axes := helper.NewAxes(2)
+	a.Scene().Add(axes)
 
 	// Creates texture 1 and animator
 	tex1, err := texture.NewTexture2DFromImage(a.DirData() + "/images/explosion7.png")
