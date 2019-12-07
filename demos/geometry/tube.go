@@ -25,6 +25,8 @@ type Tube struct {
 
 // Start is called once at the start of the demo.
 func (t *Tube) Start(a *app.App) {
+	
+	a.Camera().SetPosition(0, 10, 80)
 
 	// Add directional red light from right
 	l1 := light.NewDirectional(&math32.Color{1, 0, 0}, 1.0)
@@ -53,8 +55,8 @@ func (t *Tube) Start(a *app.App) {
 
 	mat := material.NewStandard(&math32.Color{1, 1, 1})
 	mat.SetSide(material.SideDouble)
-	mesh := graphic.NewMesh(c, mat)
-	a.Scene().Add(mesh)
+	t.mesh = graphic.NewMesh(c, mat)
+	a.Scene().Add(t.mesh)
 
 	// Create axes helper
 	axes := helper.NewAxes(2)
@@ -62,7 +64,9 @@ func (t *Tube) Start(a *app.App) {
 }
 
 // Update is called every frame.
-func (t *Tube) Update(a *app.App, deltaTime time.Duration) {}
+func (t *Tube) Update(a *app.App, deltaTime time.Duration) {
+	t.mesh.RotateY(0.01)
+}
 
 // Cleanup is called once at the end of the demo.
 func (t *Tube) Cleanup(a *app.App) {}
@@ -216,7 +220,7 @@ func NewTube(path []math32.Vector3, radius float32, radialSegments int, close bo
 	normals[0] = *tangents[0].Clone().Cross(tmpVertex)
     normals[0].Normalize()
     binormals[0] = *tangents[0].Clone().Cross(&normals[0])
-    normals[0].Normalize()
+    binormals[0].Normalize()
 	
 	for i := 1; i < l; i++ {
 		prev := *path[i].Clone().Sub(&path[i-1])
