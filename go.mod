@@ -1,6 +1,6 @@
 module github.com/g3n/g3nd
 
-go 1.12
+go 1.13
 
 require (
 	github.com/g3n/engine v0.1.1-0.20200214161420-db7282a2ba23
