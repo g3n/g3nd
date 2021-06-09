@@ -3,15 +3,16 @@
 package geometry
 
 import (
+	"math"
 	"time"
-	"github.com/g3n/engine/light"
+
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
+	"github.com/g3n/engine/light"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/g3nd/app"
 	"github.com/g3n/engine/util/helper"
-	"math"
+	"github.com/g3n/g3nd/app"
 )
 
 func init() {
@@ -19,12 +20,12 @@ func init() {
 }
 
 type Tube struct {
-	mesh    *graphic.Mesh
+	mesh *graphic.Mesh
 }
 
 // Start is called once at the start of the demo.
 func (t *Tube) Start(a *app.App) {
-	
+
 	a.Camera().SetPosition(0, 10, 80)
 
 	// Add directional red light from right
@@ -45,10 +46,10 @@ func (t *Tube) Start(a *app.App) {
 	var path []math32.Vector3
 	var i float64
 	for i = 0; i <= 100; i++ {
-		x := math.Cos(math.Pi * 2 *i/10)*3
+		x := math.Cos(math.Pi*2*i/10) * 3
 		y := i / 3
-		z := math.Sin(math.Pi * 2 *i/10)*3
-		path = append(path, *math32.NewVector3(float32(x), float32(y), float32(z)));
+		z := math.Sin(math.Pi*2*i/10) * 3
+		path = append(path, *math32.NewVector3(float32(x), float32(y), float32(z)))
 	}
 	c := geometry.NewTube(path, 1, 8, true)
 

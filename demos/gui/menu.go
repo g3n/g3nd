@@ -1,13 +1,13 @@
 package gui
 
 import (
+	"strings"
+	"time"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/gui/assets/icon"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"time"
-
-	"strings"
 )
 
 func init() {

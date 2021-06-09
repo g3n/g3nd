@@ -1,11 +1,12 @@
 package gui
 
 import (
+	"time"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"time"
 )
 
 func init() {

@@ -1,6 +1,8 @@
 package material
 
 import (
+	"time"
+
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
@@ -10,7 +12,6 @@ import (
 	"github.com/g3n/engine/texture"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
-	"time"
 )
 
 func init() {

@@ -2,9 +2,10 @@ package gui
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/g3nd/app"
-	"time"
 )
 
 func init() {

@@ -1,6 +1,8 @@
 package animation
 
 import (
+	"time"
+
 	"github.com/g3n/engine/animation"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
@@ -9,7 +11,6 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/util/helper"
-	"time"
 
 	"github.com/g3n/g3nd/app"
 )

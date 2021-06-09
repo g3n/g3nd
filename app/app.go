@@ -3,9 +3,6 @@ package app
 import (
 	"flag"
 	"fmt"
-	"github.com/g3n/engine/audio/al"
-	"github.com/g3n/engine/util"
-	"github.com/kardianos/osext"
 	"os"
 	"path/filepath"
 	"runtime/pprof"
@@ -13,6 +10,10 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/g3n/engine/audio/al"
+	"github.com/g3n/engine/util"
+	"github.com/kardianos/osext"
 
 	"github.com/g3n/engine/app"
 	"github.com/g3n/engine/camera"

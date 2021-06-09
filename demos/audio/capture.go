@@ -3,10 +3,11 @@
 package audio
 
 import (
+	"time"
+
 	"github.com/g3n/engine/audio/al"
 	"github.com/g3n/engine/gui"
 	"github.com/g3n/engine/math32"
-	"time"
 
 	"github.com/g3n/g3nd/app"
 )

@@ -1,6 +1,8 @@
 package light
 
 import (
+	"time"
+
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/gui"
@@ -9,7 +11,6 @@ import (
 	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
 	"github.com/g3n/g3nd/util"
-	"time"
 )
 
 func init() {

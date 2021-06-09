@@ -1,13 +1,14 @@
 package other
 
 import (
+	"time"
+
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/g3nd/app"
-	"time"
 )
 
 func init() {
@@ -28,34 +29,34 @@ func (t *Curves2) Start(a *app.App) {
 	controlPoints := []*math32.Vector3{}
 
 	quadBezier := math32.NewBezierQuadratic(
-		math32.NewVector3(-1,0,0),
-		math32.NewVector3(-1,-1,0),
-		math32.NewVector3(0,-1,0),
-	30)
-	controlPoints = append(controlPoints, 
-		math32.NewVector3(-1,-1,0),
+		math32.NewVector3(-1, 0, 0),
+		math32.NewVector3(-1, -1, 0),
+		math32.NewVector3(0, -1, 0),
+		30)
+	controlPoints = append(controlPoints,
+		math32.NewVector3(-1, -1, 0),
 	)
 
 	cubeBezier := math32.NewBezierCubic(
-		math32.NewVector3(0,-1,0),
-		math32.NewVector3(1,-1,0),
-		math32.NewVector3(1,1,0),
-		math32.NewVector3(0,1,0),
-	30)
-	controlPoints = append(controlPoints, 
-		math32.NewVector3(1,-1,0),
-		math32.NewVector3(1,1,0),
+		math32.NewVector3(0, -1, 0),
+		math32.NewVector3(1, -1, 0),
+		math32.NewVector3(1, 1, 0),
+		math32.NewVector3(0, 1, 0),
+		30)
+	controlPoints = append(controlPoints,
+		math32.NewVector3(1, -1, 0),
+		math32.NewVector3(1, 1, 0),
 	)
 
 	hermiteSpline := math32.NewHermiteSpline(
-		math32.NewVector3(0,1,0),
-		math32.NewVector3(0,2,0),
-		math32.NewVector3(-1,0,0),
-		math32.NewVector3(-2,0,0),
-	30)
-	controlPoints = append(controlPoints, 
-		math32.NewVector3(0,2,0),
-		math32.NewVector3(-2,0,0),
+		math32.NewVector3(0, 1, 0),
+		math32.NewVector3(0, 2, 0),
+		math32.NewVector3(-1, 0, 0),
+		math32.NewVector3(-2, 0, 0),
+		30)
+	controlPoints = append(controlPoints,
+		math32.NewVector3(0, 2, 0),
+		math32.NewVector3(-2, 0, 0),
 	)
 
 	continuedCurve := quadBezier.Continue(cubeBezier).Continue(hermiteSpline)
@@ -64,11 +65,11 @@ func (t *Curves2) Start(a *app.App) {
 	for i := 0; i < len(continuedPoints); i++ {
 		positions.AppendVector3(&continuedPoints[i])
 		if i < 30 {
-			colors.Append(1,0,0)
+			colors.Append(1, 0, 0)
 		} else if i <= 60 {
-			colors.Append(0,1,0)
+			colors.Append(0, 1, 0)
 		} else {
-			colors.Append(0,0,1)
+			colors.Append(0, 0, 1)
 		}
 	}
 	geom1.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition))
@@ -77,7 +78,6 @@ func (t *Curves2) Start(a *app.App) {
 	lines1 := graphic.NewLineStrip(geom1, mat1)
 	a.Scene().Add(lines1)
 
-	
 	// Points from curve controls
 	pointsGeom := geometry.NewGeometry()
 	positions = math32.NewArrayF32(0, 0)
@@ -100,10 +100,10 @@ func (t *Curves2) Start(a *app.App) {
 
 	for i := 0; i < len(catmullPoints); i++ {
 		positions.AppendVector3(&catmullPoints[i])
-		if i % 3 == 0 {
-			colors.Append(1,0,0)
-			colors.Append(0,1,0)
-			colors.Append(0,0,1)
+		if i%3 == 0 {
+			colors.Append(1, 0, 0)
+			colors.Append(0, 1, 0)
+			colors.Append(0, 0, 1)
 		}
 	}
 	geom2.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition))

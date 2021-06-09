@@ -1,6 +1,9 @@
 package other
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/g3n/engine/experimental/collision"
 	"github.com/g3n/engine/geometry"
 	"github.com/g3n/engine/gls"
@@ -11,9 +14,6 @@ import (
 	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"time"
-
-	"math/rand"
 )
 
 func init() {

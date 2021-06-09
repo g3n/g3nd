@@ -2,10 +2,11 @@
 package tests
 
 import (
+	"time"
+
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/g3nd/app"
-	"time"
 )
 
 // Sets the category and name of your test in the demos.Map

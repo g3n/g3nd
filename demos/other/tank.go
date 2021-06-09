@@ -1,6 +1,8 @@
 package other
 
 import (
+	"time"
+
 	"github.com/g3n/engine/camera"
 	"github.com/g3n/engine/core"
 	"github.com/g3n/engine/geometry"
@@ -13,7 +15,6 @@ import (
 	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"github.com/g3n/g3nd/app"
-	"time"
 )
 
 func init() {

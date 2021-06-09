@@ -1,14 +1,14 @@
 package other
 
 import (
-	"github.com/g3n/engine/geometry"
-	"github.com/g3n/engine/graphic"
-	"github.com/g3n/engine/math32"
-	"github.com/g3n/g3nd/app"
+	"math/rand"
 	"time"
 
+	"github.com/g3n/engine/geometry"
+	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
-	"math/rand"
+	"github.com/g3n/engine/math32"
+	"github.com/g3n/g3nd/app"
 )
 
 func init() {
