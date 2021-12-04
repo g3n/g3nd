@@ -1,3 +1,6 @@
-g3nd.prof
-g3nd.svg
+# Build output
+/g3nd
 
+# Profiling output
+/g3nd.prof
+/g3nd.svg
