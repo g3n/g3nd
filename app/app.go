@@ -497,13 +497,23 @@ func (a *App) setupScene() {
 	// Remove all controls and adds default ones
 	a.control.Clear()
 
-	// Adds camera selection
+	// Adds Perspective camera selection
 	cb := a.control.AddCheckBox("Perspective camera").SetValue(true)
 	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		if cb.Value() {
 			a.camera.SetProjection(camera.Perspective)
 		} else {
 			a.camera.SetProjection(camera.Orthographic)
+		}
+	})
+
+	// Adds Swivel camera selection
+	cb2 := a.control.AddCheckBox("Swivel camera").SetValue(a.orbit.RotationStyle() == camera.StyleSwivel)
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if cb2.Value() {
+			a.orbit.SetRotationStyle(camera.StyleSwivel)
+		} else {
+			a.orbit.SetRotationStyle(camera.StyleOrbit)
 		}
 	})
 
