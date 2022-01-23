@@ -48,9 +48,10 @@ type App struct {
 	statsTable *stats.StatsTable  // statistics table panel
 	control    *gui.ControlFolder // Pointer to gui control panel
 
-	// Camera and orbit control
-	camera *camera.Camera       // Camera
-	orbit  *camera.OrbitControl // Orbit control
+	// Camera, orbit and first person control
+	camera      *camera.Camera             // Camera
+	orbit       *camera.OrbitControl       // Orbit control
+	firstPerson *camera.FirstPersonControl // First person control
 }
 
 // IDemo is the interface that must be satisfied by all demos.
@@ -482,7 +483,9 @@ func (a *App) setupScene() {
 	a.camera.UpdateSize(5)
 	a.camera.LookAt(&math32.Vector3{0, 0, 0}, &math32.Vector3{0, 1, 0})
 	a.camera.SetProjection(camera.Perspective)
-	a.orbit.Reset()
+	if a.orbit != nil {
+		a.orbit.Reset()
+	}
 
 	// If audio active, resets global listener parameters
 	al.Listener3f(al.Position, 0, 0, 0)
@@ -497,13 +500,31 @@ func (a *App) setupScene() {
 	// Remove all controls and adds default ones
 	a.control.Clear()
 
-	// Adds camera selection
+	// Adds Perspective camera selection
 	cb := a.control.AddCheckBox("Perspective camera").SetValue(true)
 	cb.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
 		if cb.Value() {
 			a.camera.SetProjection(camera.Perspective)
 		} else {
 			a.camera.SetProjection(camera.Orthographic)
+		}
+	})
+
+	// Adds First Person camera selection
+	cb2 := a.control.AddCheckBox("First Person camera").SetValue(a.firstPerson != nil)
+	cb2.Subscribe(gui.OnChange, func(evname string, ev interface{}) {
+		if cb2.Value() {
+			// disable Orbit control before enabling First Person
+			a.orbit.Dispose()
+			a.orbit = nil
+
+			a.firstPerson = camera.NewFirstPersonControl(a.camera)
+		} else {
+			// disable First Person control before enabling Orbit
+			a.firstPerson.Dispose()
+			a.firstPerson = nil
+
+			a.orbit = camera.NewOrbitControl(a.camera)
 		}
 	})
 
@@ -560,6 +581,12 @@ func (a *App) Camera() *camera.Camera {
 func (a *App) Orbit() *camera.OrbitControl {
 
 	return a.orbit
+}
+
+// Orbit returns the current camera first person control
+func (a *App) FirstPerson() *camera.FirstPersonControl {
+
+	return a.firstPerson
 }
 
 // OnWindowResize is default handler for window resize events.
