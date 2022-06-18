@@ -124,7 +124,7 @@ func (t *PhysicsSpheres2) Start(a *app.App) {
 func (t *PhysicsSpheres2) ThrowBall() {
 
 	camPos := t.app.Camera().Position()
-	camTarget := t.app.Orbit().Target()
+	camTarget := *math32.NewVec3()
 	throwDir := math32.NewVec3().SubVectors(&camTarget, &camPos).SetLength(3)
 
 	sphere := graphic.NewMesh(t.sphereGeom, t.matSphere)

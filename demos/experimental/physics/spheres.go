@@ -148,7 +148,7 @@ func (t *PhysicsSpheres) ThrowBall() {
 
 	// Obtain throw direction from camera position and target
 	camPos := t.app.Camera().Position()
-	camTarget := t.app.Orbit().Target()
+	camTarget := *math32.NewVec3()
 	throwDir := math32.NewVec3().SubVectors(&camTarget, &camPos).SetLength(3)
 
 	// Create sphere rigid body

@@ -45,7 +45,11 @@ type TankTest struct {
 func (t *TankTest) Start(a *app.App) {
 
 	t.a = a
-	a.Orbit().SetEnabled(^camera.OrbitKeys)
+	if a.Orbit() != nil {
+		a.Orbit().SetEnabled(^camera.OrbitKeys)
+	} else if a.FirstPerson() != nil {
+		a.FirstPerson().SetEnabled(^camera.FPKeys)
+	}
 
 	// Add directional white light
 	l1 := light.NewDirectional(&math32.Color{1, 1, 1}, 1.0)
