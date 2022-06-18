@@ -441,6 +441,14 @@ func (a *App) buildGui(demoMap map[string]IDemo) {
 		}
 	})
 	a.mainPanel.Add(a.treeTests)
+
+	// return key focus to demo scene when leaving gui
+	a.mainPanel.Subscribe(gui.OnCursorLeave, func(name string, ev interface{}) {
+		gui.Manager().SetKeyFocus(nil)
+	})
+	a.control.Subscribe(gui.OnCursorLeave, func(name string, ev interface{}) {
+		gui.Manager().SetKeyFocus(nil)
+	})
 }
 
 // setupScene resets the current scene for executing a new (or first) test
