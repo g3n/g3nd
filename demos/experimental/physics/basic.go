@@ -43,7 +43,7 @@ func (t *PhysicsBasic) Start(a *app.App) {
 	a.Scene().Add(pl)
 
 	// Add directional green light from top
-	l2 := light.NewDirectional(&math32.Color{1, 1, 1}, 0.3)
+	l2 := light.NewDirectional(&math32.Color{R: 1, G: 1, B: 1}, 0.3)
 	l2.SetPosition(0, 0.1, 0)
 	a.Scene().Add(l2)
 
@@ -54,7 +54,7 @@ func (t *PhysicsBasic) Start(a *app.App) {
 
 	// Creates sphere 1
 	sphereGeom := geometry.NewSphere(0.1, 16, 8)
-	mat := material.NewStandard(&math32.Color{1, 1, 1})
+	mat := material.NewStandard(&math32.Color{R: 1, G: 1, B: 1})
 	mat.SetWireframe(true)
 
 	sphere1 := graphic.NewMesh(sphereGeom, mat)
