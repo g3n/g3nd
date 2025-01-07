@@ -100,7 +100,7 @@ const (
 func Create() *App {
 
 	a := new(App)
-	a.Application = app.App()
+	a.Application = app.App(800, 600, "G3ND")
 
 	// Creates application logger
 	a.log = logger.New("G3ND", nil)
@@ -192,7 +192,7 @@ func Create() *App {
 		if kev.Key == window.KeyEscape { // ESC terminates the program
 			a.Exit()
 		} else if kev.Key == window.KeyF11 { // F11 toggles full screen
-			//a.Window().SetFullScreen(!a.Window().FullScreen()) // TODO
+			a.SetFullScreen(!a.FullScreen())
 		} else if kev.Key == window.KeyS && kev.Mods == window.ModAlt { // Ctr-S prints statistics in the console
 			a.logStats()
 		}
